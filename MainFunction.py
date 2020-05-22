@@ -8,6 +8,7 @@ def main():
     HostDetection.main()
     SupportCheck.main()
     PackageCheck.main()
+    RPMFHandler.main()
 
 if __name__ == "__main__":
     main()
