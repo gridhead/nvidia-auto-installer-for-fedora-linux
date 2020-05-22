@@ -5,6 +5,7 @@ init()
 
 def main():
     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[ ! ] NVIDIA AUTOINSTALLER FOR FEDORA WORKSTATION" + Style.RESET_ALL)
+    SupportCheck.main()
 
 if __name__ == "__main__":
     main()
