@@ -13,6 +13,7 @@ def main():
         output = prompt.communicate()[0].decode("utf-8")
         if "rpmfusion-nonfree-nvidia-driver" in output:
             print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "RPMFusion repository for Proprietary NVIDIA Driver detected!" + Style.RESET_ALL)
+            return 0
         else:
             print(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "RPMFusion repository for Proprietary NVIDIA Driver not detected!" + Style.RESET_ALL)
             while True:
