@@ -10,7 +10,7 @@ def main():
         print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Connection to RPMFusion server was established!" + Style.RESET_ALL)
     else:
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Connection to RPMFusion server could not be established!" + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer with ERROR CODE - RPCN" + Style.RESET_ALL)
+        print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
         exit()
 
 if __name__ == "__main__":
