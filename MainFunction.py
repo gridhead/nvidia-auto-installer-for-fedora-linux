@@ -15,15 +15,5 @@ def main():
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
         exit()
 
-main()
-
-'''
 if __name__ == "__main__":
-    try:
-        main()
-    except BaseException:
-        print("")
-        print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Abort call received or exception found!" + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
-        exit()
-'''
+    main()
