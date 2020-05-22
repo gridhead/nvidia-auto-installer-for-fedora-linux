@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, sys
 from colorama import init, Fore, Style
 
 init()
@@ -25,7 +25,7 @@ def main():
     else:
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Connection to RPMFusion server could not be established!" + Style.RESET_ALL)
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
-        exit()
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()

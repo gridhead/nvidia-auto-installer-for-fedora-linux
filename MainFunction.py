@@ -1,4 +1,4 @@
-import os, HostDetection, SupportCheck, RPMFHandler, PackageCheck, RepoInstaller, DriverInstaller, ForcingLoader
+import os, HostDetection, SupportCheck, RPMFHandler, PackageCheck, RepoInstaller, DriverInstaller, ForcingLoader, sys
 from colorama import init, Fore, Back, Style
 
 init()
@@ -23,11 +23,11 @@ def main():
                 elif userpick == "n" or userpick == "y":
                     print(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "You would need to reboot to load up installed drivers" + Style.RESET_ALL)
                     print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
-                    exit()
+                    sys.exit(0)
         elif repofetc == -1:
             print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Installation cannot proceed without RPMFusion NVIDIA repository!" + Style.RESET_ALL)
             print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
-            exit()
+            sys.exit(0)
         else:
             DriverInstaller.main()
             ForcingLoader.main()
@@ -40,11 +40,11 @@ def main():
                 elif userpick == "n" or userpick == "y":
                     print(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "You would need to reboot to load up installed drivers" + Style.RESET_ALL)
                     print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
-                    exit()
+                    sys.exit(0)
     else:
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Installation was cancelled voluntarily!" + Style.RESET_ALL)
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
-        exit()
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()

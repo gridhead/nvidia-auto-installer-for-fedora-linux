@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os, sys
 from colorama import init, Fore, Back, Style
 
 init()
@@ -13,7 +13,7 @@ def main():
     else:
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "RPMFusion NVIDIA repository could not be enabled!" + Style.RESET_ALL)
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
-        exit()
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()

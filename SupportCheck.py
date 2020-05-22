@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os, sys
 from colorama import init, Fore, Back, Style
 
 init()
@@ -17,7 +17,7 @@ def main():
     if "NVIDIA" not in output:
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "No supported NVIDIA GPU was detected!" + Style.RESET_ALL)
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer with ERROR CODE - NVNF" + Style.RESET_ALL)
-        exit()
+        sys.exit(0)
     else:
         print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "An active NVIDIA GPU was detected!" + Style.RESET_ALL)
     if linect == 1:
