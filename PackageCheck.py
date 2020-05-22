@@ -11,13 +11,24 @@ def main():
     linect = output.count("\n")
     if linect == 0:
         print(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "No existing NVIDIA drivers were detected!" + Style.RESET_ALL)
+        while True:
+            userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to install the drivers? (Y/N) " + Style.RESET_ALL)
+            if userpick == "y" or userpick == "Y":
+                return 1
+            elif userpick == "n" or userpick == "y":
+                return -1
     else:
         print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "A total of " + str(linect) + " driver packages were detected!" + Style.RESET_ALL)
         pkname = output.split("\n")
         for indx in pkname:
             if indx != "":
                 print("      " + Fore.WHITE + indx + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reinstall the drivers? (Y/N)" + Style.RESET_ALL)
+        while True:
+            userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reinstall the drivers? (Y/N) " + Style.RESET_ALL)
+            if userpick == "y" or userpick == "Y":
+                return 1
+            elif userpick == "n" or userpick == "y":
+                return -1
 
 if __name__ == "__main__":
     main()
