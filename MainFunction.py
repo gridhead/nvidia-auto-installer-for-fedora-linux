@@ -1,4 +1,4 @@
-import os, HostDetection, SupportCheck, RPMFHandler, PackageCheck, RepoInstaller
+import os, HostDetection, SupportCheck, RPMFHandler, PackageCheck, RepoInstaller, DriverInstaller
 from colorama import init, Fore, Back, Style
 
 init()
@@ -12,10 +12,13 @@ def main():
         repofetc = RPMFHandler.main()
         if repofetc == 1:
             RepoInstaller.main()
-        else:
+            DriverInstaller.main()
+        elif repofetc == -1:
             print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Installation cannot proceed without RPMFusion NVIDIA repository!" + Style.RESET_ALL)
             print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
             exit()
+        else:
+            DriverInstaller.main()
     else:
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Installation was cancelled voluntarily!" + Style.RESET_ALL)
         print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer" + Style.RESET_ALL)
