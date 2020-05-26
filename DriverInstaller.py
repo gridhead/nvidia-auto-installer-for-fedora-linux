@@ -3,14 +3,15 @@ from colorama import init, Fore, Style
 from ColoramaCalls import StatusDecorator
 
 init()
+DecoratorObject = StatusDecorator()
 
 def main():
-    StatusDecorator.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
+    DecoratorObject.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
     os.system("sudo dnf install gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
-    StatusDecorator.SuccessMessage("Driver package installation completed")
-    StatusDecorator.WarningMessage("Commencing mandatory sleep for 5 minutes to load up kernel modules")
+    DecoratorObject.SuccessMessage("Driver package installation completed")
+    DecoratorObject.WarningMessage("Commencing mandatory sleep for 5 minutes to load up kernel modules")
     time.sleep(300)
-    StatusDecorator.SuccessMessage("Modified kernel modules have been loaded up")
+    DecoratorObject.SuccessMessage("Modified kernel modules have been loaded up")
 
 if __name__ == "__main__":
     main()
