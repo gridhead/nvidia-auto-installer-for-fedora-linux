@@ -3,10 +3,11 @@ from colorama import init
 from ColoramaCalls import StatusDecorator
 
 init()
+DecoratorObject = StatusDecorator()
 
 def main():
-    StatusDecorator.SectionHeader("GATHERING ACTIVE INFORMATION...")
-    StatusDecorator.SuccessMessage("Host information was gathered")
+    DecoratorObject.SectionHeader("GATHERING ACTIVE INFORMATION...")
+    DecoratorObject.SuccessMessage("Host information was gathered")
     datadict = {
         "System": str(os.uname().sysname),
         "Hostname": str(os.uname().nodename),
@@ -15,7 +16,7 @@ def main():
         "Machine": str(os.uname().machine),
     }
     for indx in datadict.keys():
-        StatusDecorator.NormalMessage(indx + ": " + datadict[indx])
+        DecoratorObject.NormalMessage(indx + ": " + datadict[indx])
 
 if __name__ == "__main__":
     main()
