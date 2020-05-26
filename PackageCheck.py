@@ -1,16 +1,17 @@
-import subprocess, os
-from colorama import init, Fore, Back, Style
+import subprocess
+from colorama import init, Fore, Style
+from ColoramaCalls import StatusDecorator
 
 init()
 
 def main():
-    print(Style.BRIGHT + Fore.CYAN + "[ ✔ ]" + " " + "LOOKING FOR EXISTING PACKAGES..." + Style.RESET_ALL)
+    StatusDecorator.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
     comand = "rpm -qa | grep 'nvidia'"
     prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = prompt.communicate()[0].decode("utf-8")
     linect = output.count("\n")
     if linect == 0:
-        print(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "No existing NVIDIA drivers were detected!" + Style.RESET_ALL)
+        StatusDecorator.WarningMessage("No existing NVIDIA drivers were detected!")
         while True:
             userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to install the drivers? (Y/N) " + Style.RESET_ALL)
             if userpick == "y" or userpick == "Y":
@@ -18,11 +19,11 @@ def main():
             elif userpick == "n" or userpick == "y":
                 return -1
     else:
-        print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "A total of " + str(linect) + " driver packages were detected!" + Style.RESET_ALL)
+        StatusDecorator.SuccessMessage("A total of " + str(linect) + " driver packages were detected!")
         pkname = output.split("\n")
         for indx in pkname:
             if indx != "":
-                print("      " + Fore.WHITE + indx + Style.RESET_ALL)
+                StatusDecorator.NormalMessage(indx)
         while True:
             userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reinstall the drivers? (Y/N) " + Style.RESET_ALL)
             if userpick == "y" or userpick == "Y":
