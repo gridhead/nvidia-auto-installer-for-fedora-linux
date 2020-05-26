@@ -1,18 +1,20 @@
 import subprocess, os, sys
+from colorama import init
 from ColoramaCalls import StatusDecorator
 
 init()
+DecoratorObject = StatusDecorator()
 
 def main():
-    StatusDecorator.SectionHeader("FETCHING REPOSITORY DATA...")
+    DecoratorObject.SectionHeader("FETCHING REPOSITORY DATA...")
     retndata = subprocess.getstatusoutput("sudo dnf config-manager --set-enable rpmfusion-nonfree-nvidia-driver")[0]
     if retndata == 0:
-        StatusDecorator.SuccessMessage("RPMFusion NVIDIA repository was enabled")
+        DecoratorObject.SuccessMessage("RPMFusion NVIDIA repository was enabled")
         os.system("sudo dnf update --refresh")
-        StatusDecorator.SuccessMessage("Your packages have been updated")
+        DecoratorObject.SuccessMessage("Your packages have been updated")
     else:
-        StatusDecorator.FailureMessage("RPMFusion NVIDIA repository could not be enabled")
-        StatusDecorator.FailureMessage("Leaving installer")
+        DecoratorObject.FailureMessage("RPMFusion NVIDIA repository could not be enabled")
+        DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
 if __name__ == "__main__":
