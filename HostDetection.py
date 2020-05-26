@@ -1,11 +1,12 @@
 import os
-from colorama import init, Fore, Back, Style
+from colorama import init
+from ColoramaCalls import StatusDecorator
 
 init()
 
 def main():
-    print(Style.BRIGHT + Fore.CYAN + "[ ✔ ]" + " " + "GATHERING ACTIVE INFORMATION..." + Style.RESET_ALL)
-    print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Host information was gathered!" + Style.RESET_ALL)
+    StatusDecorator.SectionHeader("GATHERING ACTIVE INFORMATION...")
+    StatusDecorator.SuccessMessage("Host information was gathered")
     datadict = {
         "System": str(os.uname().sysname),
         "Hostname": str(os.uname().nodename),
@@ -14,7 +15,7 @@ def main():
         "Machine": str(os.uname().machine),
     }
     for indx in datadict.keys():
-        print(Style.BRIGHT + Fore.GREEN + "     " + Style.RESET_ALL + " " + Fore.WHITE + indx + ": " + datadict[indx] + Style.RESET_ALL)
+        StatusDecorator.NormalMessage(indx + ": " + datadict[indx])
 
 if __name__ == "__main__":
     main()
