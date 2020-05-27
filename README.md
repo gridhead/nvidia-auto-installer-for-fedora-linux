@@ -1,5 +1,5 @@
-# nvidia-auto-installer-for-fedora-ws
-A CLI tool which lets you install proprietary NVIDIA drivers easily in Fedora WS 32+
+# nvidia-auto-installer-for-fedora
+A CLI tool which lets you install proprietary NVIDIA drivers easily in Fedora 32+
 
 ![](baseshot.png)
 
@@ -7,12 +7,12 @@ The look and feel is heavily inspired from `systemd` and `eopkg` prompts.
 
 ## Requirements
 * Active internet connection
-* Fedora Workstation 32 or above
+* Fedora 32 or above
 
 ## Usage
 1. Make sure you have a working internet connection
-2. Download `NVAutoInstFedoraWS32` from releases
-3. Execute `./NVAutoInstFedoraWS32` to install drivers
+2. Download `NVAutoInstFedora32` from releases
+3. Execute `./NVAutoInstFedora32` to install drivers
 4. Give stars to the repository if you found this helpful
 
 ## Note
@@ -20,6 +20,8 @@ The look and feel is heavily inspired from `systemd` and `eopkg` prompts.
 * Requires secure boot to be turned off in UEFI systems.
 * Requires superuser access for repo addition and driver setup.
 * The drivers are fetched from the RPMFusion repository.
+* Only tested on Fedora 32 Workstation.
+* Use discretion while using this on other spins.
 * Only tested on 9XX/10XX/20XX series discrete cards.
 * Use discretion while installing with older cards.
 * No additional configuration is required for Optimus setups.
