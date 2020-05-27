@@ -23,7 +23,7 @@ def main():
                     userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reboot your system now? (Y/N) " + Style.RESET_ALL)
                     if userpick == "y" or userpick == "Y":
                         DecoratorObject.WarningMessage("Rebooting now")
-                        os.system("sudo systemctl reboot")
+                        os.system("systemctl reboot")
                     elif userpick == "n" or userpick == "y":
                         DecoratorObject.WarningMessage("You would need to reboot to load up installed drivers")
                         DecoratorObject.FailureMessage("Leaving installer")
@@ -40,7 +40,7 @@ def main():
                     userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reboot your system now? (Y/N) " + Style.RESET_ALL)
                     if userpick == "y" or userpick == "Y":
                         DecoratorObject.WarningMessage("Rebooting now")
-                        os.system("sudo systemctl reboot")
+                        os.system("systemctl reboot")
                     elif userpick == "n" or userpick == "y":
                         DecoratorObject.WarningMessage("You would need to reboot to load up installed drivers")
                         DecoratorObject.FailureMessage("Leaving installer")
