@@ -7,7 +7,7 @@ init()
 DecoratorObject = StatusDecorator()
 
 def main():
-    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA WORKSTATION" + Style.RESET_ALL)
+    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE" + Style.RESET_ALL)
     if os.geteuid() == 0:
         HostDetection.main()
         SupportCheck.main()
