@@ -29,7 +29,7 @@ def main():
                         DecoratorObject.FailureMessage("Leaving installer")
                         sys.exit(0)
             elif repofetc == -1:
-                DecoratorObject.FailureMessage("Installation cannot proceed without RPMFusion NVIDIA repository!")
+                DecoratorObject.FailureMessage("Installation cannot proceed without RPM Fusion NVIDIA repository!")
                 DecoratorObject.FailureMessage("Leaving installer")
                 sys.exit(0)
             else:

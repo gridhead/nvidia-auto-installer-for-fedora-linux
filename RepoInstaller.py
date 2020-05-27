@@ -9,11 +9,11 @@ def main():
     DecoratorObject.SectionHeader("FETCHING REPOSITORY DATA...")
     retndata = subprocess.getstatusoutput("dnf config-manager --set-enable rpmfusion-nonfree-nvidia-driver")[0]
     if retndata == 0:
-        DecoratorObject.SuccessMessage("RPMFusion NVIDIA repository was enabled")
+        DecoratorObject.SuccessMessage("RPM Fusion NVIDIA repository was enabled")
         os.system("dnf update --refresh")
         DecoratorObject.SuccessMessage("Your packages have been updated")
     else:
-        DecoratorObject.FailureMessage("RPMFusion NVIDIA repository could not be enabled")
+        DecoratorObject.FailureMessage("RPM Fusion NVIDIA repository could not be enabled")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
