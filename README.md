@@ -1,7 +1,7 @@
 # nvidia-auto-installer-for-fedora
 A CLI tool which lets you install proprietary NVIDIA drivers easily in Fedora 32+
 
-![](baseshot.png)
+![](v0.2.0-screenshot.png)
 
 The look and feel is heavily inspired from `systemd` and `eopkg` prompts.
 
