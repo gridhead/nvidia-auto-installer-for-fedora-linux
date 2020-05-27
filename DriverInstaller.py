@@ -1,15 +1,17 @@
 import os, time
-from colorama import init, Fore, Back, Style
+from colorama import init, Fore, Style
+from ColoramaCalls import StatusDecorator
 
 init()
+DecoratorObject = StatusDecorator()
 
 def main():
-    print(Style.BRIGHT + Fore.CYAN + "[ ✔ ]" + " " + "INSTALLING PROPRIETARY DRIVERS..." + Style.RESET_ALL)
+    DecoratorObject.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
     os.system("sudo dnf install gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
-    print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Driver package installation completed!" + Style.RESET_ALL)
-    print(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Commencing mandatory sleep for 5 minutes to load up kernel modules" + Style.RESET_ALL)
+    DecoratorObject.SuccessMessage("Driver package installation completed")
+    DecoratorObject.WarningMessage("Commencing mandatory sleep for 5 minutes to load up kernel modules")
     time.sleep(300)
-    print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Modified kernel modules have been loaded up!" + Style.RESET_ALL)
+    DecoratorObject.SuccessMessage("Modified kernel modules have been loaded up")
 
 if __name__ == "__main__":
     main()

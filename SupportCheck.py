@@ -1,29 +1,31 @@
-import subprocess, os, sys
-from colorama import init, Fore, Back, Style
+import subprocess, sys
+from colorama import init
+from ColoramaCalls import StatusDecorator
 
 init()
+DecoratorObject = StatusDecorator()
 
 def main():
-    print(Style.BRIGHT + Fore.CYAN + "[ ✔ ]" + " " + "CHECKING FOR GPU COMPATIBILITY..." + Style.RESET_ALL)
+    DecoratorObject.SectionHeader("CHECKING FOR GPU COMPATIBILITY...")
     comand = "lspci | grep -E 'VGA|3D'"
     prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = prompt.communicate()[0].decode("utf-8")
     linect = output.count("\n")
     pkname = output.split("\n")
-    print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Compatibility infomation was obtained!" + Style.RESET_ALL)
+    DecoratorObject.SuccessMessage("Compatibility infomation was obtained")
     for indx in pkname:
         if indx != "":
-            print("      " + Fore.WHITE + indx + Style.RESET_ALL)
+            DecoratorObject.NormalMessage(indx)
     if "NVIDIA" not in output:
-        print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "No supported NVIDIA GPU was detected!" + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.RED + "[ ✘ ]" + Style.RESET_ALL + " " + Fore.WHITE + "Leaving installer with ERROR CODE - NVNF" + Style.RESET_ALL)
+        DecoratorObject.FailureMessage("No supported NVIDIA GPU was detected!")
+        DecoratorObject.FailureMessage("Leaving installer with ERROR CODE - NVNF")
         sys.exit(0)
     else:
-        print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "An active NVIDIA GPU was detected!" + Style.RESET_ALL)
+        DecoratorObject.SuccessMessage("An active NVIDIA GPU was detected!")
     if linect == 1:
-        print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "An single dedicated GPU setup was detected!" + Style.RESET_ALL)
+        DecoratorObject.SuccessMessage("An single dedicated GPU setup was detected!")
     else:
-        print(Style.BRIGHT + Fore.GREEN + "[ ✔ ]" + Style.RESET_ALL + " " + Fore.WHITE + "An Optimus Dual GPU setup was detected!" + Style.RESET_ALL)
+        DecoratorObject.SuccessMessage("An Optimus Dual GPU setup was detected!")
 
 if __name__ == "__main__":
     main()
