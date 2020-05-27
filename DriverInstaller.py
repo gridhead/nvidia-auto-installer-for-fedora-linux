@@ -7,7 +7,7 @@ DecoratorObject = StatusDecorator()
 
 def main():
     DecoratorObject.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
-    ExecStatusCode = os.system("dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
+    ExecStatusCode = os.system("dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686")
     if ExecStatusCode == 0:
         DecoratorObject.SuccessMessage("Driver package installation completed")
         DecoratorObject.WarningMessage("Commencing mandatory sleep for 5 minutes to load up kernel modules")
