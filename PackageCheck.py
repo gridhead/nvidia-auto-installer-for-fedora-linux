@@ -29,7 +29,7 @@ def main():
             userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reinstall the drivers? (Y/N) " + Style.RESET_ALL)
             if userpick == "y" or userpick == "Y":
                 return 1
-            elif userpick == "n" or userpick == "y":
+            elif userpick == "n" or userpick == "N":
                 return -1
 
 if __name__ == "__main__":
