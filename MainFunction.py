@@ -52,7 +52,7 @@ def main():
     else:
         DecoratorObject.FailureMessage("Installer cannot proceed without root privileges")
         DecoratorObject.FailureMessage("Leaving installer")
-        exit(0)
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
