@@ -24,7 +24,7 @@ def main():
                     if userpick == "y" or userpick == "Y":
                         DecoratorObject.WarningMessage("Rebooting now")
                         os.system("systemctl reboot")
-                    elif userpick == "n" or userpick == "y":
+                    elif userpick == "n" or userpick == "N":
                         DecoratorObject.WarningMessage("You would need to reboot to load up installed drivers")
                         DecoratorObject.FailureMessage("Leaving installer")
                         sys.exit(0)
@@ -41,7 +41,7 @@ def main():
                     if userpick == "y" or userpick == "Y":
                         DecoratorObject.WarningMessage("Rebooting now")
                         os.system("systemctl reboot")
-                    elif userpick == "n" or userpick == "y":
+                    elif userpick == "n" or userpick == "N":
                         DecoratorObject.WarningMessage("You would need to reboot to load up installed drivers")
                         DecoratorObject.FailureMessage("Leaving installer")
                         sys.exit(0)

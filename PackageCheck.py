@@ -17,7 +17,7 @@ def main():
             userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to install the drivers? (Y/N) " + Style.RESET_ALL)
             if userpick == "y" or userpick == "Y":
                 return 1
-            elif userpick == "n" or userpick == "y":
+            elif userpick == "n" or userpick == "N":
                 return -1
     else:
         DecoratorObject.SuccessMessage("A total of " + str(linect) + " driver packages were detected!")
