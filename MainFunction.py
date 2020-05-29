@@ -20,7 +20,7 @@ def main():
                 ForcingLoader.main()
                 DecoratorObject.SectionHeader("DRIVER INSTALLATION SUCCESSFULLY COMPLETED")
                 while True:
-                    userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reboot your system now? (Y/N) " + Style.RESET_ALL)
+                    userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + "Do you wish to reboot your system now? (Y/N) ")
                     if userpick == "y" or userpick == "Y":
                         DecoratorObject.WarningMessage("Rebooting now")
                         os.system("systemctl reboot")
@@ -37,7 +37,7 @@ def main():
                 ForcingLoader.main()
                 DecoratorObject.SectionHeader("DRIVER INSTALLATION SUCCESSFULLY COMPLETED")
                 while True:
-                    userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reboot your system now? (Y/N) " + Style.RESET_ALL)
+                    userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + "Do you wish to reboot your system now? (Y/N) ")
                     if userpick == "y" or userpick == "Y":
                         DecoratorObject.WarningMessage("Rebooting now")
                         os.system("systemctl reboot")
