@@ -14,7 +14,7 @@ def main():
     if linect == 0:
         DecoratorObject.WarningMessage("No existing NVIDIA drivers were detected!")
         while True:
-            userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to install the drivers? (Y/N) " + Style.RESET_ALL)
+            userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + "Do you wish to install the drivers? (Y/N) ")
             if userpick == "y" or userpick == "Y":
                 return 1
             elif userpick == "n" or userpick == "N":
@@ -26,7 +26,7 @@ def main():
             if indx != "":
                 DecoratorObject.NormalMessage(indx)
         while True:
-            userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reinstall the drivers? (Y/N) " + Style.RESET_ALL)
+            userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + "Do you wish to reinstall the drivers? (Y/N) ")
             if userpick == "y" or userpick == "Y":
                 return 1
             elif userpick == "n" or userpick == "N":
