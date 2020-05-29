@@ -1,5 +1,5 @@
 import os, sys
-import HostDetection, SupportCheck, RPMFHandler, PackageCheck, RepoInstaller, DriverInstaller, ForcingLoader
+import HostDetection, SupportCheck, RPMFHandler, PackageCheck, RepoInstaller, DriverInstaller
 from colorama import init, Fore, Style
 from ColoramaCalls import StatusDecorator
 
@@ -17,7 +17,6 @@ def main():
             if repofetc == 1:
                 RepoInstaller.main()
                 DriverInstaller.main()
-                ForcingLoader.main()
                 DecoratorObject.SectionHeader("DRIVER INSTALLATION SUCCESSFULLY COMPLETED")
                 while True:
                     userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reboot your system now? (Y/N) " + Style.RESET_ALL)
@@ -34,7 +33,6 @@ def main():
                 sys.exit(0)
             else:
                 DriverInstaller.main()
-                ForcingLoader.main()
                 DecoratorObject.SectionHeader("DRIVER INSTALLATION SUCCESSFULLY COMPLETED")
                 while True:
                     userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to reboot your system now? (Y/N) " + Style.RESET_ALL)
