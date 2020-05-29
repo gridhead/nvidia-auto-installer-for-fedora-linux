@@ -19,7 +19,7 @@ def main():
         else:
             DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver not detected")
             while True:
-                userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + Fore.WHITE + "Do you wish to fetch packages from this repository? (Y/N) " + Style.RESET_ALL)
+                userpick = input(Style.BRIGHT + Fore.YELLOW + "[ ! ]" + Style.RESET_ALL + " " + "Do you wish to fetch packages from this repository? (Y/N) ")
                 if userpick == "y" or userpick == "Y":
                     return 1
                 elif userpick == "n" or userpick == "N":
