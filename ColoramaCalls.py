@@ -9,16 +9,16 @@ class StatusDecorator(object):
         self.STDS = "     "
 
     def SuccessMessage(self, RequestMessage):
-        print(self.PASS + " " + Fore.WHITE + RequestMessage + Style.RESET_ALL)
+        print(self.PASS + " " + Style.RESET_ALL + RequestMessage)
 
     def FailureMessage(self, RequestMessage):
-        print(self.FAIL + " " + Fore.WHITE + RequestMessage + Style.RESET_ALL)
+        print(self.FAIL + " " + Style.RESET_ALL + RequestMessage)
 
     def WarningMessage(self, RequestMessage):
-        print(self.WARN + " " + Fore.WHITE + RequestMessage + Style.RESET_ALL)
+        print(self.WARN + " " + Style.RESET_ALL + RequestMessage)
 
     def SectionHeader(self, RequestMessage):
         print(self.HEAD + " " + Fore.CYAN + RequestMessage + Style.RESET_ALL)
 
     def NormalMessage(self, RequestMessage):
-        print(self.STDS + " " + Fore.WHITE + RequestMessage + Style.RESET_ALL)
+        print(self.STDS + " " + Style.RESET_ALL + RequestMessage)
