@@ -12,7 +12,8 @@ The look and feel is heavily inspired from `systemd` and `eopkg` prompts.
 ## Usage
 1. Make sure you have a working internet connection
 2. Download `NVAutoInstFedora32` from releases
-3. Execute `./NVAutoInstFedora32` to install drivers
+3. Make the binary executable by running `chmod +x NVAutoInstFedora32`
+3. Execute `sudo ./NVAutoInstFedora32` to install the drivers
 4. Give stars to the repository if you found this helpful
 
 ## Note
