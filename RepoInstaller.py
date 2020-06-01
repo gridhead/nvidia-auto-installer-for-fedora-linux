@@ -7,6 +7,7 @@ DecoratorObject = StatusDecorator()
 
 def main():
     DecoratorObject.SectionHeader("FETCHING REPOSITORY DATA...")
+    os.system("dnf install -y fedora-workstation-repositories")
     retndata = subprocess.getstatusoutput("dnf config-manager --set-enable rpmfusion-nonfree-nvidia-driver")[0]
     if retndata == 0:
         DecoratorObject.SuccessMessage("RPM Fusion NVIDIA repository was enabled")
