@@ -1,5 +1,5 @@
 import os, sys, click
-import HostDetection, SupportCheck, RPMFHandler, PackageCheck, DriverInstaller
+import HostDetection, SupportCheck, RPMFHandler, DriverInstaller
 from colorama import init, Fore, Style
 from ColoramaCalls import StatusDecorator
 
@@ -32,7 +32,23 @@ class InstallationMode(object):
         sys.exit(0)
 
     def driver(self):
-        pass
+        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+        if RPMFHandler.avbl():
+            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION...")
+            if RPMFHandler.conn():
+                DecoratorObject.SuccessMessage("Connection to RPM Fusion server was estabilished")
+                DecoratorObject.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
+                if DriverInstaller.main():
+                    DecoratorObject.SuccessMessage("Driver package installation completed")
+                else:
+                    DecoratorObject.FailureMessage("Proprietary drivers could not be installed")
+            else:
+                DecoratorObject.FailureMessage("RPM Fusion servers could not be connected")
+        else:
+            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
 
     def x86lib(self):
         pass
@@ -77,7 +93,7 @@ def clim(instmode):
     instobjc = InstallationMode()
     print(Style.BRIGHT + Fore.GREEN + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE" + Style.RESET_ALL)
     if instmode == "driver":
-        click.echo(1)
+        instobjc.driver()
     elif instmode == "x86lib":
         click.echo(2)
     elif instmode == "plcuda":
