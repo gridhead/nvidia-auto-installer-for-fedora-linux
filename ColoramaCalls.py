@@ -18,7 +18,7 @@ class StatusDecorator(object):
         print(self.WARN + " " + Style.RESET_ALL + RequestMessage)
 
     def SectionHeader(self, RequestMessage):
-        print(self.HEAD + " " + Fore.CYAN + RequestMessage + Style.RESET_ALL)
+        print(self.HEAD + " " + Fore.CYAN + Style.BRIGHT + RequestMessage + Style.RESET_ALL)
 
     def NormalMessage(self, RequestMessage):
         print(self.STDS + " " + Style.RESET_ALL + RequestMessage)
