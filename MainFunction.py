@@ -1,5 +1,5 @@
 import os, sys, click
-import HostDetection, SupportCheck, RPMFHandler, DriverInstaller
+import SupportCheck, RPMFHandler, DriverInstaller
 from colorama import init, Fore, Style
 from ColoramaCalls import StatusDecorator
 
@@ -68,6 +68,43 @@ class InstallationMode(object):
     def cheksu(self):
         pass
 
+    def compat(self):
+        DecoratorObject.SectionHeader("CHECKING FOR GPU COMPATIBILITY...")
+        data = SupportCheck.gpuc()
+        DecoratorObject.WarningMessage("Compatibility infomation was obtained")
+        if data is False:
+            DecoratorObject.FailureMessage("No supported NVIDIA GPU was detected")
+        else:
+            DecoratorObject.SuccessMessage("One or more active NVIDIA GPUs were detected")
+            supprt = data["supprt"]
+            gpulst = data["gpulst"]
+            for indx in gpulst:
+                if indx != "":
+                    DecoratorObject.NormalMessage(indx)
+            if supprt == "single":
+                DecoratorObject.SuccessMessage("An single dedicated GPU setup was detected")
+            else:
+                DecoratorObject.SuccessMessage("An Optimus Dual GPU setup was detected")
+            DecoratorObject.SectionHeader("GATHERING CURRENT HOST INFORMATION...")
+            data = SupportCheck.main()
+            DecoratorObject.WarningMessage("Host information was gathered")
+            for indx in data.keys():
+                DecoratorObject.NormalMessage(indx + ": " + data[indx])
+            DecoratorObject.SectionHeader("CHECKING FOR HOST COMPATIBILITY...")
+            data = SupportCheck.avbl()
+            if data is False:
+                DecoratorObject.FailureMessage("Unsupported OS detected")
+                DecoratorObject.NormalMessage("This tool cannot be used here")
+            else:
+                if data == "full":
+                    DecoratorObject.SuccessMessage("Supported OS detected")
+                    DecoratorObject.NormalMessage("This tool is expected to work correctly here")
+                elif data == "half":
+                    DecoratorObject.WarningMessage("Minimally supported OS detected")
+                    DecoratorObject.NormalMessage("Discretion is advised while using this tool")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
+
 def PrintHelpMessage():
     DecoratorObject.SectionHeader("OPTIONS")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--rpmadd" + Style.RESET_ALL + " → This mode enables the RPM Fusion NVIDIA drivers repository")
@@ -78,6 +115,7 @@ def PrintHelpMessage():
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--vulkan" + Style.RESET_ALL + " → This mode installs only the Vulkan renderer")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--vidacc" + Style.RESET_ALL + " → This mode installs only the VDPAU/VAAPI acceleration")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--getall" + Style.RESET_ALL + " → This mode installs all the above packages")
+    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--compat" + Style.RESET_ALL + " → This mode allows you to check your compatibility")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--help  " + Style.RESET_ALL + " → Show this message and exit")
 
 @click.command()
@@ -89,6 +127,7 @@ def PrintHelpMessage():
 @click.option("--vulkan", "instmode", flag_value="vulkan", help="This mode installs only the Vulkan renderer")
 @click.option("--vidacc", "instmode", flag_value="vidacc", help="This mode installs only the VDPAU/VAAPI acceleration")
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
+@click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility")
 def clim(instmode):
     instobjc = InstallationMode()
     print(Style.BRIGHT + Fore.GREEN + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE" + Style.RESET_ALL)
@@ -108,6 +147,8 @@ def clim(instmode):
         click.echo(7)
     elif instmode == "rpmadd":
         instobjc.rpmadd()
+    elif instmode == "compat":
+        instobjc.compat()
     else:
         PrintHelpMessage()
 
