@@ -52,6 +52,34 @@ def main():
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
+class InstallationMode(object):
+    def __init__(self):
+        pass
+
+    def rpmadd(self):
+        pass
+
+    def driver(self):
+        pass
+
+    def x86lib(self):
+        pass
+
+    def plcuda(self):
+        pass
+
+    def ffmpeg(self):
+        pass
+
+    def vidacc(self):
+        pass
+
+    def getall(self):
+        pass
+
+    def cheksu(self):
+        pass
+
 def PrintHelpMessage():
     DecoratorObject.SectionHeader("OPTIONS")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--rpmadd" + Style.RESET_ALL + " → This mode enables the RPM Fusion NVIDIA drivers repository")
@@ -74,6 +102,7 @@ def PrintHelpMessage():
 @click.option("--vidacc", "instmode", flag_value="vidacc", help="This mode installs only the VDPAU/VAAPI acceleration")
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
 def clim(instmode):
+    instobjc = InstallationMode()
     print(Style.BRIGHT + Fore.GREEN + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE" + Style.RESET_ALL)
     if instmode == "driver":
         click.echo(1)
@@ -90,7 +119,7 @@ def clim(instmode):
     elif instmode == "getall":
         click.echo(7)
     elif instmode == "rpmadd":
-        click.echo(8)
+        instobjc.rpmadd()
     else:
         PrintHelpMessage()
 
