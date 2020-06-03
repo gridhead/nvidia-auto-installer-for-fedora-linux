@@ -57,7 +57,25 @@ class InstallationMode(object):
         pass
 
     def rpmadd(self):
-        pass
+        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+        if RPMFHandler.avbl():
+            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+            DecoratorObject.SuccessMessage("No further action is necessary")
+        else:
+            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.WarningMessage("Repository enabling is required")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION...")
+            if RPMFHandler.conn():
+                DecoratorObject.SuccessMessage("Connection to RPM Fusion server was estabilished")
+                DecoratorObject.SectionHeader("INSTALLING RPM FUSION NVIDIA REPOSITORY...")
+                if RPMFHandler.main():
+                    DecoratorObject.SuccessMessage("RPM Fusion NVIDIA repository was enabled")
+                else:
+                    DecoratorObject.FailureMessage("RPM Fusion NVIDIA repository could not be enabled")
+            else:
+                DecoratorObject.FailureMessage("RPM Fusion servers could not be connected")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
 
     def driver(self):
         pass
