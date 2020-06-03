@@ -1,20 +1,11 @@
-import os, sys, time
-from colorama import init, Fore, Style
-from ColoramaCalls import StatusDecorator
-
-init()
-DecoratorObject = StatusDecorator()
+import os
 
 def main():
-    DecoratorObject.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
-    ExecStatusCode = os.system("dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-libs.i686")
+    ExecStatusCode = os.system("dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
     if ExecStatusCode == 0:
-        DecoratorObject.SuccessMessage("Driver package installation completed")
-        DecoratorObject.WarningMessage("Kernel modules would be built up on the next boot")
+        return True
     else:
-        DecoratorObject.FailureMessage("Could not install proprietary drivers")
-        DecoratorObject.FailureMessage("Leaving installer")
-        sys.exit(0)
+        return False
 
 if __name__ == "__main__":
     main()
