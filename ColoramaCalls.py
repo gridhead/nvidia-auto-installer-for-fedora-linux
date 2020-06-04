@@ -1,4 +1,5 @@
-from colorama import init, Fore, Style
+import click
+from colorama import Fore, Style
 
 class StatusDecorator(object):
     def __init__(self):
@@ -9,16 +10,16 @@ class StatusDecorator(object):
         self.STDS = "     "
 
     def SuccessMessage(self, RequestMessage):
-        print(self.PASS + " " + Style.RESET_ALL + RequestMessage)
+        click.echo(self.PASS + " " + Style.RESET_ALL + RequestMessage)
 
     def FailureMessage(self, RequestMessage):
-        print(self.FAIL + " " + Style.RESET_ALL + RequestMessage)
+        click.echo(self.FAIL + " " + Style.RESET_ALL + RequestMessage)
 
     def WarningMessage(self, RequestMessage):
-        print(self.WARN + " " + Style.RESET_ALL + RequestMessage)
+        click.echo(self.WARN + " " + Style.RESET_ALL + RequestMessage)
 
     def SectionHeader(self, RequestMessage):
-        print(self.HEAD + " " + Fore.CYAN + RequestMessage + Style.RESET_ALL)
+        click.echo(self.HEAD + " " + Fore.CYAN + Style.BRIGHT + RequestMessage + Style.RESET_ALL)
 
     def NormalMessage(self, RequestMessage):
-        print(self.STDS + " " + Style.RESET_ALL + RequestMessage)
+        click.echo(self.STDS + " " + Style.RESET_ALL + RequestMessage)
