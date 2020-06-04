@@ -2,9 +2,8 @@
 v0.3.0 (04 June 2020)  
 A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora 32 and above
 
-![](v0.2.5-screenshot.png)
-
-The look and feel is heavily inspired from `systemd` and `eopkg` prompts.
+## Screenshots
+Find all the shiny stuff [here](SCREENSHOTS.md).
 
 ## Requirements
 * Active internet connection
