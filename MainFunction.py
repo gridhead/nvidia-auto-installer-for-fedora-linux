@@ -259,6 +259,17 @@ class InstallationMode(object):
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
+    def cheksu(self):
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser permission is available")
+            DecoratorObject.NormalMessage("This tool is expected to work correctly here")
+        else:
+            DecoratorObject.FailureMessage("Superuser permission is not available")
+            DecoratorObject.NormalMessage("This tool cannot be used here")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
+
     def compat(self):
         DecoratorObject.SectionHeader("CHECKING FOR GPU COMPATIBILITY...")
         data = SupportCheck.gpuc()
