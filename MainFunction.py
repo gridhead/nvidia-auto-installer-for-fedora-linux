@@ -118,6 +118,51 @@ class InstallationMode(object):
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
+    def plcuda(self):
+        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+        if RPMFHandler.avbl():
+            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+            if RPMFHandler.conn():
+                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                data = DriverInstaller.avbl()
+                if data is False:
+                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
+                else:
+                    qant = 0
+                    for indx in data:
+                        if indx != "":
+                            qant += 1
+                            DecoratorObject.NormalMessage(indx)
+                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                    DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...")
+                    if PlCudaInstaller.rpck():
+                        DecoratorObject.WarningMessage("Official CUDA repository was detected")
+                        DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO NVIDIA SERVERS...")
+                        if PlCudaInstaller.conn():
+                            DecoratorObject.SuccessMessage("Connection to NVIDIA servers was established")
+                            DecoratorObject.SectionHeader("INSTALLING RPM FUSION METAPACKAGE FOR CUDA...")
+                            if PlCudaInstaller.meta():
+                                DecoratorObject.SuccessMessage("RPM Fusion CUDA metapackage was successfully installed")
+                                DecoratorObject.SectionHeader("INSTALLING NVIDIA CUDA CORE PACKAGES...")
+                                if PlCudaInstaller.main():
+                                    DecoratorObject.SuccessMessage("NVIDIA CUDA core packages were successfully installed")
+                                else:
+                                    DecoratorObject.FailureMessage("NVIDIA CUDA core packages could not be installed")
+                            else:
+                                DecoratorObject.FailureMessage("RPM Fusion CUDA metapackage packages could not be installed")
+                        else:
+                            DecoratorObject.FailureMessage("Connection to NVIDIA servers could not be established")
+                    else:
+                        DecoratorObject.FailureMessage("Official CUDA repository was not detected")
+            else:
+                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be estabilished")
+        else:
+            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
+
     def ffmpeg(self):
         pass
 
