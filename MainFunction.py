@@ -1,5 +1,5 @@
 import os, sys, click
-import SupportCheck, RPMFHandler, DriverInstaller, x86LibInstaller, PlCudaInstaller
+import SupportCheck, RPMFHandler, DriverInstaller, x86LibInstaller, PlCudaInstaller, FFMPEGInstaller, VidAccInstaller, VulkanInstaller, SuperuserCheck
 from colorama import init, Fore, Style
 from ColoramaCalls import StatusDecorator
 
@@ -86,7 +86,7 @@ class InstallationMode(object):
                     else:
                         DecoratorObject.FailureMessage("x86 libraries for XORG could not be installed")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be estabilished")
+                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
         else:
             DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         DecoratorObject.FailureMessage("Leaving installer")
@@ -157,23 +157,41 @@ class InstallationMode(object):
                     else:
                         DecoratorObject.FailureMessage("Official CUDA repository was not detected")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be estabilished")
+                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
         else:
             DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def ffmpeg(self):
-        pass
-
-    def vidacc(self):
-        pass
-
-    def getall(self):
-        pass
-
-    def cheksu(self):
-        pass
+        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+        if RPMFHandler.avbl():
+            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+            if RPMFHandler.conn():
+                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                data = DriverInstaller.avbl()
+                if data is False:
+                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
+                else:
+                    qant = 0
+                    for indx in data:
+                        if indx != "":
+                            qant += 1
+                            DecoratorObject.NormalMessage(indx)
+                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                    DecoratorObject.SectionHeader("INSTALLING NVENC/NVDEC FOR FFMPEG ACCELERATION...")
+                    if FFMPEGInstaller.main():
+                        DecoratorObject.SuccessMessage("NVENC/NVDEC for FFMPEG acceleration were successfully installed")
+                    else:
+                        DecoratorObject.FailureMessage("NVENC/NVDEC for FFMPEG acceleration could not be installed")
+            else:
+                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+        else:
+            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
 
     def compat(self):
         DecoratorObject.SectionHeader("CHECKING FOR GPU COMPATIBILITY...")
@@ -223,6 +241,7 @@ def PrintHelpMessage():
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--vulkan" + Style.RESET_ALL + " → This mode installs only the Vulkan renderer")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--vidacc" + Style.RESET_ALL + " → This mode installs only the VDPAU/VAAPI acceleration")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--getall" + Style.RESET_ALL + " → This mode installs all the above packages")
+    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--cheksu" + Style.RESET_ALL + " → This mode allows you to check the user privilege level")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--compat" + Style.RESET_ALL + " → This mode allows you to check your compatibility")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--help  " + Style.RESET_ALL + " → Show this message and exit")
 
@@ -236,11 +255,14 @@ def PrintHelpMessage():
 @click.option("--vulkan", "instmode", flag_value="vulkan", help="This mode installs only the Vulkan renderer")
 @click.option("--vidacc", "instmode", flag_value="vidacc", help="This mode installs only the VDPAU/VAAPI acceleration")
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
+@click.option("--cheksu", "instmode", flag_value="cheksu", help="This mode allows you to check the user privilege level")
 @click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility")
 def clim(instmode):
     instobjc = InstallationMode()
     print(Style.BRIGHT + Fore.GREEN + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE" + Style.RESET_ALL)
-    if instmode == "driver":
+    if instmode == "rpmadd":
+        instobjc.rpmadd()
+    elif instmode == "driver":
         instobjc.driver()
     elif instmode == "x86lib":
         instobjc.x86lib()
@@ -249,15 +271,15 @@ def clim(instmode):
     elif instmode == "plcuda":
         instobjc.plcuda()
     elif instmode == "ffmpeg":
-        click.echo(4)
+        instobjc.ffmpeg()
     elif instmode == "vulkan":
-        click.echo(5)
+        instobjc.vulkan()
     elif instmode == "vidacc":
-        click.echo(6)
+        instobjc.vidacc()
     elif instmode == "getall":
-        click.echo(7)
-    elif instmode == "rpmadd":
-        instobjc.rpmadd()
+        instobjc.getall()
+    elif instmode == "cheksu":
+        instobjc.cheksu()
     elif instmode == "compat":
         instobjc.compat()
     else:
