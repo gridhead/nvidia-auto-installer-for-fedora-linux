@@ -1,5 +1,5 @@
 import os, sys, click
-import SupportCheck, RPMFHandler, DriverInstaller, x86LibInstaller
+import SupportCheck, RPMFHandler, DriverInstaller, x86LibInstaller, PlCudaInstaller
 from colorama import init, Fore, Style
 from ColoramaCalls import StatusDecorator
 
@@ -18,7 +18,7 @@ class InstallationMode(object):
         else:
             DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
             DecoratorObject.WarningMessage("Repository enabling is required")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION...")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
             if RPMFHandler.conn():
                 DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
                 DecoratorObject.SectionHeader("INSTALLING RPM FUSION NVIDIA REPOSITORY...")
@@ -35,7 +35,7 @@ class InstallationMode(object):
         DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
         if RPMFHandler.avbl():
             DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION...")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
             if RPMFHandler.conn():
                 DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
                 DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
@@ -66,7 +66,7 @@ class InstallationMode(object):
         DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
         if RPMFHandler.avbl():
             DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION...")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
             if RPMFHandler.conn():
                 DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
                 DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
@@ -92,8 +92,31 @@ class InstallationMode(object):
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
-    def plcuda(self):
-        pass
+    def nvrepo(self):
+        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...")
+        if PlCudaInstaller.rpck():
+            DecoratorObject.WarningMessage("Official CUDA repository was detected")
+            DecoratorObject.SuccessMessage("No further action is necessary")
+        else:
+            DecoratorObject.WarningMessage("Official CUDA repository was not detected")
+            DecoratorObject.WarningMessage("Repository enabling is required")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO NVIDIA SERVERS...")
+            if PlCudaInstaller.conn():
+                DecoratorObject.SuccessMessage("Connection to NVIDIA servers was established")
+                DecoratorObject.SectionHeader("INSTALLING OFFICIAL CUDA REPOSITORY...")
+                if PlCudaInstaller.rpin():
+                    DecoratorObject.SuccessMessage("Official CUDA repository was enabled")
+                    DecoratorObject.SectionHeader("REFRESHING REPOSITORY LIST...")
+                    if PlCudaInstaller.rpup():
+                        DecoratorObject.SuccessMessage("Repositories have been refreshed")
+                    else:
+                        DecoratorObject.FailureMessage("Repositories could not be refreshed")
+                else:
+                    DecoratorObject.FailureMessage("Official CUDA repository could not be enabled")
+            else:
+                DecoratorObject.FailureMessage("Connection to NVIDIA servers could not be established")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
 
     def ffmpeg(self):
         pass
@@ -149,6 +172,7 @@ def PrintHelpMessage():
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--rpmadd" + Style.RESET_ALL + " → This mode enables the RPM Fusion NVIDIA drivers repository")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--driver" + Style.RESET_ALL + " → This mode simply installs the NVIDIA driver")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--x86lib" + Style.RESET_ALL + " → This mode installs only the x86 libraries for Xorg")
+    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--nvrepo" + Style.RESET_ALL + " → This mode enables the Official NVIDIA repository for CUDA")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--plcuda" + Style.RESET_ALL + " → This mode installs only the CUDA support softwares")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--ffmpeg" + Style.RESET_ALL + " → This mode installs only the FFMPEG acceleration")
     DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--vulkan" + Style.RESET_ALL + " → This mode installs only the Vulkan renderer")
@@ -161,6 +185,7 @@ def PrintHelpMessage():
 @click.option("--rpmadd", "instmode", flag_value="rpmadd", help="This mode enables the RPM Fusion NVIDIA drivers repository")
 @click.option("--driver", "instmode", flag_value="driver", help="This mode simply installs the NVIDIA driver")
 @click.option("--x86lib", "instmode", flag_value="x86lib", help="This mode installs only the x86 libraries for Xorg")
+@click.option("--nvrepo", "instmode", flag_value="nvrepo", help="This mode enables the Official NVIDIA repository for CUDA")
 @click.option("--plcuda", "instmode", flag_value="plcuda", help="This mode installs only the CUDA support softwares")
 @click.option("--ffmpeg", "instmode", flag_value="ffmpeg", help="This mode installs only the FFMPEG acceleration")
 @click.option("--vulkan", "instmode", flag_value="vulkan", help="This mode installs only the Vulkan renderer")
@@ -174,8 +199,10 @@ def clim(instmode):
         instobjc.driver()
     elif instmode == "x86lib":
         instobjc.x86lib()
+    elif instmode == "nvrepo":
+        instobjc.nvrepo()
     elif instmode == "plcuda":
-        click.echo(3)
+        instobjc.plcuda()
     elif instmode == "ffmpeg":
         click.echo(4)
     elif instmode == "vulkan":
