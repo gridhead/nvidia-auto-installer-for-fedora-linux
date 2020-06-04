@@ -11,251 +11,296 @@ class InstallationMode(object):
         pass
 
     def rpmadd(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
-        if RPMFHandler.avbl():
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SuccessMessage("No further action is necessary")
-        else:
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
-            DecoratorObject.WarningMessage("Repository enabling is required")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
-            if RPMFHandler.conn():
-                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
-                DecoratorObject.SectionHeader("INSTALLING RPM FUSION NVIDIA REPOSITORY...")
-                if RPMFHandler.main():
-                    DecoratorObject.SuccessMessage("RPM Fusion NVIDIA repository was enabled")
-                else:
-                    DecoratorObject.FailureMessage("RPM Fusion NVIDIA repository could not be enabled")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.SuccessMessage("No further action is necessary")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+                DecoratorObject.WarningMessage("Repository enabling is required")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                    DecoratorObject.SectionHeader("INSTALLING RPM FUSION NVIDIA REPOSITORY...")
+                    if RPMFHandler.main():
+                        DecoratorObject.SuccessMessage("RPM Fusion NVIDIA repository was enabled")
+                    else:
+                        DecoratorObject.FailureMessage("RPM Fusion NVIDIA repository could not be enabled")
+                else:
+                    DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+        else:
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def driver(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
-        if RPMFHandler.avbl():
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
-            if RPMFHandler.conn():
-                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
-                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.WarningMessage("No existing NVIDIA driver packages were detected")
-                    DecoratorObject.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                    DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                    data = DriverInstaller.avbl()
+                    if data is False:
+                        DecoratorObject.WarningMessage("No existing NVIDIA driver packages were detected")
+                        DecoratorObject.SectionHeader("INSTALLING PROPRIETARY DRIVERS...")
+                    else:
+                        qant = 0
+                        for indx in data:
+                            if indx != "":
+                                qant += 1
+                                DecoratorObject.NormalMessage(indx)
+                        DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                        DecoratorObject.SectionHeader("REINSTALLING PROPRIETARY DRIVERS...")
+                    if DriverInstaller.main():
+                        DecoratorObject.SuccessMessage("Driver package installation completed")
+                    else:
+                        DecoratorObject.FailureMessage("Proprietary drivers could not be installed")
                 else:
-                    qant = 0
-                    for indx in data:
-                        if indx != "":
-                            qant += 1
-                            DecoratorObject.NormalMessage(indx)
-                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.SectionHeader("REINSTALLING PROPRIETARY DRIVERS...")
-                if DriverInstaller.main():
-                    DecoratorObject.SuccessMessage("Driver package installation completed")
-                else:
-                    DecoratorObject.FailureMessage("Proprietary drivers could not be installed")
+                    DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+                DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
-            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def x86lib(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
-        if RPMFHandler.avbl():
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
-            if RPMFHandler.conn():
-                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
-                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
-                else:
-                    qant = 0
-                    for indx in data:
-                        if indx != "":
-                            qant += 1
-                            DecoratorObject.NormalMessage(indx)
-                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.SectionHeader("INSTALLING x86 LIBRARIES FOR XORG...")
-                    if x86LibInstaller.main():
-                        DecoratorObject.SuccessMessage("x86 libraries for XORG were successfully installed")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                    DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                    data = DriverInstaller.avbl()
+                    if data is False:
+                        DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
                     else:
-                        DecoratorObject.FailureMessage("x86 libraries for XORG could not be installed")
+                        qant = 0
+                        for indx in data:
+                            if indx != "":
+                                qant += 1
+                                DecoratorObject.NormalMessage(indx)
+                        DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                        DecoratorObject.SectionHeader("INSTALLING x86 LIBRARIES FOR XORG...")
+                        if x86LibInstaller.main():
+                            DecoratorObject.SuccessMessage("x86 libraries for XORG were successfully installed")
+                        else:
+                            DecoratorObject.FailureMessage("x86 libraries for XORG could not be installed")
+                else:
+                    DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+                DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
-            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def nvrepo(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...")
-        if PlCudaInstaller.rpck():
-            DecoratorObject.WarningMessage("Official CUDA repository was detected")
-            DecoratorObject.SuccessMessage("No further action is necessary")
-        else:
-            DecoratorObject.WarningMessage("Official CUDA repository was not detected")
-            DecoratorObject.WarningMessage("Repository enabling is required")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO NVIDIA SERVERS...")
-            if PlCudaInstaller.conn():
-                DecoratorObject.SuccessMessage("Connection to NVIDIA servers was established")
-                DecoratorObject.SectionHeader("INSTALLING OFFICIAL CUDA REPOSITORY...")
-                if PlCudaInstaller.rpin():
-                    DecoratorObject.SuccessMessage("Official CUDA repository was enabled")
-                    DecoratorObject.SectionHeader("REFRESHING REPOSITORY LIST...")
-                    if PlCudaInstaller.rpup():
-                        DecoratorObject.SuccessMessage("Repositories have been refreshed")
-                    else:
-                        DecoratorObject.FailureMessage("Repositories could not be refreshed")
-                else:
-                    DecoratorObject.FailureMessage("Official CUDA repository could not be enabled")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...")
+            if PlCudaInstaller.rpck():
+                DecoratorObject.WarningMessage("Official CUDA repository was detected")
+                DecoratorObject.SuccessMessage("No further action is necessary")
             else:
-                DecoratorObject.FailureMessage("Connection to NVIDIA servers could not be established")
+                DecoratorObject.WarningMessage("Official CUDA repository was not detected")
+                DecoratorObject.WarningMessage("Repository enabling is required")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO NVIDIA SERVERS...")
+                if PlCudaInstaller.conn():
+                    DecoratorObject.SuccessMessage("Connection to NVIDIA servers was established")
+                    DecoratorObject.SectionHeader("INSTALLING OFFICIAL CUDA REPOSITORY...")
+                    if PlCudaInstaller.rpin():
+                        DecoratorObject.SuccessMessage("Official CUDA repository was enabled")
+                        DecoratorObject.SectionHeader("REFRESHING REPOSITORY LIST...")
+                        if PlCudaInstaller.rpup():
+                            DecoratorObject.SuccessMessage("Repositories have been refreshed")
+                        else:
+                            DecoratorObject.FailureMessage("Repositories could not be refreshed")
+                    else:
+                        DecoratorObject.FailureMessage("Official CUDA repository could not be enabled")
+                else:
+                    DecoratorObject.FailureMessage("Connection to NVIDIA servers could not be established")
+        else:
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def plcuda(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
-        if RPMFHandler.avbl():
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
-            if RPMFHandler.conn():
-                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
-                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
-                else:
-                    qant = 0
-                    for indx in data:
-                        if indx != "":
-                            qant += 1
-                            DecoratorObject.NormalMessage(indx)
-                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...")
-                    if PlCudaInstaller.rpck():
-                        DecoratorObject.WarningMessage("Official CUDA repository was detected")
-                        DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO NVIDIA SERVERS...")
-                        if PlCudaInstaller.conn():
-                            DecoratorObject.SuccessMessage("Connection to NVIDIA servers was established")
-                            DecoratorObject.SectionHeader("INSTALLING RPM FUSION METAPACKAGE FOR CUDA...")
-                            if PlCudaInstaller.meta():
-                                DecoratorObject.SuccessMessage("RPM Fusion CUDA metapackage was successfully installed")
-                                DecoratorObject.SectionHeader("INSTALLING NVIDIA CUDA CORE PACKAGES...")
-                                if PlCudaInstaller.main():
-                                    DecoratorObject.SuccessMessage("NVIDIA CUDA core packages were successfully installed")
-                                else:
-                                    DecoratorObject.FailureMessage("NVIDIA CUDA core packages could not be installed")
-                            else:
-                                DecoratorObject.FailureMessage("RPM Fusion CUDA metapackage packages could not be installed")
-                        else:
-                            DecoratorObject.FailureMessage("Connection to NVIDIA servers could not be established")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                    DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                    data = DriverInstaller.avbl()
+                    if data is False:
+                        DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
                     else:
-                        DecoratorObject.FailureMessage("Official CUDA repository was not detected")
+                        qant = 0
+                        for indx in data:
+                            if indx != "":
+                                qant += 1
+                                DecoratorObject.NormalMessage(indx)
+                        DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...")
+                        if PlCudaInstaller.rpck():
+                            DecoratorObject.WarningMessage("Official CUDA repository was detected")
+                            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO NVIDIA SERVERS...")
+                            if PlCudaInstaller.conn():
+                                DecoratorObject.SuccessMessage("Connection to NVIDIA servers was established")
+                                DecoratorObject.SectionHeader("INSTALLING RPM FUSION METAPACKAGE FOR CUDA...")
+                                if PlCudaInstaller.meta():
+                                    DecoratorObject.SuccessMessage("RPM Fusion CUDA metapackage was successfully installed")
+                                    DecoratorObject.SectionHeader("INSTALLING NVIDIA CUDA CORE PACKAGES...")
+                                    if PlCudaInstaller.main():
+                                        DecoratorObject.SuccessMessage("NVIDIA CUDA core packages were successfully installed")
+                                    else:
+                                        DecoratorObject.FailureMessage("NVIDIA CUDA core packages could not be installed")
+                                else:
+                                    DecoratorObject.FailureMessage("RPM Fusion CUDA metapackage packages could not be installed")
+                            else:
+                                DecoratorObject.FailureMessage("Connection to NVIDIA servers could not be established")
+                        else:
+                            DecoratorObject.FailureMessage("Official CUDA repository was not detected")
+                else:
+                    DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+                DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
-            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def ffmpeg(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
-        if RPMFHandler.avbl():
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
-            if RPMFHandler.conn():
-                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
-                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
-                else:
-                    qant = 0
-                    for indx in data:
-                        if indx != "":
-                            qant += 1
-                            DecoratorObject.NormalMessage(indx)
-                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.SectionHeader("INSTALLING NVENC/NVDEC FOR FFMPEG ACCELERATION...")
-                    if FFMPEGInstaller.main():
-                        DecoratorObject.SuccessMessage("NVENC/NVDEC for FFMPEG acceleration were successfully installed")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                    DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                    data = DriverInstaller.avbl()
+                    if data is False:
+                        DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
                     else:
-                        DecoratorObject.FailureMessage("NVENC/NVDEC for FFMPEG acceleration could not be installed")
+                        qant = 0
+                        for indx in data:
+                            if indx != "":
+                                qant += 1
+                                DecoratorObject.NormalMessage(indx)
+                        DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                        DecoratorObject.SectionHeader("INSTALLING NVENC/NVDEC FOR FFMPEG ACCELERATION...")
+                        if FFMPEGInstaller.main():
+                            DecoratorObject.SuccessMessage("NVENC/NVDEC for FFMPEG acceleration were successfully installed")
+                        else:
+                            DecoratorObject.FailureMessage("NVENC/NVDEC for FFMPEG acceleration could not be installed")
+                else:
+                    DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+                DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
-            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def vulkan(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
-        if RPMFHandler.avbl():
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
-            if RPMFHandler.conn():
-                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
-                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
-                else:
-                    qant = 0
-                    for indx in data:
-                        if indx != "":
-                            qant += 1
-                            DecoratorObject.NormalMessage(indx)
-                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.SectionHeader("INSTALLING VULKAN RENDERER SUPPORT...")
-                    if VulkanInstaller.main():
-                        DecoratorObject.SuccessMessage("Vulkan renderer support were successfully installed")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                    DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                    data = DriverInstaller.avbl()
+                    if data is False:
+                        DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
                     else:
-                        DecoratorObject.FailureMessage("Vulkan renderer support could not be installed")
+                        qant = 0
+                        for indx in data:
+                            if indx != "":
+                                qant += 1
+                                DecoratorObject.NormalMessage(indx)
+                        DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                        DecoratorObject.SectionHeader("INSTALLING VULKAN RENDERER SUPPORT...")
+                        if VulkanInstaller.main():
+                            DecoratorObject.SuccessMessage("Vulkan renderer support were successfully installed")
+                        else:
+                            DecoratorObject.FailureMessage("Vulkan renderer support could not be installed")
+                else:
+                    DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+                DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
-            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def vidacc(self):
-        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
-        if RPMFHandler.avbl():
-            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
-            if RPMFHandler.conn():
-                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
-                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
-                else:
-                    qant = 0
-                    for indx in data:
-                        if indx != "":
-                            qant += 1
-                            DecoratorObject.NormalMessage(indx)
-                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.SectionHeader("INSTALLING VIDEO ACCELERATION SUPPORT...")
-                    if VidAccInstaller.main():
-                        DecoratorObject.SuccessMessage("Video acceleration were successfully installed")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                    DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                    data = DriverInstaller.avbl()
+                    if data is False:
+                        DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
                     else:
-                        DecoratorObject.FailureMessage("Video acceleration could not be installed")
+                        qant = 0
+                        for indx in data:
+                            if indx != "":
+                                qant += 1
+                                DecoratorObject.NormalMessage(indx)
+                        DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                        DecoratorObject.SectionHeader("INSTALLING VIDEO ACCELERATION SUPPORT...")
+                        if VidAccInstaller.main():
+                            DecoratorObject.SuccessMessage("Video acceleration were successfully installed")
+                        else:
+                            DecoratorObject.FailureMessage("Video acceleration could not be installed")
+                else:
+                    DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
             else:
-                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+                DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
-            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
     def getall(self):
-        DecoratorObject.SectionHeader("FULL FLEDGED INSTALLATION BEGINNING...")
-        DecoratorObject.NormalMessage("This mode is yet to be implemented")
+        DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.SuccessMessage("Superuser privilege acquired")
+            DecoratorObject.SectionHeader("FULL FLEDGED INSTALLATION BEGINNING...")
+            DecoratorObject.NormalMessage("This mode is yet to be implemented")
+        else:
+            DecoratorObject.FailureMessage("Superuser privilege could not be acquired")
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
