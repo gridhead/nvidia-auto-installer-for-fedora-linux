@@ -1,10 +1,189 @@
-import os, sys, click
-import SupportCheck, RPMFHandler, DriverInstaller, x86LibInstaller, PlCudaInstaller, FFMPEGInstaller, VidAccInstaller, VulkanInstaller, SuperuserCheck
+import os, subprocess, sys, click, distro
 from colorama import init, Fore, Style
 from ColoramaCalls import StatusDecorator
 
 init()
 DecoratorObject = StatusDecorator()
+
+class Coll_SupportCheck(object):
+    def gpuc(self):
+        comand = "lspci | grep -E 'VGA|3D'"
+        prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = prompt.communicate()[0].decode("utf-8")
+        linect = output.count("\n")
+        pkname = output.split("\n")
+        if "NVIDIA" not in output:
+            return False
+        else:
+            if linect == 1:
+                supprt = "single"
+            else:
+                supprt = "optims"
+            jsondt = {
+                "supprt": supprt,
+                "gpuqnt": linect,
+                "gpulst": pkname,
+            }
+            return jsondt
+
+    def main(self):
+        jsondt = {
+            "System": str(os.uname().sysname) + " v" + str(os.uname().release),
+            "Hostname": str(os.uname().nodename),
+            "Version": str(os.uname().version),
+            "Distribution": str(distro.os_release_info()["name"]) + " " + str(distro.os_release_info()["version_id"]) + " " + str(os.uname().machine),
+        }
+        return jsondt
+
+    def avbl(self):
+        if str(distro.os_release_info()["name"]) == "Fedora":
+            if int(distro.os_release_info()["version_id"]) >= 32:
+                return "full"
+            else:
+                return "half"
+        else:
+            return False
+
+class Coll_RPMFHandler(object):
+    def avbl(self):
+        comand = "dnf repolist | grep 'rpmfusion-nonfree-nvidia-driver'"
+        prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = prompt.communicate()[0].decode("utf-8")
+        if "rpmfusion-nonfree-nvidia-driver" in output:
+            return True
+        else:
+            return False
+
+    def conn(self):
+        retndata = subprocess.getstatusoutput("ping -c 3 -W 3 rpmfusion.org")[0]
+        if retndata == 0:
+            return True
+        else:
+            return False
+
+    def main(self):
+        os.system("dnf install -y fedora-workstation-repositories")
+        retndata = subprocess.getstatusoutput("dnf config-manager --set-enable rpmfusion-nonfree-nvidia-driver")[0]
+        if retndata == 0:
+            return True
+        else:
+            return False
+
+class Coll_DriverInstaller(object):
+    def main(self):
+        ExecStatusCode = os.system(
+            "dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+    def avbl(self):
+        comand = "rpm -qa | grep 'nvidia'"
+        prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = prompt.communicate()[0].decode("utf-8")
+        linect = output.count("\n")
+        if linect == 0:
+            return False
+        else:
+            pkname = output.split("\n")
+            return pkname
+
+class Coll_X86LibInstaller(object):
+    def main(self):
+        ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-libs.i686")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+class Coll_PlCudaInstaller(object):
+    def rpck(self):
+        comand = "dnf repolist | grep 'cuda'"
+        prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = prompt.communicate()[0].decode("utf-8")
+        if "cuda" in output:
+            return True
+        else:
+            return False
+
+    def rpin(self):
+        retndata = subprocess.getstatusoutput("dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-fedora29.repo")[0]
+        print(retndata)
+        if retndata == 0:
+            return True
+        else:
+            return False
+
+    def conn(self):
+        retndata = subprocess.getstatusoutput("ping -c 3 -W 3 developer.download.nvidia.com")[0]
+        if retndata == 0:
+            return True
+        else:
+            return False
+
+    def rpup(self):
+        ExecStatusCode = os.system("dnf clean all")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+    def meta(self):
+        ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-cuda")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+    def main(self):
+        ExecStatusCode = os.system("dnf install -y cuda")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+class Coll_FFMPEGInstaller(object):
+    def main(self):
+        ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-cuda-libs")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+class Coll_VidAccInstaller(object):
+    def main(self):
+        ExecStatusCode = os.system("dnf install -y vdpauinfo libva-vdpau-driver libva-utils")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+class Coll_VulkanInstaller(object):
+    def main(self):
+        ExecStatusCode = os.system("dnf install -y vulkan")
+        if ExecStatusCode == 0:
+            return True
+        else:
+            return False
+
+class Coll_SuperuserCheck(object):
+    def main(self):
+        data = os.geteuid()
+        if data == 0:
+            return True
+        else:
+            return False
+
+SupportCheck = Coll_SupportCheck()
+RPMFHandler = Coll_RPMFHandler()
+DriverInstaller = Coll_DriverInstaller()
+x86LibInstaller = Coll_X86LibInstaller()
+PlCudaInstaller = Coll_PlCudaInstaller()
+FFMPEGInstaller = Coll_FFMPEGInstaller()
+VidAccInstaller = Coll_VidAccInstaller()
+VulkanInstaller = Coll_VulkanInstaller()
+SuperuserCheck = Coll_SuperuserCheck()
 
 class InstallationMode(object):
     def __init__(self):
