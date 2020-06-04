@@ -8,7 +8,21 @@ DecoratorObject = StatusDecorator()
 
 class InstallationMode(object):
     def __init__(self):
-        pass
+        self.menudict = {
+        "--rpmadd " : "This mode enables the RPM Fusion NVIDIA drivers repository.",
+        "--driver " : "This mode simply installs the NVIDIA driver.",
+        "--x86lib " : "This mode installs only the x86 libraries for Xorg.",
+        "--nvrepo " : "This mode enables the Official NVIDIA repository for CUDA.",
+        "--plcuda " : "This mode installs only the CUDA support softwares.",
+        "--ffmpeg " : "This mode installs only the FFMPEG acceleration.",
+        "--vulkan " : "This mode installs only the Vulkan renderer.",
+        "--vidacc " : "This mode installs only the VDPAU/VAAPI acceleration.",
+        "--getall " : "This mode installs all the above packages.",
+        "--cheksu " : "This mode allows you to check the user privilege level.",
+        "--compat " : "This mode allows you to check your compatibility.",
+        "--version" : "Show the version and exit.",
+        "--help   " : "Show this message and exit.",
+    }
 
     def rpmadd(self):
         DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
@@ -352,20 +366,11 @@ class InstallationMode(object):
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
-def PrintHelpMessage():
-    DecoratorObject.SectionHeader("OPTIONS")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--rpmadd" + Style.RESET_ALL + " → This mode enables the RPM Fusion NVIDIA drivers repository")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--driver" + Style.RESET_ALL + " → This mode simply installs the NVIDIA driver")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--x86lib" + Style.RESET_ALL + " → This mode installs only the x86 libraries for Xorg")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--nvrepo" + Style.RESET_ALL + " → This mode enables the Official NVIDIA repository for CUDA")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--plcuda" + Style.RESET_ALL + " → This mode installs only the CUDA support softwares")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--ffmpeg" + Style.RESET_ALL + " → This mode installs only the FFMPEG acceleration")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--vulkan" + Style.RESET_ALL + " → This mode installs only the Vulkan renderer")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--vidacc" + Style.RESET_ALL + " → This mode installs only the VDPAU/VAAPI acceleration")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--getall" + Style.RESET_ALL + " → This mode installs all the above packages")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--cheksu" + Style.RESET_ALL + " → This mode allows you to check the user privilege level")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--compat" + Style.RESET_ALL + " → This mode allows you to check your compatibility")
-    DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + "--help  " + Style.RESET_ALL + " → Show this message and exit")
+    def lsmenu(self):
+        DecoratorObject.SectionHeader("OPTIONS")
+        for indx in self.menudict.keys():
+            DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + indx + Style.RESET_ALL + " → " + self.menudict[indx])
+        sys.exit(0)
 
 @click.command()
 @click.option("--rpmadd", "instmode", flag_value="rpmadd", help="This mode enables the RPM Fusion NVIDIA drivers repository")
@@ -379,6 +384,7 @@ def PrintHelpMessage():
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
 @click.option("--cheksu", "instmode", flag_value="cheksu", help="This mode allows you to check the user privilege level")
 @click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility")
+@click.version_option(version="v0.3.0", prog_name="NVAutoInstFedora32 by t0xic0der")
 def clim(instmode):
     instobjc = InstallationMode()
     print(Style.BRIGHT + Fore.GREEN + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE" + Style.RESET_ALL)
@@ -405,7 +411,7 @@ def clim(instmode):
     elif instmode == "compat":
         instobjc.compat()
     else:
-        PrintHelpMessage()
+        instobjc.lsmenu()
 
 if __name__ == "__main__":
     clim()
