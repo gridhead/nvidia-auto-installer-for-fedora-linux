@@ -223,6 +223,36 @@ class InstallationMode(object):
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
+    def vidacc(self):
+        DecoratorObject.SectionHeader("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+        if RPMFHandler.avbl():
+            DecoratorObject.WarningMessage("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+            DecoratorObject.SectionHeader("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+            if RPMFHandler.conn():
+                DecoratorObject.SuccessMessage("Connection to RPM Fusion servers was established")
+                DecoratorObject.SectionHeader("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                data = DriverInstaller.avbl()
+                if data is False:
+                    DecoratorObject.FailureMessage("No existing NVIDIA driver packages were detected")
+                else:
+                    qant = 0
+                    for indx in data:
+                        if indx != "":
+                            qant += 1
+                            DecoratorObject.NormalMessage(indx)
+                    DecoratorObject.WarningMessage("A total of " + str(qant) + " driver packages were detected")
+                    DecoratorObject.SectionHeader("INSTALLING VIDEO ACCELERATION SUPPORT...")
+                    if VidAccInstaller.main():
+                        DecoratorObject.SuccessMessage("Video acceleration were successfully installed")
+                    else:
+                        DecoratorObject.FailureMessage("Video acceleration could not be installed")
+            else:
+                DecoratorObject.FailureMessage("Connection to RPM Fusion servers could not be established")
+        else:
+            DecoratorObject.FailureMessage("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
+
     def compat(self):
         DecoratorObject.SectionHeader("CHECKING FOR GPU COMPATIBILITY...")
         data = SupportCheck.gpuc()
