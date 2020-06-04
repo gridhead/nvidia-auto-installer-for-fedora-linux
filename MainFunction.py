@@ -253,6 +253,12 @@ class InstallationMode(object):
         DecoratorObject.FailureMessage("Leaving installer")
         sys.exit(0)
 
+    def getall(self):
+        DecoratorObject.SectionHeader("FULL FLEDGED INSTALLATION BEGINNING...")
+        DecoratorObject.NormalMessage("This mode is yet to be implemented")
+        DecoratorObject.FailureMessage("Leaving installer")
+        sys.exit(0)
+
     def compat(self):
         DecoratorObject.SectionHeader("CHECKING FOR GPU COMPATIBILITY...")
         data = SupportCheck.gpuc()
