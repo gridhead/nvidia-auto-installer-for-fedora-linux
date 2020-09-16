@@ -138,7 +138,7 @@ class Coll_PlCudaInstaller(object):
             return False
 
     def rpin(self):
-        retndata = subprocess.getstatusoutput("dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-fedora29.repo")[0]
+        retndata = subprocess.getstatusoutput("dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo")[0]
         if retndata == 0:
             return True
         else:
