@@ -1,9 +1,32 @@
 import os, subprocess, sys, click, distro
-from colorama import init, Fore, Style
-from ColoramaCalls import StatusDecorator
 
-init()
+
+class StatusDecorator(object):
+    def __init__(self):
+        self.PASS = click.style("[ ✔ ]", fg="green", bold=True)
+        self.FAIL = click.style("[ ✘ ]", fg="red", bold=True)
+        self.WARN = click.style("[ ! ]", fg="yellow", bold=True)
+        self.HEAD = click.style("[ # ]", fg="cyan", bold=True)
+        self.STDS = "     "
+
+    def SuccessMessage(self, RequestMessage):
+        click.echo(self.PASS + " " + RequestMessage)
+
+    def FailureMessage(self, RequestMessage):
+        click.echo(self.FAIL + " " + RequestMessage)
+
+    def WarningMessage(self, RequestMessage):
+        click.echo(self.WARN + " " + RequestMessage)
+
+    def SectionHeader(self, RequestMessage):
+        click.echo(self.HEAD + " " + click.style(RequestMessage, fg="cyan", bold=True))
+
+    def NormalMessage(self, RequestMessage):
+        click.echo(self.STDS + " " + RequestMessage)
+
+
 DecoratorObject = StatusDecorator()
+
 
 class Coll_SupportCheck(object):
     def gpuc(self):
@@ -31,18 +54,22 @@ class Coll_SupportCheck(object):
             "System": str(os.uname().sysname) + " v" + str(os.uname().release),
             "Hostname": str(os.uname().nodename),
             "Version": str(os.uname().version),
-            "Distribution": str(distro.os_release_info()["name"]) + " " + str(distro.os_release_info()["version_id"]) + " " + str(os.uname().machine),
+            "Distribution": str(distro.os_release_info()["name"]) + " " + str(os.uname().machine),
         }
         return jsondt
 
     def avbl(self):
-        if str(distro.os_release_info()["name"]) == "Fedora":
-            if int(distro.os_release_info()["version_id"]) >= 32:
-                return "full"
+        try:
+            if str(distro.os_release_info()["name"]) == "Fedora":
+                if int(distro.os_release_info()["version_id"]) >= 32:
+                    return "full"
+                else:
+                    return "half"
             else:
-                return "half"
-        else:
+                return False
+        except KeyError:
             return False
+
 
 class Coll_RPMFHandler(object):
     def avbl(self):
@@ -69,6 +96,7 @@ class Coll_RPMFHandler(object):
         else:
             return False
 
+
 class Coll_DriverInstaller(object):
     def main(self):
         ExecStatusCode = os.system(
@@ -89,6 +117,7 @@ class Coll_DriverInstaller(object):
             pkname = output.split("\n")
             return pkname
 
+
 class Coll_X86LibInstaller(object):
     def main(self):
         ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-libs.i686")
@@ -96,6 +125,7 @@ class Coll_X86LibInstaller(object):
             return True
         else:
             return False
+
 
 class Coll_PlCudaInstaller(object):
     def rpck(self):
@@ -108,8 +138,7 @@ class Coll_PlCudaInstaller(object):
             return False
 
     def rpin(self):
-        retndata = subprocess.getstatusoutput("dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/fedora29/x86_64/cuda-fedora29.repo")[0]
-        print(retndata)
+        retndata = subprocess.getstatusoutput("dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo")[0]
         if retndata == 0:
             return True
         else:
@@ -143,6 +172,7 @@ class Coll_PlCudaInstaller(object):
         else:
             return False
 
+
 class Coll_FFMPEGInstaller(object):
     def main(self):
         ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-cuda-libs")
@@ -150,6 +180,7 @@ class Coll_FFMPEGInstaller(object):
             return True
         else:
             return False
+
 
 class Coll_VidAccInstaller(object):
     def main(self):
@@ -159,6 +190,7 @@ class Coll_VidAccInstaller(object):
         else:
             return False
 
+
 class Coll_VulkanInstaller(object):
     def main(self):
         ExecStatusCode = os.system("dnf install -y vulkan")
@@ -167,6 +199,7 @@ class Coll_VulkanInstaller(object):
         else:
             return False
 
+
 class Coll_SuperuserCheck(object):
     def main(self):
         data = os.geteuid()
@@ -174,6 +207,7 @@ class Coll_SuperuserCheck(object):
             return True
         else:
             return False
+
 
 SupportCheck = Coll_SupportCheck()
 RPMFHandler = Coll_RPMFHandler()
@@ -184,6 +218,7 @@ FFMPEGInstaller = Coll_FFMPEGInstaller()
 VidAccInstaller = Coll_VidAccInstaller()
 VulkanInstaller = Coll_VulkanInstaller()
 SuperuserCheck = Coll_SuperuserCheck()
+
 
 class InstallationMode(object):
     def __init__(self):
@@ -548,8 +583,9 @@ class InstallationMode(object):
     def lsmenu(self):
         DecoratorObject.SectionHeader("OPTIONS")
         for indx in self.menudict.keys():
-            DecoratorObject.NormalMessage(Style.BRIGHT + Fore.GREEN + indx + Style.RESET_ALL + " → " + self.menudict[indx])
+            DecoratorObject.NormalMessage(click.style(indx, fg="green", bold=True) + "  " + self.menudict[indx])
         sys.exit(0)
+
 
 @click.command()
 @click.option("--rpmadd", "instmode", flag_value="rpmadd", help="This mode enables the RPM Fusion NVIDIA drivers repository")
@@ -563,34 +599,23 @@ class InstallationMode(object):
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
 @click.option("--cheksu", "instmode", flag_value="cheksu", help="This mode allows you to check the user privilege level")
 @click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility")
-@click.version_option(version="v0.3.0", prog_name="NVAutoInstFedora32 by t0xic0der")
+@click.version_option(version="v0.3.5", prog_name=click.style("NVAutoInstFedora32 by t0xic0der", fg="green", bold=True))
 def clim(instmode):
     instobjc = InstallationMode()
-    print(Style.BRIGHT + Fore.GREEN + "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE" + Style.RESET_ALL)
-    if instmode == "rpmadd":
-        instobjc.rpmadd()
-    elif instmode == "driver":
-        instobjc.driver()
-    elif instmode == "x86lib":
-        instobjc.x86lib()
-    elif instmode == "nvrepo":
-        instobjc.nvrepo()
-    elif instmode == "plcuda":
-        instobjc.plcuda()
-    elif instmode == "ffmpeg":
-        instobjc.ffmpeg()
-    elif instmode == "vulkan":
-        instobjc.vulkan()
-    elif instmode == "vidacc":
-        instobjc.vidacc()
-    elif instmode == "getall":
-        instobjc.getall()
-    elif instmode == "cheksu":
-        instobjc.cheksu()
-    elif instmode == "compat":
-        instobjc.compat()
-    else:
-        instobjc.lsmenu()
+    click.echo(click.style("[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE", fg="green", bold=True))
+    if instmode == "rpmadd":    instobjc.rpmadd()
+    elif instmode == "driver":  instobjc.driver()
+    elif instmode == "x86lib":  instobjc.x86lib()
+    elif instmode == "nvrepo":  instobjc.nvrepo()
+    elif instmode == "plcuda":  instobjc.plcuda()
+    elif instmode == "ffmpeg":  instobjc.ffmpeg()
+    elif instmode == "vulkan":  instobjc.vulkan()
+    elif instmode == "vidacc":  instobjc.vidacc()
+    elif instmode == "getall":  instobjc.getall()
+    elif instmode == "cheksu":  instobjc.cheksu()
+    elif instmode == "compat":  instobjc.compat()
+    else:                       instobjc.lsmenu()
+
 
 if __name__ == "__main__":
     clim()
