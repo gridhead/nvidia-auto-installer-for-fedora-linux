@@ -1,5 +1,5 @@
 # nvidia-auto-installer-for-fedora
-v0.3.0 (04 June 2020)  
+v0.3.5 (23 September 2020) (COPR pending) and v0.3.0 (04 June 2020) (Executable binary)  
 A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora 32 and above
 
 ## Screenshots
