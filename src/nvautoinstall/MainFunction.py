@@ -1,6 +1,11 @@
-import os, subprocess, sys, click, distro
+import os
+import subprocess
+import sys
 
+import click
+import distro
 from nvautoinstall import __version__
+
 
 class StatusDecorator(object):
     def __init__(self):
