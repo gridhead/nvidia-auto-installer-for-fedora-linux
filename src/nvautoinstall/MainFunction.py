@@ -1,13 +1,13 @@
 import os, subprocess, sys, click, distro
 
-from nvautoinstall import __version__
+#from nvautoinstall import __version__
 
 class StatusDecorator(object):
     def __init__(self):
-        self.PASS = click.style("[ ✔ ]", fg="green", bold=True)
-        self.FAIL = click.style("[ ✘ ]", fg="red", bold=True)
+        self.PASS = click.style("[ \u2713 ]", fg="green", bold=True)
+        self.FAIL = click.style("[ \u2717 ]", fg="red", bold=True)
         self.WARN = click.style("[ ! ]", fg="yellow", bold=True)
-        self.HEAD = click.style("[ # ]", fg="cyan", bold=True)
+        self.HEAD = click.style("[ \u2605 ]", fg="magenta", bold=True)
         self.STDS = "     "
 
     def SuccessMessage(self, RequestMessage):
@@ -20,7 +20,7 @@ class StatusDecorator(object):
         click.echo(self.WARN + " " + RequestMessage)
 
     def SectionHeader(self, RequestMessage):
-        click.echo(self.HEAD + " " + click.style(RequestMessage, fg="cyan", bold=True))
+        click.echo(self.HEAD + " " + click.style(RequestMessage, fg="magenta", bold=True))
 
     def NormalMessage(self, RequestMessage):
         click.echo(self.STDS + " " + RequestMessage)
@@ -224,20 +224,20 @@ SuperuserCheck = Coll_SuperuserCheck()
 class InstallationMode(object):
     def __init__(self):
         self.menudict = {
-        "--rpmadd " : "This mode enables the RPM Fusion NVIDIA drivers repository.",
-        "--driver " : "This mode simply installs the NVIDIA driver.",
-        "--x86lib " : "This mode installs only the x86 libraries for Xorg.",
-        "--nvrepo " : "This mode enables the Official NVIDIA repository for CUDA.",
-        "--plcuda " : "This mode installs only the CUDA support softwares.",
-        "--ffmpeg " : "This mode installs only the FFMPEG acceleration.",
-        "--vulkan " : "This mode installs only the Vulkan renderer.",
-        "--vidacc " : "This mode installs only the VDPAU/VAAPI acceleration.",
-        "--getall " : "This mode installs all the above packages.",
-        "--cheksu " : "This mode allows you to check the user privilege level.",
-        "--compat " : "This mode allows you to check your compatibility.",
-        "--version" : "Show the version and exit.",
-        "--help   " : "Show this message and exit.",
-    }
+            "--rpmadd " : "This mode enables the RPM Fusion NVIDIA drivers repository.",
+            "--driver " : "This mode simply installs the NVIDIA driver.",
+            "--x86lib " : "This mode installs only the x86 libraries for Xorg.",
+            "--nvrepo " : "This mode enables the Official NVIDIA repository for CUDA.",
+            "--plcuda " : "This mode installs only the CUDA support softwares.",
+            "--ffmpeg " : "This mode installs only the FFMPEG acceleration.",
+            "--vulkan " : "This mode installs only the Vulkan renderer.",
+            "--vidacc " : "This mode installs only the VDPAU/VAAPI acceleration.",
+            "--getall " : "This mode installs all the above packages.",
+            "--cheksu " : "This mode allows you to check the user privilege level.",
+            "--compat " : "This mode allows you to check your compatibility.",
+            "--version" : "Show the version and exit.",
+            "--help   " : "Show this message and exit.",
+        }
 
     def rpmadd(self):
         DecoratorObject.SectionHeader("CHECKING SUPERUSER PERMISSIONS...")
