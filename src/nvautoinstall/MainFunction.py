@@ -1,6 +1,6 @@
 import os, subprocess, sys, click, distro
 
-#from nvautoinstall import __version__
+from nvautoinstall import __version__
 
 class StatusDecorator(object):
     def __init__(self):
@@ -100,8 +100,7 @@ class Coll_RPMFHandler(object):
 
 class Coll_DriverInstaller(object):
     def main(self):
-        ExecStatusCode = os.system(
-            "dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
+        ExecStatusCode = os.system("dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
         if ExecStatusCode == 0:
             return True
         else:
@@ -139,7 +138,7 @@ class Coll_PlCudaInstaller(object):
             return False
 
     def rpin(self):
-        retndata = subprocess.getstatusoutput("dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo")[0]
+        retndata = subprocess.getstatusoutput("dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora33/x86_64/cuda-fedora33.repo")[0]
         if retndata == 0:
             return True
         else:
