@@ -565,7 +565,7 @@ class InstallationMode(object):
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
 @click.option("--cheksu", "instmode", flag_value="cheksu", help="This mode allows you to check the user privilege level")
 @click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility")
-@click.version_option(version=__version__, prog_name=click.style("NVAutoInstall by Akashdeep Dhar <t0xic0der@fedoraproject>", fg="green", bold=True))
+@click.version_option(version=__version__, prog_name=click.style("NVAutoInstall by Akashdeep Dhar <t0xic0der@fedoraproject.org>", fg="green", bold=True))
 def clim(instmode):
     instobjc = InstallationMode()
     click.echo(click.style("[ # ] NVIDIA AUTOINSTALLER FOR FEDORA", fg="green", bold=True))
