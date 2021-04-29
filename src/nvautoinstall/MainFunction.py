@@ -21,26 +21,26 @@ class StatusDecorator(object):
         self.HEAD = click.style("[ \u2605 ]", fg="magenta", bold=True)
         self.STDS = "     "
 
-    def success_message(self, RequestMessage):
-        click.echo(self.PASS + " " + RequestMessage)
+    def success_message(self, request_message):
+        click.echo(self.PASS + " " + request_message)
 
-    def failure_message(self, RequestMessage):
-        click.echo(self.FAIL + " " + RequestMessage)
+    def failure_message(self, request_message):
+        click.echo(self.FAIL + " " + request_message)
 
-    def warning_message(self, RequestMessage):
-        click.echo(self.WARN + " " + RequestMessage)
+    def warning_message(self, request_message):
+        click.echo(self.WARN + " " + request_message)
 
-    def section_heading(self, RequestMessage):
-        click.echo(self.HEAD + " " + click.style(RequestMessage, fg="magenta", bold=True))
+    def section_heading(self, request_message):
+        click.echo(self.HEAD + " " + click.style(request_message, fg="magenta", bold=True))
 
-    def general_message(self, RequestMessage):
-        click.echo(self.STDS + " " + RequestMessage)
+    def general_message(self, request_message):
+        click.echo(self.STDS + " " + request_message)
 
 
 DecoratorObject = StatusDecorator()
 
 
-class Coll_SupportCheck(object):
+class CollSupportCheck(object):
     def gpuc(self):
         comand = "lspci | grep -E 'VGA|3D'"
         prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -83,7 +83,7 @@ class Coll_SupportCheck(object):
             return False
 
 
-class Coll_RPMFHandler(object):
+class CollRPMFHandler(object):
     def avbl(self):
         comand = "dnf repolist | grep 'rpmfusion-nonfree-nvidia-driver'"
         prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -100,10 +100,10 @@ class Coll_RPMFHandler(object):
         return retndata == 0
 
 
-class Coll_DriverInstaller(object):
+class CollDriverInstaller(object):
     def main(self):
-        ExecStatusCode = os.system("dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs")
+        return exec_status_code == 0
 
     def avbl(self):
         comand = "rpm -qa | grep 'nvidia'"
@@ -117,13 +117,13 @@ class Coll_DriverInstaller(object):
             return pkname
 
 
-class Coll_X86LibInstaller(object):
+class CollX86LibInstaller(object):
     def main(self):
-        ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-libs.i686")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf install -y xorg-x11-drv-nvidia-libs.i686")
+        return exec_status_code == 0
 
 
-class Coll_PlCudaInstaller(object):
+class CollPlCudaInstaller(object):
     def rpck(self):
         comand = "dnf repolist | grep 'cuda'"
         prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -139,51 +139,51 @@ class Coll_PlCudaInstaller(object):
         return retndata == 0
 
     def rpup(self):
-        ExecStatusCode = os.system("dnf clean all")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf clean all")
+        return exec_status_code == 0
 
     def meta(self):
-        ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-cuda")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf install -y xorg-x11-drv-nvidia-cuda")
+        return exec_status_code == 0
 
     def main(self):
-        ExecStatusCode = os.system("dnf install -y cuda")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf install -y cuda")
+        return exec_status_code == 0
 
 
-class Coll_FFMPEGInstaller(object):
+class CollFFMPEGInstaller(object):
     def main(self):
-        ExecStatusCode = os.system("dnf install -y xorg-x11-drv-nvidia-cuda-libs")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf install -y xorg-x11-drv-nvidia-cuda-libs")
+        return exec_status_code == 0
 
 
-class Coll_VidAccInstaller(object):
+class CollVidAccInstaller(object):
     def main(self):
-        ExecStatusCode = os.system("dnf install -y vdpauinfo libva-vdpau-driver libva-utils")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf install -y vdpauinfo libva-vdpau-driver libva-utils")
+        return exec_status_code == 0
 
 
-class Coll_VulkanInstaller(object):
+class CollVulkanInstaller(object):
     def main(self):
-        ExecStatusCode = os.system("dnf install -y vulkan")
-        return ExecStatusCode == 0
+        exec_status_code = os.system("dnf install -y vulkan")
+        return exec_status_code == 0
 
 
-class Coll_SuperuserCheck(object):
+class CollSuperuserCheck(object):
     def main(self):
         data = os.geteuid()
         return data == 0
 
 
-SupportCheck = Coll_SupportCheck()
-RPMFHandler = Coll_RPMFHandler()
-DriverInstaller = Coll_DriverInstaller()
-x86LibInstaller = Coll_X86LibInstaller()
-PlCudaInstaller = Coll_PlCudaInstaller()
-FFMPEGInstaller = Coll_FFMPEGInstaller()
-VidAccInstaller = Coll_VidAccInstaller()
-VulkanInstaller = Coll_VulkanInstaller()
-SuperuserCheck = Coll_SuperuserCheck()
+SupportCheck = CollSupportCheck()
+RPMFHandler = CollRPMFHandler()
+DriverInstaller = CollDriverInstaller()
+x86LibInstaller = CollX86LibInstaller()
+PlCudaInstaller = CollPlCudaInstaller()
+FFMPEGInstaller = CollFFMPEGInstaller()
+VidAccInstaller = CollVidAccInstaller()
+VulkanInstaller = CollVulkanInstaller()
+SuperuserCheck = CollSuperuserCheck()
 
 
 class InstallationMode(object):
