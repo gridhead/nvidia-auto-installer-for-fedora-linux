@@ -4,7 +4,13 @@ import sys
 
 import click
 import distro
-from nvautoinstall import __version__
+
+try:
+    # Imports version in the packaged environment
+    from nvautoinstall import __version__
+except ModuleNotFoundError:
+    # Imports version in the development environment
+    from __init__ import __version__
 
 
 class StatusDecorator(object):
@@ -604,7 +610,7 @@ class InstallationMode(object):
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
 @click.option("--cheksu", "instmode", flag_value="cheksu", help="This mode allows you to check the user privilege level")
 @click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility")
-@click.version_option(version="v0.3.5", prog_name=click.style("NVAutoInstFedora32 by t0xic0der", fg="green", bold=True))
+@click.version_option(version=__version__, prog_name=click.style("NVAutoInstFedora32 by t0xic0der", fg="green", bold=True))
 def clim(instmode):
     instobjc = InstallationMode()
     click.echo(click.style("[ # ] NVIDIA AUTOINSTALLER FOR FEDORA 32 AND ABOVE", fg="green", bold=True))
