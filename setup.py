@@ -58,4 +58,4 @@ setuptools.setup(
       'Topic :: System :: Hardware :: Hardware Drivers',
       'Topic :: Utilities',
     ],
-    )
+)
