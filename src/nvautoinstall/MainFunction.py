@@ -146,6 +146,10 @@ class CollPlCudaInstaller(object):
         exec_status_code = os.system("dnf install -y xorg-x11-drv-nvidia-cuda")
         return exec_status_code == 0
 
+    def stop(self):
+        exec_status_code = os.system("dnf module disable -y nvidia-driver")
+        return exec_status_code == 0
+
     def main(self):
         exec_status_code = os.system("dnf install -y cuda")
         return exec_status_code == 0
@@ -321,6 +325,11 @@ class InstallationMode(object):
                         DecoratorObject.section_heading("REFRESHING REPOSITORY LIST...")
                         if PlCudaInstaller.rpup():
                             DecoratorObject.success_message("Repositories have been refreshed")
+                            DecoratorObject.section_heading("DISABLING NVIDIA DRIVER MODULE...")
+                            if PlCudaInstaller.stop():
+                                DecoratorObject.success_message("NVIDIA DRIVER module has been disabled")
+                            else:
+                                DecoratorObject.failure_message("NVIDIA DRIVER module could not be disabled")
                         else:
                             DecoratorObject.failure_message("Repositories could not be refreshed")
                     else:
