@@ -1,7 +1,7 @@
 %global srcname nvidia-auto-installer-for-fedora
 
 Name: nvautoinstall
-Version: 0.3.6
+Version: 0.3.7
 Release: 0%{?dist}
 Summary: NVIDIA Auto Installer for Fedora
 
@@ -36,10 +36,17 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+
+* Sat May 22 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+- v0.3.7
+- Added option to enable/disable PRIME support on Optimus-supported devices
+- Added other miscellaneous changes for ease of maintenance
+
 * Sun May 09 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.3.6
 - Reworked installation method for CUDA repo compatibility
 - Minor patch leading to a version bump
+
 * Thu Apr 29 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.3.5
 - Corrected unicode escape sequences for colors
@@ -48,6 +55,7 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Refactored the code to remove needless lines
 - Made compliance related changes here and there
 - Tested and confirmed the tool to be working in F34 Workstation
+
 * Thu Jun 04 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.3.0
 - Combined RPM Fusion pinging, checking, installing into a single module
@@ -67,11 +75,13 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Added checks for NVIDIA repository and RPM Fusion repository availability
 - Added network availability check before pinging respective repo servers
 - Improved handling of interrupt. halt and suspend system calls for tool
+
 * Mon Jun 01 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.2.6
 - Fixed broken repository addition module
 - Added installation of fedora-workstation-repositories first
 - Added enabling of repository after the install is complete
+
 * Sun May 31 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.2.5
 - Removed mandatory sleep for kernel module load
@@ -81,6 +91,7 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Fixed boolean choices in main function
 - Fixed boolean choices in package check
 - Fixed prompt colors for custom-themed terminals
+
 * Wed May 27 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.2.0
 - Cleaned up repeated code using class implemented decorator calls
@@ -92,6 +103,7 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Added dedicated status check for kernel module reader
 - Fixed confirmation choice during package check
 - Fixed typo in RPM Fusion mentions throughout the tool interface
+
 * Fri May 22 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.1.0
 - Added host detection with display of system details and hostname
