@@ -1,3 +1,24 @@
+"""
+##########################################################################
+*
+*   Copyright © 2019-2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+*
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*
+##########################################################################
+"""
+
 import os
 import subprocess
 import sys
@@ -179,6 +200,23 @@ class CollSuperuserCheck(object):
         return data == 0
 
 
+class CollPrimeSupportEnabler(object):
+    def main(self, opts):
+        try:
+            with open("/usr/share/X11/xorg.conf.d/nvidia.conf", "r") as sharconf:
+                shardata = sharconf.read()
+            primemod = ""
+            for indx in shardata.split("\n"):
+                primemod += indx + "\n"
+                if opts is True and indx == "\tOption \"BaseMosaic\" \"on\"":
+                    primemod += "\tOption \"PrimaryGPU\" \"yes\"" + "\n"
+            with open("/etc/X11/xorg.conf.d/nvidia.conf", "w") as etcdconf:
+                etcdconf.write(primemod)
+            return True
+        except Exception:
+            return False
+
+
 SupportCheck = CollSupportCheck()
 RPMFHandler = CollRPMFHandler()
 DriverInstaller = CollDriverInstaller()
@@ -188,6 +226,7 @@ FFMPEGInstaller = CollFFMPEGInstaller()
 VidAccInstaller = CollVidAccInstaller()
 VulkanInstaller = CollVulkanInstaller()
 SuperuserCheck = CollSuperuserCheck()
+PrimeSupportEnabler = CollPrimeSupportEnabler()
 
 
 class InstallationMode(object):
@@ -204,6 +243,7 @@ class InstallationMode(object):
             "--getall " : "This mode installs all the above packages.",
             "--cheksu " : "This mode allows you to check the user privilege level.",
             "--compat " : "This mode allows you to check your compatibility.",
+            "--primec " : "This mode allows you to setup PRIME configuration.",
             "--version" : "Show the version and exit.",
             "--help   " : "Show this message and exit.",
         }
@@ -555,6 +595,56 @@ class InstallationMode(object):
         DecoratorObject.failure_message("Leaving installer")
         sys.exit(0)
 
+    def primec(self):
+        DecoratorObject.section_heading("CHECKING SUPERUSER PERMISSIONS...")
+        if SuperuserCheck.main():
+            DecoratorObject.success_message("Superuser privilege acquired")
+            DecoratorObject.section_heading("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
+            if RPMFHandler.avbl():
+                DecoratorObject.warning_message("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                DecoratorObject.section_heading("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
+                if RPMFHandler.conn():
+                    DecoratorObject.success_message("Connection to RPM Fusion servers was established")
+                    DecoratorObject.section_heading("LOOKING FOR EXISTING DRIVER PACKAGES...")
+                    data = DriverInstaller.avbl()
+                    if data is False:
+                        DecoratorObject.failure_message("No existing NVIDIA driver packages were detected")
+                    else:
+                        qant = 0
+                        for indx in data:
+                            if indx != "":
+                                qant += 1
+                                DecoratorObject.general_message(indx)
+                        DecoratorObject.warning_message("A total of " + str(qant) + " driver packages were detected")
+                        DecoratorObject.section_heading("SETTING UP PRIME SUPPORT...")
+                        DecoratorObject.warning_message("Intervention required")
+                        DecoratorObject.general_message(click.style("< Y >", fg="green", bold=True) + " to enable PRIME support")
+                        DecoratorObject.general_message(click.style("< N >", fg="red", bold=True) + " to disable PRIME support")
+                        DecoratorObject.general_message(click.style("< * >", fg="yellow", bold=True) + " anything else to leave")
+                        solution = input("[Y/N] ")
+                        if solution == "Y" or solution == "y":
+                            DecoratorObject.section_heading("ENABLING PRIME SUPPORT...")
+                            if PrimeSupportEnabler.main(True):
+                                DecoratorObject.success_message("PRIME Support was successfully enabled")
+                            else:
+                                DecoratorObject.failure_message("PRIME Support could not be enabled")
+                        elif solution == "N" or solution == "n":
+                            DecoratorObject.section_heading("DISABLING PRIME SUPPORT...")
+                            if PrimeSupportEnabler.main(False):
+                                DecoratorObject.success_message("PRIME Support was successfully disabled")
+                            else:
+                                DecoratorObject.failure_message("PRIME Support could not be disabled")
+                        else:
+                            DecoratorObject.section_heading("SAFE AND GOOD ANSWER...")
+                else:
+                    DecoratorObject.failure_message("Connection to RPM Fusion servers could not be established")
+            else:
+                DecoratorObject.failure_message("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+        else:
+            DecoratorObject.failure_message("Superuser privilege could not be acquired")
+        DecoratorObject.failure_message("Leaving installer")
+        sys.exit(0)
+
     def lsmenu(self):
         DecoratorObject.section_heading("OPTIONS")
         for indx in self.menudict.keys():
@@ -563,33 +653,115 @@ class InstallationMode(object):
 
 
 @click.command()
-@click.option("--rpmadd", "instmode", flag_value="rpmadd", help="This mode enables the RPM Fusion NVIDIA drivers repository")
-@click.option("--driver", "instmode", flag_value="driver", help="This mode simply installs the NVIDIA driver")
-@click.option("--x86lib", "instmode", flag_value="x86lib", help="This mode installs only the x86 libraries for Xorg")
-@click.option("--nvrepo", "instmode", flag_value="nvrepo", help="This mode enables the Official NVIDIA repository for CUDA")
-@click.option("--plcuda", "instmode", flag_value="plcuda", help="This mode installs only the CUDA support softwares")
-@click.option("--ffmpeg", "instmode", flag_value="ffmpeg", help="This mode installs only the FFMPEG acceleration")
-@click.option("--vulkan", "instmode", flag_value="vulkan", help="This mode installs only the Vulkan renderer")
-@click.option("--vidacc", "instmode", flag_value="vidacc", help="This mode installs only the VDPAU/VAAPI acceleration")
-@click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages")
-@click.option("--cheksu", "instmode", flag_value="cheksu", help="This mode allows you to check the user privilege level")
-@click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility")
-@click.version_option(version=__version__, prog_name=click.style("NVAutoInstall by Akashdeep Dhar <t0xic0der@fedoraproject.org>", fg="green", bold=True))
+@click.option(
+    "--rpmadd",
+    "instmode",
+    flag_value="rpmadd",
+    help="This mode enables the RPM Fusion NVIDIA drivers repository."
+)
+@click.option(
+    "--driver",
+    "instmode",
+    flag_value="driver",
+    help="This mode simply installs the NVIDIA driver."
+)
+@click.option(
+    "--x86lib",
+    "instmode",
+    flag_value="x86lib",
+    help="This mode installs only the x86 libraries for Xorg."
+)
+@click.option(
+    "--nvrepo",
+    "instmode",
+    flag_value="nvrepo",
+    help="This mode enables the Official NVIDIA repository for CUDA."
+)
+@click.option(
+    "--plcuda",
+    "instmode",
+    flag_value="plcuda",
+    help="This mode installs only the CUDA support softwares."
+)
+@click.option(
+    "--ffmpeg",
+    "instmode",
+    flag_value="ffmpeg",
+    help="This mode installs only the FFMPEG acceleration."
+)
+@click.option(
+    "--vulkan",
+    "instmode",
+    flag_value="vulkan",
+    help="This mode installs only the Vulkan renderer."
+)
+@click.option(
+    "--vidacc",
+    "instmode",
+    flag_value="vidacc",
+    help="This mode installs only the VDPAU/VAAPI acceleration."
+)
+@click.option(
+    "--getall",
+    "instmode",
+    flag_value="getall",
+    help="This mode installs all the above packages."
+)
+@click.option(
+    "--cheksu",
+    "instmode",
+    flag_value="cheksu",
+    help="This mode allows you to check the user privilege level."
+)
+@click.option(
+    "--compat",
+    "instmode",
+    flag_value="compat",
+    help="This mode allows you to check your compatibility."
+)
+@click.option(
+    "--primec",
+    "instmode",
+    flag_value="primec",
+    help="This mode allows you to setup PRIME configuration."
+)
+@click.version_option(
+    version=__version__,
+    prog_name=click.style(
+        "NVAutoInstall by Akashdeep Dhar <t0xic0der@fedoraproject.org>",
+        fg="green",
+        bold=True
+    )
+)
 def clim(instmode):
     instobjc = InstallationMode()
     click.echo(click.style("[ # ] NVIDIA AUTOINSTALLER FOR FEDORA", fg="green", bold=True))
-    if instmode == "rpmadd":    instobjc.rpmadd()
-    elif instmode == "driver":  instobjc.driver()
-    elif instmode == "x86lib":  instobjc.x86lib()
-    elif instmode == "nvrepo":  instobjc.nvrepo()
-    elif instmode == "plcuda":  instobjc.plcuda()
-    elif instmode == "ffmpeg":  instobjc.ffmpeg()
-    elif instmode == "vulkan":  instobjc.vulkan()
-    elif instmode == "vidacc":  instobjc.vidacc()
-    elif instmode == "getall":  instobjc.getall()
-    elif instmode == "cheksu":  instobjc.cheksu()
-    elif instmode == "compat":  instobjc.compat()
-    else:                       instobjc.lsmenu()
+    if instmode == "rpmadd":
+        instobjc.rpmadd()
+    elif instmode == "driver":
+        instobjc.driver()
+    elif instmode == "x86lib":
+        instobjc.x86lib()
+    elif instmode == "nvrepo":
+        instobjc.nvrepo()
+    elif instmode == "plcuda":
+        instobjc.plcuda()
+    elif instmode == "ffmpeg":
+        instobjc.ffmpeg()
+    elif instmode == "vulkan":
+        instobjc.vulkan()
+    elif instmode == "vidacc":
+        instobjc.vidacc()
+    elif instmode == "getall":
+        instobjc.getall()
+    elif instmode == "cheksu":
+        instobjc.cheksu()
+    elif instmode == "compat":
+        instobjc.compat()
+    elif instmode == "primec":
+        instobjc.primec()
+    else:
+        instobjc.lsmenu()
 
 
 if __name__ == "__main__":
