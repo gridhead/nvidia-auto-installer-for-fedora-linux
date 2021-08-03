@@ -112,7 +112,7 @@ class CollRPMFHandler(object):
         return "rpmfusion-nonfree-nvidia-driver" in output
 
     def conn(self):
-        retndata = subprocess.getstatusoutput("ping -c 3 -W 3 rpmfusion.org")[0]
+        retndata = subprocess.getstatusoutput("curl https://rpmfusion.org")[0]
         return retndata == 0
 
     def main(self):
@@ -156,7 +156,7 @@ class CollPlCudaInstaller(object):
         return retndata == 0
 
     def conn(self):
-        retndata = subprocess.getstatusoutput("ping -c 3 -W 3 developer.download.nvidia.com")[0]
+        retndata = subprocess.getstatusoutput("curl https://developer.download.nvidia.com/compute/cuda/repos/")[0]
         return retndata == 0
 
     def rpup(self):
