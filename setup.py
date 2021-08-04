@@ -1,10 +1,5 @@
 import setuptools, codecs, os.path
 
-# use README.md as readme
-def readme():
-    with open('README.md') as f:
-        return f.read()
-
 # get __version__ from a file
 def read(rel_path):
     here = os.path.abspath(os.path.dirname(__file__))
@@ -22,16 +17,16 @@ def get_version(rel_path):
 # setuptools configuration
 setuptools.setup(
     name='nvautoinstall',
-    description='Auto-installer for proprietary NVidia drivers on Fedora',
-    long_description=readme(),
-    long_description_content_type="text/markdown",
+    description='A CLI tool which lets you install proprietary NVIDIA drivers and much more',
+    long_description='A CLI tool which lets you install proprietary NVIDIA drivers and much more',
     url='https://github.com/t0xic0der/nvidia-auto-installer-for-fedora',
     author='Akashdeep Dhar',
+    author_email='t0xic0der@fedoraproject.org',
+    maintainer='Akashdeep Dhar',
+    maintainer_email='t0xic0der@fedoraproject.org',
     license='GPLv3',
-
     # extract version from source
     version=get_version("src/nvautoinstall/__init__.py"),
-
     # tell distutils packages are under src directory
     package_dir={
       '': 'src',
@@ -41,12 +36,10 @@ setuptools.setup(
       'click',
       'distro',
     ],
-
     # automatically create console scripts
     entry_points={
       'console_scripts': ['nvautoinstall=nvautoinstall.MainFunction:clim'],
     },
-
     classifiers=[
       'Development Status :: 4 - Beta',
       'Environment :: Console',
