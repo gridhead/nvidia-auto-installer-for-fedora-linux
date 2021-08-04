@@ -14,9 +14,7 @@
 
 ## Installation
 
-If you use Fedora (32, 33, 34 ELN, Rawhide or above), CentOS (Stream 8 or above), RHEL (8 or above), 
-Mageia (7, Cauldron or above), OpenSUSE (Leap or Tumbleweed) - you can install NVIDIA Auto Installer for Fedora 
-by enabling my COPR repository. Simply execute the following commands in succession to install the tool.
+If you use Fedora (32, 33, 34 ELN, Rawhide or above), CentOS (Stream 8 or above), RHEL (8 or above), Mageia (7, Cauldron or above), OpenSUSE (Leap or Tumbleweed) - you can install NVIDIA Auto Installer for Fedora by enabling my COPR repository. Simply execute the following commands in succession to install the tool.
 
 ```shell
 # dnf install dnf-plugins-core -y
@@ -79,8 +77,4 @@ This mode would show the help message and exit out.
 * Native support for PRIME configuration on Optimus.
 
 ## Disclaimer
-This tool has been tried and tested multiple times and is expected to work flawlessly in Fedora Workstation 32 or 
-above. It has not been tested on any of the spins yet so proceed with caution. While the chances of things going wrong 
-is pretty slim but still you would want to make backups, should things do not go as expected. As always, you are 
-choosing to use this tool at your will and you cannot hold me responsible for any mishap there may occur due to the 
-misuse of this tool.
+This tool has been tried and tested multiple times and is expected to work flawlessly in Fedora Workstation 32 or above. It has not been tested on any of the spins yet so proceed with caution. While the chances of things going wrong is pretty slim but still you would want to make backups, should things do not go as expected. As always, you are choosing to use this tool at your will and you cannot hold me responsible for any mishap there may occur due to the misuse of this tool.
