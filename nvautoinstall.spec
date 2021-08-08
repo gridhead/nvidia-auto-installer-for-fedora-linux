@@ -7,7 +7,7 @@ Summary: NVIDIA Auto Installer for Fedora
 
 License: GPLv3
 Url: https://github.com/t0xic0der/%{srcname}
-Source0: https://github.com/t0xic0der/%{srcname}/releases/download/%{version}/%{name}-%{version}.tar.gz
+Source0: https://github.com/t0xic0der/%{srcname}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch: noarch
 
@@ -37,7 +37,7 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 #-- CHANGELOG -----------------------------------------------------------------#
 %changelog
 
-* Wed Aug 02 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Mon Aug 02 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.3.8
 - Replaced ping with curl for checking availability of RPM Fusion servers
 - Replaced ping with curl for checking availability of NVIDIA Developer servers
