@@ -1,7 +1,7 @@
 %global srcname nvidia-auto-installer-for-fedora
 
 Name: nvautoinstall
-Version: 0.3.8
+Version: 0.3.9
 Release: 0%{?dist}
 Summary: NVIDIA Auto Installer for Fedora
 
@@ -12,7 +12,6 @@ Source0: https://github.com/t0xic0der/%{srcname}/releases/download/v%{version}/%
 BuildArch: noarch
 
 BuildRequires: python3-devel
-BuildRequires: python3-setuptools
 
 %description
 A CLI tool which lets you install proprietary NVIDIA drivers and much more
@@ -20,22 +19,27 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 %prep
 %autosetup
 
+%generate_buildrequires
+%pyproject_buildrequires -r
+
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files nvautoinstall
 
-#-- FILES ---------------------------------------------------------------------#
-%files
+%files -f %{pyproject_files}
 %doc README.md
 %license LICENSE
 %{_bindir}/nvautoinstall
-%{python3_sitelib}/%{name}-*.egg-info/
-%{python3_sitelib}/%{name}/
 
-#-- CHANGELOG -----------------------------------------------------------------#
 %changelog
+
+* Thu Aug 12 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+- v0.3.9
+- Reworked RPM specfile with pyproject directives
+- Removed dependency on python3-setuptools for build
 
 * Mon Aug 02 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 - v0.3.8
