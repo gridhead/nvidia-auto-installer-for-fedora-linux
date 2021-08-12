@@ -52,7 +52,9 @@ This mode installs all the above packages. (Not been implemented yet)
 - **`sudo nvautoinstall --cheksu`**  
 This mode allows you to check the current user privilege level. You can use this tool effectively only when you have logged in as a root or sudo user.
 - **`sudo nvautoinstall --compat`**  
-This mode allows you to check your hardware and host compatiblity. The tool would check your hardware and host and tell if your device is supported by the tool or not.
+This mode allows you to check your hardware and host compatibility. The tool would check your hardware and host and tell if your device is supported by the tool or not.
+- **`sudo nvautoinstall --primec`**  
+This mode allows you to toggle the PRIME offloading to render all display elements using the discrete card. This has only been tested on Workstation variant of Fedora.
 - **`sudo nvautoinstall --version`**  
 This mode would show the tool version and exit out.
 - **`sudo nvautoinstall --help`**  
@@ -67,6 +69,7 @@ This mode would show the help message and exit out.
 * Only tested on 9XX/10XX/20XX series discrete cards.
 * Use discretion while installing with older cards.
 * No additional configuration is required for Optimus setups.
+* Native support for PRIME configuration on Optimus.
 
 ## Coming soon
 * CLI "Launch using Dedicated Graphics Card" option.
@@ -74,7 +77,6 @@ This mode would show the help message and exit out.
 * Distinct mode for using integrated or discrete GPU.
 * Experimental support for RHEL 8 and CentOS 8.
 * Support for older cards by active querying at NVIDIA.
-* Native support for PRIME configuration on Optimus.
 
 ## Disclaimer
 This tool has been tried and tested multiple times and is expected to work flawlessly in Fedora Workstation 32 or above. It has not been tested on any of the spins yet so proceed with caution. While the chances of things going wrong is pretty slim but still you would want to make backups, should things do not go as expected. As always, you are choosing to use this tool at your will and you cannot hold me responsible for any mishap there may occur due to the misuse of this tool.
