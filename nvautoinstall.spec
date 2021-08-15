@@ -2,7 +2,7 @@
 
 Name: nvautoinstall
 Version: 0.3.9
-Release: 0%{?dist}
+Release: 1%{?dist}
 Summary: NVIDIA Auto Installer for Fedora
 
 License: GPLv3
@@ -12,6 +12,8 @@ Source0: https://github.com/t0xic0der/%{srcname}/releases/download/v%{version}/%
 BuildArch: noarch
 
 BuildRequires: python3-devel
+
+Requires: dnf-plugins-core
 
 %description
 A CLI tool which lets you install proprietary NVIDIA drivers and much more
@@ -36,27 +38,28 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 
 %changelog
 
-* Thu Aug 12 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Thu Aug 12 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.3.9-1
 - v0.3.9
 - Reworked RPM specfile with pyproject directives
 - Removed dependency on python3-setuptools for build
+- Added dnf-plugins-core in the list of runtime dependencies
 
-* Mon Aug 02 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Mon Aug 02 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.3.8-0
 - v0.3.8
 - Replaced ping with curl for checking availability of RPM Fusion servers
 - Replaced ping with curl for checking availability of NVIDIA Developer servers
 
-* Sat May 22 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Sat May 22 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.3.7-0
 - v0.3.7
 - Added option to enable/disable PRIME support on Optimus-supported devices
 - Added other miscellaneous changes for ease of maintenance
 
-* Sun May 09 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Sun May 09 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.3.6-0
 - v0.3.6
 - Reworked installation method for CUDA repo compatibility
 - Minor patch leading to a version bump
 
-* Thu Apr 29 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Thu Apr 29 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.3.5-0
 - v0.3.5
 - Corrected unicode escape sequences for colors
 - Changed CUDA repository to the most recent F33 remote install
@@ -65,7 +68,7 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Made compliance related changes here and there
 - Tested and confirmed the tool to be working in F34 Workstation
 
-* Thu Jun 04 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Thu Jun 04 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.3.0-0
 - v0.3.0
 - Combined RPM Fusion pinging, checking, installing into a single module
 - Combined driver installer and existing package checking into a single module
@@ -85,13 +88,13 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Added network availability check before pinging respective repo servers
 - Improved handling of interrupt. halt and suspend system calls for tool
 
-* Mon Jun 01 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Mon Jun 01 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.2.6-0
 - v0.2.6
 - Fixed broken repository addition module
 - Added installation of fedora-workstation-repositories first
 - Added enabling of repository after the install is complete
 
-* Sun May 31 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Sun May 31 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.2.5-0
 - v0.2.5
 - Removed mandatory sleep for kernel module load
 - Removed dependency on kernel module loader
@@ -101,7 +104,7 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Fixed boolean choices in package check
 - Fixed prompt colors for custom-themed terminals
 
-* Wed May 27 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Wed May 27 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.2.0-0
 - v0.2.0
 - Cleaned up repeated code using class implemented decorator calls
 - Enforced root access for whole operation instead of sudo implementation
@@ -113,7 +116,7 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 - Fixed confirmation choice during package check
 - Fixed typo in RPM Fusion mentions throughout the tool interface
 
-* Fri May 22 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+* Fri May 22 2020 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.1.0-0
 - v0.1.0
 - Added host detection with display of system details and hostname
 - Added GPU compatibility check for detecting active NVIDIA GPU
