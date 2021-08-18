@@ -20,12 +20,12 @@
 """
 
 import os
-import subprocess
 import sys
 from dataclasses import dataclass
+from typing import Any
 from nvautoinstall.functions.rpmf_handler import CollRPMFHandler
 from nvautoinstall.functions.support_check import CollSupportCheck
-from nvautoinstall.functions.status_decorator import StatusDecorator
+from nvautoinstall.functions.status_decorator import DecoratorObject
 from nvautoinstall.functions.installer_functions import (
     CollDriverInstaller,
     CollFFMPEGInstaller,
@@ -34,6 +34,7 @@ from nvautoinstall.functions.installer_functions import (
     CollVulkanInstaller,
     CollX86LibInstaller,
 )
+from nvautoinstall.handler.messages import nv_msgs
 import click
 
 
@@ -45,15 +46,13 @@ except ModuleNotFoundError:
     from __init__ import __version__, __author__
 
 
-DecoratorObject = StatusDecorator()
-
-
 class CollSuperuserCheck(object):
     @staticmethod
     def main():
         return os.geteuid() == 0
 
 
+@dataclass
 class CollPrimeSupportEnabler(object):
     @staticmethod
     def main(opts):
@@ -84,6 +83,7 @@ SuperuserCheck: CollSuperuserCheck = CollSuperuserCheck()
 PrimeSupportEnabler: CollPrimeSupportEnabler = CollPrimeSupportEnabler()
 
 
+@dataclass
 class InstallationMode(object):
     def __init__(self):
         self.menudict = {
@@ -96,7 +96,7 @@ class InstallationMode(object):
             "--vulkan ": "This mode installs only the Vulkan renderer.",
             "--vidacc ": "This mode installs only the VDPAU/VAAPI acceleration.",
             "--getall ": "This mode installs all the above packages.",
-            "--cheksu ": "This mode allows you to check the user privilege level.",
+            "--checksu ": "This mode allows you to check the user privilege level.",
             "--compat ": "This mode allows you to check your compatibility.",
             "--primec ": "This mode allows you to setup PRIME configuration.",
             "--version": "Show the version and exit.",
@@ -105,40 +105,35 @@ class InstallationMode(object):
 
     @staticmethod
     def rpmadd():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
         if RPMFHandler.avbl():
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.send_message("PASS", "No further action is necessary")
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
+            DecoratorObject.send_message("PASS", nv_msgs.get("no_further_action"))
         else:
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
-            DecoratorObject.send_message("WARN", "Repository enabling is required")
-            DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_not_detected"))
+            DecoratorObject.send_message("WARN", nv_msgs.get("repository_enabling_is_required"))
             if RPMFHandler.conn():
-                DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                DecoratorObject.send_message("HEAD", "INSTALLING RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
+                DecoratorObject.send_message("HEAD", nv_msgs.get("installing_nvidia_repository"), "magenta", True)
                 if RPMFHandler.rpmf_repo_install():
-                    DecoratorObject.send_message("PASS", "RPM Fusion NVIDIA repository was enabled")
+                    DecoratorObject.send_message("PASS", nv_msgs.get("nvidia_repository_enabled"))
                 else:
-                    DecoratorObject.send_message("FAIL", "RPM Fusion NVIDIA repository could not be enabled")
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_repository_not_enabled"))
             else:
-                DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
 
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get(nv_msgs.get("Leaving installer")))
         sys.exit(0)
 
     @staticmethod
     def driver():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
+
         if RPMFHandler.avbl():
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
-                DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                DecoratorObject.send_message("HEAD", "LOOKING FOR EXISTING DRIVER PACKAGES...", "magenta", True)
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.send_message("WARN", "No existing NVIDIA driver packages were detected")
-                    DecoratorObject.send_message("HEAD", "INSTALLING PROPRIETARY DRIVERS...", "magenta", True)
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
+                if data := DriverInstaller.avbl() is False:
+                    DecoratorObject.send_message("WARN", nv_msgs.get("no_existing_nvidia_driver_detected"))
+                    DecoratorObject.send_message("HEAD", nv_msgs.get("installing_proprietary_drivers"), "magenta", True)
                 else:
                     qant = 0
                     for indx in data:
@@ -146,30 +141,27 @@ class InstallationMode(object):
                             qant += 1
                             DecoratorObject.send_message("STDS", indx)
                     DecoratorObject.send_message("WARN", "A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.send_message("HEAD", "REINSTALLING PROPRIETARY DRIVERS...", "magenta", True)
+                    DecoratorObject.send_message("HEAD", nv_msgs.get("installing_proprietary_drivers"), "magenta", True)
                 if DriverInstaller.main():
-                    DecoratorObject.send_message("PASS", "Driver package installation completed")
+                    DecoratorObject.send_message("PASS", nv_msgs.get("driver_instalation_completed"))
                 else:
-                    DecoratorObject.send_message("FAIL", "Proprietary drivers could not be installed")
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("proprietart_drivers_not_installed"))
             else:
-                DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
         else:
-            DecoratorObject.send_message("FAIL", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+            DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
+        DecoratorObject.send_message("FAIL", nv_msgs.get(nv_msgs.get("Leaving installer")))
         sys.exit(0)
 
     @staticmethod
     def x86lib():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
         if RPMFHandler.avbl():
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
-                DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                DecoratorObject.send_message("HEAD", "LOOKING FOR EXISTING DRIVER PACKAGES...", "magenta", True)
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
                 data = DriverInstaller.avbl()
                 if data is False:
-                    DecoratorObject.send_message("FAIL", "No existing NVIDIA driver packages were detected")
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                 else:
                     qant = 0
                     for indx in data:
@@ -177,27 +169,27 @@ class InstallationMode(object):
                             qant += 1
                             DecoratorObject.send_message("STDS", indx)
                     DecoratorObject.send_message("WARN", "A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.send_message("HEAD", "INSTALLING x86 LIBRARIES FOR XORG...", "magenta", True)
+                    DecoratorObject.send_message("HEAD", nv_msgs.get("installing_x86_libraries_for_xorg"), "magenta", True)
                     if x86LibInstaller.main():
-                        DecoratorObject.send_message("PASS", "x86 libraries for XORG were successfully installed")
+                        DecoratorObject.send_message("PASS", nv_msgs.get("x86_libraries_installed"))
                     else:
-                        DecoratorObject.send_message("FAIL", "x86 libraries for XORG could not be installed")
+                        DecoratorObject.send_message("FAIL", nv_msgs.get("x86_libraries_not_installed"))
             else:
-                DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
         else:
-            DecoratorObject.send_message("FAIL", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+            DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
     def nvrepo():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...", "magenta", True)
+        DecoratorObject.send_message("HEAD", nv_msgs.get("checking_availability_cudo_repository"), "magenta", True)
         if PlCudaInstaller.rpck():
-            DecoratorObject.send_message("WARN", "Official CUDA repository was detected")
-            DecoratorObject.send_message("PASS", "No further action is necessary")
+            DecoratorObject.send_message("WARN", nv_msgs.get("cudo_repository_detected"))
+            DecoratorObject.send_message("PASS", nv_msgs.get("no_further_action"))
         else:
             DecoratorObject.send_message("WARN", "Official CUDA repository was not detected")
-            DecoratorObject.send_message("WARN", "Repository enabling is required")
+            DecoratorObject.send_message("WARN", nv_msgs.get("repository_enabling_is_required"))
             DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO NVIDIA SERVERS...", "magenta", True)
             if PlCudaInstaller.conn():
                 DecoratorObject.send_message("PASS", "Connection to NVIDIA servers was established")
@@ -218,21 +210,17 @@ class InstallationMode(object):
                     DecoratorObject.send_message("FAIL", "Official CUDA repository could not be enabled")
             else:
                 DecoratorObject.send_message("FAIL", "Connection to NVIDIA servers could not be established")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
     def plcuda():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
         if RPMFHandler.avbl():
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
-                DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                DecoratorObject.send_message("HEAD", "LOOKING FOR EXISTING DRIVER PACKAGES...", "magenta", True)
-                data = DriverInstaller.avbl()
-                if data is False:
-                    DecoratorObject.send_message("FAIL", "No existing NVIDIA driver packages were detected")
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
+                if data := DriverInstaller.avbl() is False:
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                 else:
                     qant = 0
                     for indx in data:
@@ -240,9 +228,9 @@ class InstallationMode(object):
                             qant += 1
                             DecoratorObject.send_message("STDS", indx)
                     DecoratorObject.send_message("WARN", "A total of " + str(qant) + " driver packages were detected")
-                    DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...", "magenta", True)
+                    DecoratorObject.send_message("HEAD", nv_msgs.get("checking_availability_cudo_repository"), "magenta", True)
                     if PlCudaInstaller.rpck():
-                        DecoratorObject.send_message("WARN", "Official CUDA repository was detected")
+                        DecoratorObject.send_message("WARN", nv_msgs.get("cudo_repository_detected"))
                         DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO NVIDIA SERVERS...", "magenta", True)
                         if PlCudaInstaller.conn():
                             DecoratorObject.send_message("PASS", "Connection to NVIDIA servers was established")
@@ -267,11 +255,11 @@ class InstallationMode(object):
                     else:
                         DecoratorObject.send_message("FAIL", "Official CUDA repository was not detected")
             else:
-                DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
         else:
-            DecoratorObject.send_message("FAIL", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
 
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
@@ -279,16 +267,14 @@ class InstallationMode(object):
         DecoratorObject.send_message("HEAD", "CHECKING SUPERUSER PERMISSIONS...", "magenta", True)
         if SuperuserCheck.main():
             DecoratorObject.send_message("PASS", "Superuser privilege acquired")
-            DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
             if RPMFHandler.avbl():
-                DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-                DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+                DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
                 if RPMFHandler.conn():
-                    DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                    DecoratorObject.send_message("HEAD", "LOOKING FOR EXISTING DRIVER PACKAGES...", "magenta", True)
+                    DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
+
                     data = DriverInstaller.avbl()
                     if data is False:
-                        DecoratorObject.send_message("FAIL", "No existing NVIDIA driver packages were detected")
+                        DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                     else:
                         qant = 0
                         for indx in data:
@@ -302,26 +288,23 @@ class InstallationMode(object):
                         else:
                             DecoratorObject.send_message("FAIL", "NVENC/NVDEC for FFMPEG acceleration could not be installed")
                 else:
-                    DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
             else:
-                DecoratorObject.send_message("FAIL", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
         else:
             DecoratorObject.send_message("FAIL", "Superuser privilege could not be acquired")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
     def vulkan():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
         if RPMFHandler.avbl():
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
-                DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                DecoratorObject.send_message("HEAD", "LOOKING FOR EXISTING DRIVER PACKAGES...", "magenta", True)
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
                 data = DriverInstaller.avbl()
                 if data is False:
-                    DecoratorObject.send_message("FAIL", "No existing NVIDIA driver packages were detected")
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                 else:
                     qant = 0
                     for indx in data:
@@ -335,25 +318,22 @@ class InstallationMode(object):
                     else:
                         DecoratorObject.send_message("FAIL", "Vulkan renderer support could not be installed")
             else:
-                DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
         else:
-            DecoratorObject.send_message("FAIL", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+            DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
 
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
     def vidacc():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
         if RPMFHandler.avbl():
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
-                DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                DecoratorObject.send_message("HEAD", "LOOKING FOR EXISTING DRIVER PACKAGES...", "magenta", True)
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
                 data = DriverInstaller.avbl()
                 if data is False:
-                    DecoratorObject.send_message("FAIL", "No existing NVIDIA driver packages were detected")
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                 else:
                     qant = 0
                     for indx in data:
@@ -367,10 +347,10 @@ class InstallationMode(object):
                     else:
                         DecoratorObject.send_message("FAIL", "Video acceleration could not be installed")
             else:
-                DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
         else:
-            DecoratorObject.send_message("FAIL", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+            DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
@@ -382,11 +362,11 @@ class InstallationMode(object):
             DecoratorObject.send_message("STDS", "This mode is yet to be implemented")
         else:
             DecoratorObject.send_message("FAIL", "Superuser privilege could not be acquired")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
-    def cheksu():
+    def checksu():
         DecoratorObject.send_message("HEAD", "CHECKING SUPERUSER PERMISSIONS...", "magenta", True)
         if SuperuserCheck.main():
             DecoratorObject.send_message("PASS", "Superuser permission is available")
@@ -394,7 +374,7 @@ class InstallationMode(object):
         else:
             DecoratorObject.send_message("FAIL", "Superuser permission is not available")
             DecoratorObject.send_message("STDS", "This tool cannot be used here")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
@@ -421,8 +401,7 @@ class InstallationMode(object):
             for indx in data.keys():
                 DecoratorObject.send_message("STDS", indx + ": " + data[indx])
             DecoratorObject.send_message("HEAD", "CHECKING FOR HOST COMPATIBILITY...", "magenta", True)
-            data = SupportCheck.avbl()
-            if data is False:
+            if data := SupportCheck.avbl() is False:
                 DecoratorObject.send_message("FAIL", "Unsupported OS detected")
                 DecoratorObject.send_message("STDS", "This tool cannot be used here")
             else:
@@ -432,21 +411,18 @@ class InstallationMode(object):
                 elif data == "half":
                     DecoratorObject.send_message("WARN", "Minimally supported OS detected")
                     DecoratorObject.send_message("STDS", "Discretion is advised while using this tool")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
     def primec():
-        DecoratorObject.send_message("HEAD", "CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...", "magenta", True)
         if RPMFHandler.avbl():
-            DecoratorObject.send_message("WARN", "RPM Fusion repository for Proprietary NVIDIA Driver was detected")
-            DecoratorObject.send_message("HEAD", "ATTEMPTING CONNECTION TO RPM FUSION SERVERS...", "magenta", True)
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
-                DecoratorObject.send_message("PASS", "Connection to RPM Fusion servers was established")
-                DecoratorObject.send_message("HEAD", "LOOKING FOR EXISTING DRIVER PACKAGES...", "magenta", True)
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
                 data = DriverInstaller.avbl()
                 if data is False:
-                    DecoratorObject.send_message("FAIL", "No existing NVIDIA driver packages were detected")
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                 else:
                     qant = 0
                     for indx in data:
@@ -460,13 +436,13 @@ class InstallationMode(object):
                     DecoratorObject.send_message("STDS", click.style("< N >", fg="red", bold=True) + " to disable PRIME support")
                     DecoratorObject.send_message("STDS", click.style("< * >", fg="yellow", bold=True) + " anything else to leave")
                     solution = input("[Y/N] ")
-                    if solution == "Y" or solution == "y":
+                    if solution.upper() == "Y":
                         DecoratorObject.send_message("HEAD", "ENABLING PRIME SUPPORT...", "magenta", True)
                         if PrimeSupportEnabler.main(True):
                             DecoratorObject.send_message("PASS", "PRIME Support was successfully enabled")
                         else:
                             DecoratorObject.send_message("FAIL", "PRIME Support could not be enabled")
-                    elif solution == "N" or solution == "n":
+                    elif solution.upper() == "N":
                         DecoratorObject.send_message("HEAD", "DISABLING PRIME SUPPORT...", "magenta", True)
                         if PrimeSupportEnabler.main(False):
                             DecoratorObject.send_message("PASS", "PRIME Support was successfully disabled")
@@ -475,10 +451,10 @@ class InstallationMode(object):
                     else:
                         DecoratorObject.send_message("HEAD", "SAFE AND GOOD ANSWER...", "magenta", True)
             else:
-                DecoratorObject.send_message("FAIL", "Connection to RPM Fusion servers could not be established")
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
         else:
-            DecoratorObject.send_message("FAIL", "RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
-        DecoratorObject.send_message("FAIL", "Leaving installer")
+            DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
+        DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     def lsmenu(self):
@@ -498,7 +474,7 @@ class InstallationMode(object):
 @click.option("--vulkan", "instmode", flag_value="vulkan", help="This mode installs only the Vulkan renderer.")
 @click.option("--vidacc", "instmode", flag_value="vidacc", help="This mode installs only the VDPAU/VAAPI acceleration.")
 @click.option("--getall", "instmode", flag_value="getall", help="This mode installs all the above packages.")
-@click.option("--cheksu", "instmode", flag_value="cheksu", help="This mode allows you to check the user privilege level.")
+@click.option("--checksu", "instmode", flag_value="checksu", help="This mode allows you to check the user privilege level.")
 @click.option("--compat", "instmode", flag_value="compat", help="This mode allows you to check your compatibility.")
 @click.option("--primec", "instmode", flag_value="primec", help="This mode allows you to setup PRIME configuration.")
 @click.version_option(
@@ -514,32 +490,22 @@ def main(instmode):
 
     instobjc = InstallationMode()
     click.echo(click.style("[ # ] NVIDIA AUTOINSTALLER FOR FEDORA", fg="green", bold=True))
-    if instmode == "rpmadd":
-        instobjc.rpmadd()
-    elif instmode == "driver":
-        instobjc.driver()
-    elif instmode == "x86lib":
-        instobjc.x86lib()
-    elif instmode == "nvrepo":
-        instobjc.nvrepo()
-    elif instmode == "plcuda":
-        instobjc.plcuda()
-    elif instmode == "ffmpeg":
-        instobjc.ffmpeg()
-    elif instmode == "vulkan":
-        instobjc.vulkan()
-    elif instmode == "vidacc":
-        instobjc.vidacc()
-    elif instmode == "getall":
-        instobjc.getall()
-    elif instmode == "cheksu":
-        instobjc.cheksu()
-    elif instmode == "compat":
-        instobjc.compat()
-    elif instmode == "primec":
-        instobjc.primec()
-    else:
-        instobjc.lsmenu()
+
+    instmode_dict: dict[str, Any] = {
+        "rpmadd": instobjc.rpmadd(),
+        "driver": instobjc.driver(),
+        "x86lib": instobjc.x86lib(),
+        "nvrepo": instobjc.nvrepo(),
+        "checksu": instobjc.checksu(),
+        "compat": instobjc.compat(),
+        "primec": instobjc.primec(),
+        "plcuda": instobjc.plcuda(),
+        "ffmpeg": instobjc.ffmpeg(),
+        "vulkan": instobjc.vulkan(),
+        "vidacc": instobjc.vidacc(),
+        "getall": instobjc.getall(),
+    }
+    instobjc.lsmenu() if not instmode_dict.get[instmode] else instmode_dict.get(instmode)
 
 
 if __name__ == "__main__":

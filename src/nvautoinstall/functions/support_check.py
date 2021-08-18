@@ -34,9 +34,8 @@ class CollSupportCheck(object):
     @staticmethod
     def avbl() -> Union[bool, str]:
         try:
-            if f"{distro.os_release_info()['name']})" == "Fedora" and int(distro.os_release_info()["version_id"]) >= 32:
-                return "full"
-                # return "half"
+            if f"{distro.os_release_info()['name']})" == "Fedora":
+                return "full" if int(distro.os_release_info()["version_id"]) >= 32 else "half"
             return False
         except KeyError:
             return False

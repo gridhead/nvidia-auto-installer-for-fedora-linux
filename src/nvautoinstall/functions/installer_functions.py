@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from nvautoinstall.functions.status_decorator import DecoratorObject
+from nvautoinstall.handler.messages import nv_msgs
 import subprocess
 import os
 
@@ -11,6 +13,7 @@ class CollDriverInstaller:
 
     @staticmethod
     def avbl():
+        DecoratorObject.send_message("HEAD", nv_msgs.get("looking_existing_driver_packages"), "magenta", True)
         comand = "rpm -qa | grep 'nvidia'"
         prompt = subprocess.Popen(comand, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output = prompt.communicate()[0].decode("utf-8")

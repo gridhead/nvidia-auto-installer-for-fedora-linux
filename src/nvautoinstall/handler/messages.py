@@ -1,0 +1,26 @@
+import gettext as _
+
+nv_msgs = {
+    "checking_rpm_fusion_nvidia_repository": _("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY..."),
+    "nvidia_driver_detected": _("RPM Fusion repository for Proprietary NVIDIA Driver was detected"),
+    "no_further_action": _("No further action is necessary"),
+    "nvidia_driver_not_detected": _("RPM Fusion repository for Proprietary NVIDIA Driver was not detected"),
+    "repository_enabling_is_required": _("Repository enabling is required"),
+    "attempting_connection_to_rpm_server": _("ATTEMPTING CONNECTION TO RPM FUSION SERVERS..."),
+    "connection_to_rpm_server_established": _("Connection to RPM Fusion servers was established"),
+    "installing_nvidia_repository": _("INSTALLING RPM FUSION NVIDIA REPOSITORY..."),
+    "nvidia_repository_enabled": _("RPM Fusion NVIDIA repository was enabled"),
+    "nvidia_repository_not_enabled": _("RPM Fusion NVIDIA repository could not be enabled"),
+    "connection_to_rpm_server_not_established": _("Connection to RPM Fusion servers could not be established"),
+    "leaving_installer": _("Leaving installer"),
+    "looking_existing_driver_packages": _("LOOKING FOR EXISTING DRIVER PACKAGES..."),
+    "no_existing_nvidia_driver_detected": _("No existing NVIDIA driver packages were detected"),
+    "installing_proprietary_drivers": _("INSTALLING PROPRIETARY DRIVERS..."),
+    "driver_instalation_completed": _("Driver package installation completed"),
+    "proprietart_drivers_not_installed": _("Proprietary drivers could not be installed"),
+    "installing_x86_libraries_for_xorg": _("INSTALLING x86 LIBRARIES FOR XORG..."),
+    "x86_libraries_installed": _("x86 libraries for XORG were successfully installed"),
+    "x86_libraries_not_installed": _("x86 libraries for XORG could not be installed"),
+    "checking_availability_cudo_repository": _("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY..."),
+    "cudo_repository_detected": _("Official CUDA repository was detected"),
+}
