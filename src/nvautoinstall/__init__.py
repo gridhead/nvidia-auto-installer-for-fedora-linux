@@ -18,5 +18,5 @@
 *
 ##########################################################################
 """
-
 __version__ = "0.3.9"
+__author__ = "NVAutoInstall by Akashdeep Dhar <t0xic0der@fedoraproject.org>"
