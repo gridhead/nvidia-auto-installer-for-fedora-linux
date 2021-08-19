@@ -1,7 +1,7 @@
 from gettext import gettext as gt
 
 
-nvgtmsgs: dict[str, str] = {
+nv_msgs: dict[str, str] = {
     "checkinggtrpmgtfusiongtnvidiagtrepository": gt("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY..."),
     "nvidiagtdrivergtdetected": gt("RPM Fusion repository for Proprietary NVIDIA Driver was detected"),
     "nogtfurthergtaction": gt("No further action is necessary"),
