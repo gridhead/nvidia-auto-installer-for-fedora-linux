@@ -42,7 +42,7 @@ This mode enables the official NVIDIA repository for CUDA software.
 - **`sudo nvautoinstall --plcuda`**  
 This mode installs only the CUDA support softwares. Enabling the RPM Fusion NVIDIA drivers and NVIDIA official repository, and installing the basic drivers are mandatory before doing this.
 - **`sudo nvautoinstall --ffmpeg`**  
-This mode installs only the FFMPEG accleration. Enabling the RPM Fusion NVIDIA drivers repository and installing the basic drivers are mandatory before doing this.
+This mode installs only the FFMPEG acceleration. Enabling the RPM Fusion NVIDIA drivers repository and installing the basic drivers are mandatory before doing this.
 - **`sudo nvautoinstall --vulkan`**  
 This mode installs only the Vulkan renderer. Enabling the RPM Fusion NVIDIA drivers repository and installing the basic drivers are mandatory before doing this.
 - **`sudo nvautoinstall --vidacc`**  
