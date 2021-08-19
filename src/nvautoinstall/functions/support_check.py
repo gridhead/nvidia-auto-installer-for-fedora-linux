@@ -1,6 +1,8 @@
 import os, subprocess, distro
 from dataclasses import dataclass
 from typing import Any, Union, Dict
+from nvautoinstall.handler.messages import nv_msgs
+from nvautoinstall.functions.status_decorator import DecoratorObject
 
 
 @dataclass
@@ -32,10 +34,16 @@ class CollSupportCheck(object):
         return jsondt
 
     @staticmethod
-    def avbl() -> Union[bool, str]:
+    def avbl() -> None:
         try:
             if f"{distro.os_release_info()['name']})" == "Fedora":
-                return "full" if int(distro.os_release_info()["version_id"]) >= 32 else "half"
-            return False
+                if int(distro.os_release_info()["version_id"]) >= 32:
+                    DecoratorObject.send_message("PASS", "Supported OS detected")
+                    DecoratorObject.send_message("STDS", "This tool is expected to work correctly here")
+                else:
+                    DecoratorObject.send_message("WARN", "Minimally supported OS detected")
+                    DecoratorObject.send_message("STDS", "Discretion is advised while using this tool")
+            DecoratorObject.send_message("FAIL", "Unsupported OS detected")
+            DecoratorObject.send_message("STDS", "This tool cannot be used here")
         except KeyError:
-            return False
+            DecoratorObject.send_message("FAIL", "Critical Error")

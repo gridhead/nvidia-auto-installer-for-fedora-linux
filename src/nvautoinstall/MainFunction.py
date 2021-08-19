@@ -126,7 +126,6 @@ class InstallationMode(object):
 
     @staticmethod
     def driver():
-
         if RPMFHandler.avbl():
             DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
@@ -264,35 +263,28 @@ class InstallationMode(object):
 
     @staticmethod
     def ffmpeg():
-        DecoratorObject.send_message("HEAD", "CHECKING SUPERUSER PERMISSIONS...", "magenta", True)
-        if SuperuserCheck.main():
-            DecoratorObject.send_message("PASS", "Superuser privilege acquired")
-            if RPMFHandler.avbl():
-                DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
-                if RPMFHandler.conn():
-                    DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
-
-                    data = DriverInstaller.avbl()
-                    if data is False:
-                        DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
-                    else:
-                        qant = 0
-                        for indx in data:
-                            if indx != "":
-                                qant += 1
-                                DecoratorObject.send_message("STDS", indx)
-                        DecoratorObject.send_message("WARN", "A total of " + str(qant) + " driver packages were detected")
-                        DecoratorObject.send_message("HEAD", "INSTALLING NVENC/NVDEC FOR FFMPEG ACCELERATION...", "magenta", True)
-                        if FFMPEGInstaller.main():
-                            DecoratorObject.send_message("PASS", "NVENC/NVDEC for FFMPEG acceleration were successfully installed")
-                        else:
-                            DecoratorObject.send_message("FAIL", "NVENC/NVDEC for FFMPEG acceleration could not be installed")
+        if RPMFHandler.avbl():
+            DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
+            if RPMFHandler.conn():
+                DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
+                if data := DriverInstaller.avbl() is False:
+                    DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                 else:
-                    DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
+                    qant = 0
+                    for indx in data:
+                        if indx != "":
+                            qant += 1
+                            DecoratorObject.send_message("STDS", indx)
+                    DecoratorObject.send_message("WARN", "A total of " + str(qant) + " driver packages were detected")
+                    DecoratorObject.send_message("HEAD", "INSTALLING NVENC/NVDEC FOR FFMPEG ACCELERATION...", "magenta", True)
+                    if FFMPEGInstaller.main():
+                        DecoratorObject.send_message("PASS", "NVENC/NVDEC for FFMPEG acceleration were successfully installed")
+                    else:
+                        DecoratorObject.send_message("FAIL", "NVENC/NVDEC for FFMPEG acceleration could not be installed")
             else:
-                DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
+                DecoratorObject.send_message("FAIL", nv_msgs.get("connection_to_rpm_server_not_established"))
         else:
-            DecoratorObject.send_message("FAIL", "Superuser privilege could not be acquired")
+            DecoratorObject.send_message("FAIL", nv_msgs.get("nvidia_driver_not_detected"))
         DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
@@ -355,19 +347,13 @@ class InstallationMode(object):
 
     @staticmethod
     def getall():
-        DecoratorObject.send_message("HEAD", "CHECKING SUPERUSER PERMISSIONS...", "magenta", True)
-        if SuperuserCheck.main():
-            DecoratorObject.send_message("PASS", "Superuser privilege acquired")
-            DecoratorObject.send_message("HEAD", "FULL FLEDGED INSTALLATION BEGINNING...", "magenta", True)
-            DecoratorObject.send_message("STDS", "This mode is yet to be implemented")
-        else:
-            DecoratorObject.send_message("FAIL", "Superuser privilege could not be acquired")
+        DecoratorObject.send_message("HEAD", "FULL FLEDGED INSTALLATION BEGINNING...", "magenta", True)
+        DecoratorObject.send_message("STDS", "This mode is yet to be implemented")
         DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
     @staticmethod
     def checksu():
-        DecoratorObject.send_message("HEAD", "CHECKING SUPERUSER PERMISSIONS...", "magenta", True)
         if SuperuserCheck.main():
             DecoratorObject.send_message("PASS", "Superuser permission is available")
             DecoratorObject.send_message("STDS", "This tool is expected to work correctly here")
@@ -401,16 +387,7 @@ class InstallationMode(object):
             for indx in data.keys():
                 DecoratorObject.send_message("STDS", indx + ": " + data[indx])
             DecoratorObject.send_message("HEAD", "CHECKING FOR HOST COMPATIBILITY...", "magenta", True)
-            if data := SupportCheck.avbl() is False:
-                DecoratorObject.send_message("FAIL", "Unsupported OS detected")
-                DecoratorObject.send_message("STDS", "This tool cannot be used here")
-            else:
-                if data == "full":
-                    DecoratorObject.send_message("PASS", "Supported OS detected")
-                    DecoratorObject.send_message("STDS", "This tool is expected to work correctly here")
-                elif data == "half":
-                    DecoratorObject.send_message("WARN", "Minimally supported OS detected")
-                    DecoratorObject.send_message("STDS", "Discretion is advised while using this tool")
+            SupportCheck.avbl()
         DecoratorObject.send_message("FAIL", nv_msgs.get("Leaving installer"))
         sys.exit(0)
 
