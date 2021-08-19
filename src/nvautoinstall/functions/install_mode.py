@@ -261,8 +261,7 @@ class InstallationMode(object):
             DecoratorObject.send_message("WARN", nv_msgs.get("nvidia_driver_detected"))
             if RPMFHandler.conn():
                 DecoratorObject.send_message("PASS", nv_msgs.get("connection_to_rpm_server_established"))
-                data = DriverInstaller.avbl()
-                if data is False:
+                if data := DriverInstaller.avbl() is False:
                     DecoratorObject.send_message("FAIL", nv_msgs.get("no_existing_nvidia_driver_detected"))
                 else:
                     qant = 0
