@@ -1,6 +1,6 @@
 import os, subprocess, distro
 from dataclasses import dataclass
-from typing import Any, Union, Dict
+from typing import Union, Dict
 from nvautoinstall.handler.messages import nv_msgs
 from nvautoinstall.functions.status_decorator import DecoratorObject
 
