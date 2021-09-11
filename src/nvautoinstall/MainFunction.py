@@ -93,7 +93,7 @@ class CollSupportCheck(object):
 
     def avbl(self):
         try:
-            if str(distro.os_release_info()["name"]) == "Fedora":
+            if distro.id() == "fedora":
                 if int(distro.os_release_info()["version_id"]) >= 32:
                     return "full"
                 else:
