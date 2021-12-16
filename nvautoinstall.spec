@@ -1,11 +1,11 @@
-%global srcname nvidia-auto-installer-for-fedora
+%global srcname nvidia-auto-installer-for-fedora-linux
 
 Name: nvautoinstall
-Version: 0.3.9
-Release: 1%{?dist}
-Summary: NVIDIA Auto Installer for Fedora
+Version: 0.4.0
+Release: 0%{?dist}
+Summary: NVIDIA Auto Installer for Fedora Linux
 
-License: GPLv3
+License: GPLv3+
 Url: https://github.com/t0xic0der/%{srcname}
 Source0: https://github.com/t0xic0der/%{srcname}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
@@ -16,7 +16,7 @@ BuildRequires: python3-devel
 Requires: dnf-plugins-core
 
 %description
-A CLI tool which lets you install proprietary NVIDIA drivers and much more
+A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora Linux (32 or above, ELN or Rawhide)
 
 %prep
 %autosetup
@@ -37,6 +37,17 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more
 %{_bindir}/nvautoinstall
 
 %changelog
+
+* Thu Dec 16 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.4.0-0
+- v0.4.0
+- Restructured the project to make the codebase more modular
+- Performed repository clean up and removal of static files
+- Reworked the dependency management with the use of Poetry
+- Deprecated COPR build updates for Mageia, EPEL and OpenSUSE
+- Reimplimented CLI compositing to make use of commands over options
+- Removed dedicated installation of x86 NVIDIA libraries due to inclusion
+- Fixed RPM Fusion Non-free repo detection by force installation
+- Updated official CUDA repositories to point to Fedora 34 or later
 
 * Thu Aug 12 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.3.9-1
 - v0.3.9
