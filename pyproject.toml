@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "nvautoinstall"
+version = "0.4.0"
+description = "A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora Linux (32 or above, ELN or Rawhide)"
+authors = ["Akashdeep Dhar <akashdeep.dhar@gmail.com>", "Christopher Engelhard <lcts@fedoraproject.org>", "Onuralp SEZER <thunderbirdtr@gmail.com>", "Gustavo Costa <xfgusta@gmail.com>"]
+license = "GPL-3.0-or-later"
+maintainers = ["Akashdeep Dhar <akashdeep.dhar@gmail.com>"]
+readme = "README.md"
+homepage = "https://copr.fedorainfracloud.org/coprs/t0xic0der/nvidia-auto-installer-for-fedora"
+repository = "https://github.com/t0xic0der/nvidia-auto-installer-for-fedora-linux"
+documentation = "https://github.com/t0xic0der/nvidia-auto-installer-for-fedora-linux/blob/master/README.md"
+keywords = ["fedora", "cuda", "nvidia", "optimus"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.8",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "Topic :: System :: Operating System",
+    "Topic :: Utilities",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = ">=7.1.2"
+distro = ">=1.5.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+nvautoinstall = "nvautoinstall.main:main"
