@@ -19,9 +19,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
 
-from . import (Objc_CheckSuperuserPermissions,
-               Objc_HandleRPMFusionRepositories, failure, section, success,
-               warning)
+from . import (
+    Objc_CheckSuperuserPermissions,
+    Objc_HandleRPMFusionRepositories,
+    failure,
+    section,
+    success,
+    warning,
+)
 
 
 class HandleRPMFusionRepositories:
@@ -31,14 +36,10 @@ class HandleRPMFusionRepositories:
             success("Superuser privilege acquired")
             section("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
             if Objc_HandleRPMFusionRepositories.avbl():
-                warning(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was detected"
-                )
+                warning("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
                 success("No further action is necessary")
             else:
-                warning(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was not detected"
-                )
+                warning("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
                 warning("Repository enabling is required")
                 section("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
                 if Objc_HandleRPMFusionRepositories.conn():

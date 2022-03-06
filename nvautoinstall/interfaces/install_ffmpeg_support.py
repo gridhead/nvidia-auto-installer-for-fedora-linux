@@ -19,9 +19,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
 
-from . import (Objc_CheckSuperuserPermissions, Objc_HandleDriversInstallation,
-               Objc_HandleRPMFusionRepositories, Objc_InstallFfmpegSupport,
-               failure, general, section, success, warning)
+from . import (
+    Objc_CheckSuperuserPermissions,
+    Objc_HandleDriversInstallation,
+    Objc_HandleRPMFusionRepositories,
+    Objc_InstallFfmpegSupport,
+    failure,
+    general,
+    section,
+    success,
+    warning,
+)
 
 
 class InstallFfmpegSupport:
@@ -31,9 +39,7 @@ class InstallFfmpegSupport:
             success("Superuser privilege acquired")
             section("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
             if Objc_HandleRPMFusionRepositories.avbl():
-                warning(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was detected"
-                )
+                warning("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
                 section("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
                 if Objc_HandleRPMFusionRepositories.conn():
                     success("Connection to RPM Fusion servers was established")
@@ -47,24 +53,18 @@ class InstallFfmpegSupport:
                             if indx != "":
                                 qant += 1
                                 general(indx)
-                        warning(
-                            "A total of " + str(qant) + " driver packages were detected"
-                        )
+                        warning("A total of " + str(qant) + " driver packages were detected")
                         section("INSTALLING NVENC/NVDEC FOR FFMPEG ACCELERATION...")
                         if Objc_InstallFfmpegSupport.main():
                             success(
                                 "NVENC/NVDEC for FFMPEG acceleration were successfully installed"
                             )
                         else:
-                            failure(
-                                "NVENC/NVDEC for FFMPEG acceleration could not be installed"
-                            )
+                            failure("NVENC/NVDEC for FFMPEG acceleration could not be installed")
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
             else:
-                failure(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was not detected"
-                )
+                failure("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
             failure("Superuser privilege could not be acquired")
         failure("Leaving installer")

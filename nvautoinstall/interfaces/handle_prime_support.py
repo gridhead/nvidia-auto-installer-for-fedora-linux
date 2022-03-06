@@ -21,9 +21,17 @@ import sys
 
 from click import style
 
-from . import (Objc_CheckSuperuserPermissions, Objc_HandleDriversInstallation,
-               Objc_HandlePrimeSupport, Objc_HandleRPMFusionRepositories,
-               failure, general, section, success, warning)
+from . import (
+    Objc_CheckSuperuserPermissions,
+    Objc_HandleDriversInstallation,
+    Objc_HandlePrimeSupport,
+    Objc_HandleRPMFusionRepositories,
+    failure,
+    general,
+    section,
+    success,
+    warning,
+)
 
 
 class HandlePrimeSupport:
@@ -33,9 +41,7 @@ class HandlePrimeSupport:
             success("Superuser privilege acquired")
             section("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
             if Objc_HandleRPMFusionRepositories.avbl():
-                warning(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was detected"
-                )
+                warning("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
                 section("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
                 if Objc_HandleRPMFusionRepositories.conn():
                     success("Connection to RPM Fusion servers was established")
@@ -49,23 +55,12 @@ class HandlePrimeSupport:
                             if indx != "":
                                 qant += 1
                                 general(indx)
-                        warning(
-                            "A total of " + str(qant) + " driver packages were detected"
-                        )
+                        warning("A total of " + str(qant) + " driver packages were detected")
                         section("SETTING UP PRIME SUPPORT...")
                         warning("Intervention required")
-                        general(
-                            style("< Y >", fg="green", bold=True)
-                            + " to enable PRIME support"
-                        )
-                        general(
-                            style("< N >", fg="red", bold=True)
-                            + " to disable PRIME support"
-                        )
-                        general(
-                            style("< * >", fg="yellow", bold=True)
-                            + " anything else to leave"
-                        )
+                        general(style("< Y >", fg="green", bold=True) + " to enable PRIME support")
+                        general(style("< N >", fg="red", bold=True) + " to disable PRIME support")
+                        general(style("< * >", fg="yellow", bold=True) + " anything else to leave")
                         solution = input("[Y/N] ")
                         if solution == "Y" or solution == "y":
                             section("ENABLING PRIME SUPPORT...")
@@ -84,9 +79,7 @@ class HandlePrimeSupport:
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
             else:
-                failure(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was not detected"
-                )
+                failure("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
             failure("Superuser privilege could not be acquired")
         failure("Leaving installer")

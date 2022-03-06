@@ -17,4 +17,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-from .status import failure, general, section, success, warning
+from .status import failure, general, section, success, warning  # noqa

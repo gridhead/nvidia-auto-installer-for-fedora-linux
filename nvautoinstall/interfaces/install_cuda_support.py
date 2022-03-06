@@ -19,10 +19,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
 
-from . import (Objc_CheckSuperuserPermissions, Objc_HandleCudaInstallation,
-               Objc_HandleDriversInstallation,
-               Objc_HandleRPMFusionRepositories, failure, general, section,
-               success, warning)
+from . import (
+    Objc_CheckSuperuserPermissions,
+    Objc_HandleCudaInstallation,
+    Objc_HandleDriversInstallation,
+    Objc_HandleRPMFusionRepositories,
+    failure,
+    general,
+    section,
+    success,
+    warning,
+)
 
 
 class InstallCudaSupport:
@@ -32,9 +39,7 @@ class InstallCudaSupport:
             success("Superuser privilege acquired")
             section("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
             if Objc_HandleRPMFusionRepositories.avbl():
-                warning(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was detected"
-                )
+                warning("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
                 section("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
                 if Objc_HandleRPMFusionRepositories.conn():
                     success("Connection to RPM Fusion servers was established")
@@ -48,9 +53,7 @@ class InstallCudaSupport:
                             if indx != "":
                                 qant += 1
                                 general(indx)
-                        warning(
-                            "A total of " + str(qant) + " driver packages were detected"
-                        )
+                        warning("A total of " + str(qant) + " driver packages were detected")
                         section("CHECKING AVAILABILITY OF OFFICIAL CUDA REPOSITORY...")
                         if Objc_HandleCudaInstallation.rpck():
                             warning("Official CUDA repository was detected")
@@ -68,25 +71,19 @@ class InstallCudaSupport:
                                             "NVIDIA CUDA core packages were successfully installed"
                                         )
                                     else:
-                                        failure(
-                                            "NVIDIA CUDA core packages could not be installed"
-                                        )
+                                        failure("NVIDIA CUDA core packages could not be installed")
                                 else:
                                     failure(
-                                        "RPM Fusion CUDA metapackage packages could not be installed"
+                                        "RPM Fusion CUDA metapackage packages could not be installed"  # noqa
                                     )
                             else:
-                                failure(
-                                    "Connection to NVIDIA servers could not be established"
-                                )
+                                failure("Connection to NVIDIA servers could not be established")
                         else:
                             failure("Official CUDA repository was not detected")
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
             else:
-                failure(
-                    "RPM Fusion repository for Proprietary NVIDIA Driver was not detected"
-                )
+                failure("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
         else:
             failure("Superuser privilege could not be acquired")
         failure("Leaving installer")

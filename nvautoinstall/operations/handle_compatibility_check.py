@@ -51,9 +51,7 @@ class HandleCompatibilityCheck(object):
             "System": str(os.uname().sysname) + " v" + str(os.uname().release),
             "Hostname": str(os.uname().nodename),
             "Version": str(os.uname().version),
-            "Distribution": str(distro.os_release_info()["name"])
-            + " "
-            + str(os.uname().machine),
+            "Distribution": str(distro.os_release_info()["name"]) + " " + str(os.uname().machine),
         }
         return jsondt
 

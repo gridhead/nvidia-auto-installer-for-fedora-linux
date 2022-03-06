@@ -19,12 +19,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import click
 
-from . import (CheckSuperuserPermissions, HandleCompatibilityCheck,
-               HandleDriverInstallation, HandlePrimeSupport,
-               HandleRPMFusionRepositories, InstallCudaSupport,
-               InstallEverything, InstallFfmpegSupport,
-               InstallNvidiaRepositories, InstallVideoAcceleration,
-               InstallVulkanSupport, __version__)
+from . import (
+    CheckSuperuserPermissions,
+    HandleCompatibilityCheck,
+    HandleDriverInstallation,
+    HandlePrimeSupport,
+    HandleRPMFusionRepositories,
+    InstallCudaSupport,
+    InstallEverything,
+    InstallFfmpegSupport,
+    InstallNvidiaRepositories,
+    InstallVideoAcceleration,
+    InstallVulkanSupport,
+    __version__,
+)
 
 
 @click.group(name="nvautoinstall")
@@ -37,11 +45,7 @@ from . import (CheckSuperuserPermissions, HandleCompatibilityCheck,
     ),
 )
 def main():
-    click.echo(
-        click.style(
-            "[ # ] NVIDIA AUTOINSTALLER FOR FEDORA LINUX", fg="green", bold=True
-        )
-    )
+    click.echo(click.style("[ # ] NVIDIA AUTOINSTALLER FOR FEDORA LINUX", fg="green", bold=True))
 
 
 @main.command(name="rpmadd", help="Enable the RPM Fusion NVIDIA drivers repository.")
