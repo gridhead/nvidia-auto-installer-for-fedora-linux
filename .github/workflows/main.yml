@@ -1,0 +1,45 @@
+---
+name: CI
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.8", "3.9", "3.10"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up a virtual environment for Python ${{ matrix.python-version }}
+        run: |
+             python -m pip install --upgrade virtualenv
+             virtualenv venv
+             source venv/bin/activate
+             which python
+
+      - name: Install the base dependencies
+        run: |
+             source venv/bin/activate
+             python -m pip install --upgrade poetry
+
+      - name: Check the correctness of the project config
+        run: |
+             source venv/bin/activate
+             poetry check
+
+      - name: Install the package
+        run: |
+             source venv/bin/activate
+             poetry install
+
+      - name: Check the quality of the code
+        run: |
+             source venv/bin/activate
+             pytest
