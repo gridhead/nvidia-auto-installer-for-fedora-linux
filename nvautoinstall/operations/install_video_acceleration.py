@@ -22,7 +22,5 @@ import os
 
 class InstallVideoAcceleration(object):
     def main(self):
-        exec_status_code = os.system(
-            "dnf install -y vdpauinfo libva-vdpau-driver libva-utils"
-        )
+        exec_status_code = os.system("dnf install -y vdpauinfo libva-vdpau-driver libva-utils")
         return exec_status_code == 0

@@ -19,8 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
 
-from . import (Objc_HandleCompatibilityCheck, failure, general, section,
-               success, warning)
+from . import Objc_HandleCompatibilityCheck, failure, general, section, success, warning
 
 
 class HandleCompatibilityCheck:

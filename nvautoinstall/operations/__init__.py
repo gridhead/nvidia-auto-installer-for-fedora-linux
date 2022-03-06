@@ -17,12 +17,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-from .check_superuser_permissions import CheckSuperuserPermissions
-from .handle_compatibility_check import HandleCompatibilityCheck
-from .handle_cuda_installation import HandleCudaInstallation
-from .handle_drivers_installation import HandleDriversInstallation
-from .handle_prime_support import HandlePrimeSupport
-from .handle_rpmfusion_repositories import HandleRPMFusionRepositories
-from .install_ffmpeg_support import InstallFfmpegSupport
-from .install_video_acceleration import InstallVideoAcceleration
-from .install_vulkan_support import InstallVulkanSupport
+from .check_superuser_permissions import CheckSuperuserPermissions  # noqa
+from .handle_compatibility_check import HandleCompatibilityCheck  # noqa
+from .handle_cuda_installation import HandleCudaInstallation  # noqa
+from .handle_drivers_installation import HandleDriversInstallation  # noqa
+from .handle_prime_support import HandlePrimeSupport  # noqa
+from .handle_rpmfusion_repositories import HandleRPMFusionRepositories  # noqa
+from .install_ffmpeg_support import InstallFfmpegSupport  # noqa
+from .install_video_acceleration import InstallVideoAcceleration  # noqa
+from .install_vulkan_support import InstallVulkanSupport  # noqa

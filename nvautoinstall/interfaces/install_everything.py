@@ -19,8 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
 
-from . import (Objc_CheckSuperuserPermissions, failure, general, section,
-               success)
+from . import Objc_CheckSuperuserPermissions, failure, general, section, success
 
 
 class InstallEverything:

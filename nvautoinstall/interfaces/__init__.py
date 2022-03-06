@@ -17,12 +17,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-from ..decoration import failure, general, section, success, warning
-from ..operations import (CheckSuperuserPermissions, HandleCompatibilityCheck,
-                          HandleCudaInstallation, HandleDriversInstallation,
-                          HandlePrimeSupport, HandleRPMFusionRepositories,
-                          InstallFfmpegSupport, InstallVideoAcceleration,
-                          InstallVulkanSupport)
+from ..decoration import failure, general, section, success, warning  # noqa
+from ..operations import (
+    CheckSuperuserPermissions,
+    HandleCompatibilityCheck,
+    HandleCudaInstallation,
+    HandleDriversInstallation,
+    HandlePrimeSupport,
+    HandleRPMFusionRepositories,
+    InstallFfmpegSupport,
+    InstallVideoAcceleration,
+    InstallVulkanSupport,
+)
 
 Objc_CheckSuperuserPermissions = CheckSuperuserPermissions()
 Objc_HandlePrimeSupport = HandlePrimeSupport()
