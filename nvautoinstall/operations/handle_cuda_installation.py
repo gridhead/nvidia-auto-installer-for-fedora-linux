@@ -32,7 +32,7 @@ class HandleCudaInstallation(object):
 
     def rpin(self):
         retndata = subprocess.getstatusoutput(
-            "dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora34/x86_64/cuda-fedora34.repo"  # noqa
+            "dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora35/x86_64/cuda-fedora35.repo"  # noqa
         )[0]
         return retndata == 0
 
