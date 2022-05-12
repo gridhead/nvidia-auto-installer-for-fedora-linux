@@ -49,6 +49,9 @@ class HandlePrimeSupport:
                     data = Objc_HandleDriversInstallation.avbl()
                     if data is False:
                         failure("No existing NVIDIA driver packages were detected")
+                        general(
+                            "Please try executing `nvautoinstall driver` with elevated privileges before this"  # noqa
+                        )
                     else:
                         qant = 0
                         for indx in data:
@@ -66,21 +69,36 @@ class HandlePrimeSupport:
                             section("ENABLING PRIME SUPPORT...")
                             if Objc_HandlePrimeSupport.main(True):
                                 success("PRIME Support was successfully enabled")
+                                general("Please reboot your device for the changes to take effect")
                             else:
                                 failure("PRIME Support could not be enabled")
+                                general(
+                                    "Please confirm whether PRIME Support was properly configured"
+                                )
                         elif solution == "N" or solution == "n":
                             section("DISABLING PRIME SUPPORT...")
                             if Objc_HandlePrimeSupport.main(False):
                                 success("PRIME Support was successfully disabled")
+                                general("Please reboot your device for the changes to take effect")
                             else:
                                 failure("PRIME Support could not be disabled")
+                                general(
+                                    "Please confirm whether PRIME Support was properly configured"
+                                )
                         else:
                             section("SAFE AND GOOD ANSWER...")
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
+                    general(
+                        "Please check the internet connection or firewall configuration and try again"  # noqa
+                    )
             else:
                 failure("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+                general(
+                    "Please try executing `nvautoinstall rpmadd` with elevated privileges before this"  # noqa
+                )
         else:
             failure("Superuser privilege could not be acquired")
+            general("Please try executing this command with elevated privileges")
         failure("Leaving installer")
         sys.exit(0)

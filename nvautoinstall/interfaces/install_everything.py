@@ -31,5 +31,6 @@ class InstallEverything:
             general("This mode is yet to be implemented")
         else:
             failure("Superuser privilege could not be acquired")
+            general("Please try executing this command with elevated privileges")
         failure("Leaving installer")
         sys.exit(0)

@@ -47,6 +47,9 @@ class InstallVulkanSupport:
                     data = Objc_HandleDriversInstallation.avbl()
                     if data is False:
                         failure("No existing NVIDIA driver packages were detected")
+                        general(
+                            "Please try executing `nvautoinstall driver` with elevated privileges before this"  # noqa
+                        )
                     else:
                         qant = 0
                         for indx in data:
@@ -59,11 +62,21 @@ class InstallVulkanSupport:
                             success("Vulkan renderer support were successfully installed")
                         else:
                             failure("Vulkan renderer support could not be installed")
+                            general(
+                                "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                            )
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
+                    general(
+                        "Please check the internet connection or firewall configuration and try again"  # noqa
+                    )
             else:
                 failure("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+                general(
+                    "Please try executing `nvautoinstall rpmadd` with elevated privileges before this"  # noqa
+                )
         else:
             failure("Superuser privilege could not be acquired")
+            general("Please try executing this command with elevated privileges")
         failure("Leaving installer")
         sys.exit(0)

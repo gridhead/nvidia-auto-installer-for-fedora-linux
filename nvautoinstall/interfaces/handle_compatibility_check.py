@@ -29,6 +29,7 @@ class HandleCompatibilityCheck:
         warning("Compatibility infomation was obtained")
         if data is False:
             failure("No supported NVIDIA GPU was detected")
+            general("This tool is supported only on devices having one or more active NVIDIA GPUs")
         else:
             success("One or more active NVIDIA GPUs were detected")
             supprt = data["supprt"]
@@ -37,7 +38,7 @@ class HandleCompatibilityCheck:
                 if indx != "":
                     general(indx)
             if supprt == "single":
-                success("An single dedicated GPU setup was detected")
+                success("A single dedicated GPU setup was detected")
             else:
                 success("An Optimus Dual GPU setup was detected")
             section("GATHERING CURRENT HOST INFORMATION...")
