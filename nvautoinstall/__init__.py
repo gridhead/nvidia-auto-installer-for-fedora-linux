@@ -29,4 +29,4 @@ from .interfaces.install_nvidia_repositories import InstallNvidiaRepositories  #
 from .interfaces.install_video_acceleration import InstallVideoAcceleration  # noqa
 from .interfaces.install_vulkan_support import InstallVulkanSupport  # noqa
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"

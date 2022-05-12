@@ -1,5 +1,5 @@
 <h1 align="center">NVIDIA Auto Installer for Fedora Linux</h1>
-<p align="center">A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora Linux (32 or above, ELN or Rawhide)</p>
+<p align="center">A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora Linux (32 or above and Rawhide)</p>
 
 <p align="center">
     <img src="https://img.shields.io/github/issues/t0xic0der/nvidia-auto-installer-for-fedora-linux?style=flat-square&logo=appveyor&color=teal">
@@ -14,11 +14,11 @@
 
 ### Requirements
 * Active internet connection
-* Fedora Linux (32 or above, ELN or Rawhide)
+* Fedora Linux (32 or above and Rawhide)
 * Device with a discrete NVIDIA GPU
 
 ### Installation
-If you use Fedora Linux (32 or above, ELN or Rawhide) - you can install NVIDIA Auto Installer for Fedora by enabling my 
+If you use Fedora Linux (32 or above and Rawhide) - you can install NVIDIA Auto Installer for Fedora by enabling my 
 COPR repository. Simply execute the following commands in succession to install the tool.
 
 ```shell
@@ -91,7 +91,7 @@ Active internet connection and superuser privilege is required to execute the fo
 
 ### Disclaimer
 This tool has been tried and tested multiple times and is expected to work flawlessly in Fedora Linux (32 or above, 
-ELN or Rawhide). It has not been tested on any of the spins yet so you are requested to proceed with caution. While the 
+and Rawhide). It has not been tested on any of the spins yet so you are requested to proceed with caution. While the 
 chances of things going wrong is pretty slim, you would still want to make backups, should things do not go as expected. 
 As always, you are choosing to use this tool at your will and you cannot hold me responsible for any mishap that may 
 occur due to the misuse of this tool.
