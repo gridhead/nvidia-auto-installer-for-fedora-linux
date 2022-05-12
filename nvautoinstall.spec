@@ -1,7 +1,7 @@
 %global srcname nvidia-auto-installer-for-fedora-linux
 
 Name: nvautoinstall
-Version: 0.4.0
+Version: 0.4.1
 Release: 0%{?dist}
 Summary: NVIDIA Auto Installer for Fedora Linux
 
@@ -16,7 +16,7 @@ BuildRequires: python3-devel
 Requires: dnf-plugins-core
 
 %description
-A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora Linux (32 or above, ELN or Rawhide)
+A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora Linux (32 or above and Rawhide)
 
 %prep
 %autosetup
@@ -37,6 +37,19 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more easil
 %{_bindir}/nvautoinstall
 
 %changelog
+
+* Thu May 12 2022 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.4.1-0
+- v0.4.1
+- Included code quality compliance checks in the repository
+- Setup GitHub Actions for code compliance checks
+- Setup Dependabot alerts in the repository for security and updates
+- Loosened Python version requirement to support older Fedora releases
+- Added .gitignore of Python template to the repository
+- Dependabot - Bumped pyparsing from 3.0.7 to 3.0.8
+- Dependabot - Bumped platformdirs from 2.5.1 to 2.5.2
+- Dependabot - Bumped typing-extensions from 4.1.1 to 4.2.0
+- Updated NVIDIA CUDA repositories for Fedora Linux 36
+- Added quality-of-life enhancing error correction messages
 
 * Thu Dec 16 2021 Akashdeep Dhar <t0xic0der@fedoraproject.org> - 0.4.0-0
 - v0.4.0
