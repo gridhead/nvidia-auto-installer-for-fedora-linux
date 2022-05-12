@@ -23,6 +23,7 @@ from . import (
     Objc_CheckSuperuserPermissions,
     Objc_HandleRPMFusionRepositories,
     failure,
+    general,
     section,
     success,
     warning,
@@ -37,6 +38,9 @@ class HandleRPMFusionRepositories:
             section("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
             if Objc_HandleRPMFusionRepositories.avbl():
                 warning("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                general(
+                    "Please try executing `nvautoinstall driver` with elevated privileges now to install the drivers"  # noqa
+                )
                 success("No further action is necessary")
             else:
                 warning("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
@@ -47,11 +51,21 @@ class HandleRPMFusionRepositories:
                     section("INSTALLING RPM FUSION NVIDIA REPOSITORY...")
                     if Objc_HandleRPMFusionRepositories.main():
                         success("RPM Fusion NVIDIA repository was enabled")
+                        general(
+                            "Please try executing `nvautoinstall driver` with elevated privileges now to install the drivers"  # noqa
+                        )
                     else:
                         failure("RPM Fusion NVIDIA repository could not be enabled")
+                        general(
+                            "Please try executing `dnf update` with elevated privileges before this"
+                        )
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
+                    general(
+                        "Please check the internet connection or firewall configuration and try again"  # noqa
+                    )
         else:
             failure("Superuser privilege could not be acquired")
+            general("Please try executing this command with elevated privileges")
         failure("Leaving installer")
         sys.exit(0)
