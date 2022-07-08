@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+import os
+
 
 class HandlePrimeSupport(object):
     def main(self, opts):
@@ -29,6 +31,16 @@ class HandlePrimeSupport(object):
                     primemod += '\tOption "PrimaryGPU" "yes"' + "\n"
             with open("/etc/X11/xorg.conf.d/nvidia.conf", "w") as etcdconf:
                 etcdconf.write(primemod)
+            # KDE SDDM needs to be configured appropriately
+            if os.environ["XDG_CURRENT_DESKTOP"] == "KDE":
+                x_setup = "/etc/sddm/Xsetup"
+                with open(x_setup, "r") as xsetup_read:
+                    # Prevents adding it twice when called multiple times
+                    if "# KDE SDDM setup" not in xsetup_read.read():
+                        with open(x_setup, "a") as xsetup_append:
+                            xsetup_append.write("\n# KDE SDDM setup")
+                            xsetup_append.write("\nxrandr --setprovideroutputsource modesetting NVIDIA-G0")
+                            xsetup_append.write("\nxrandr --auto")
             return True
         except Exception:
             return False
