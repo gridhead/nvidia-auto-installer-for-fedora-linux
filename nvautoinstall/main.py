@@ -58,7 +58,9 @@ def handle_driver_installation():
     HandleDriverInstallation()
 
 
-@main.command(name="nvrepo", help="Enable NVIDIA repository for CUDA (E.g nvautoinstall nvrepo f36).")
+@main.command(
+    name="nvrepo", help="Enable NVIDIA repository for CUDA (E.g nvautoinstall nvrepo f36)."
+)
 @click.argument("repover", nargs=1)
 def install_nvidia_repositories(repover):
     InstallNvidiaRepositories(repover)

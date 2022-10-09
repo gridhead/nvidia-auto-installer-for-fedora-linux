@@ -40,8 +40,8 @@ Active internet connection and superuser privilege is required to execute the fo
   This mode enables the RPM Fusion NVIDIA drivers repository.
 - **`sudo nvautoinstall driver`**  
   This mode simply installs the NVIDIA drivers. Enabling the RPM Fusion NVIDIA drivers repository is mandatory before 
-  doing this.
-- **`sudo nvautoinstall nvrepo`**  
+  doing this.(Acceptable fedora repo versions are f33-34-35-36)
+- **`sudo nvautoinstall nvrepo f36`**  
   This mode enables the official NVIDIA repository for CUDA software.
 - **`sudo nvautoinstall plcuda`**  
   This mode installs only the CUDA support softwares. Enabling the RPM Fusion NVIDIA drivers and NVIDIA official 
