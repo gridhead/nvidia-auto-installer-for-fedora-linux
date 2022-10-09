@@ -59,8 +59,9 @@ def handle_driver_installation():
 
 
 @main.command(name="nvrepo", help="Enable the official NVIDIA repository for CUDA.")
-def install_nvidia_repositories():
-    InstallNvidiaRepositories()
+@click.argument("repover", nargs=1)
+def install_nvidia_repositories(repover):
+    InstallNvidiaRepositories(repover)
 
 
 @main.command(name="plcuda", help="Install only the CUDA support software.")
