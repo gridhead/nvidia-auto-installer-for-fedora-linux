@@ -67,12 +67,21 @@ class InstallCuBLASSupport:
                         if Objc_HandleCudaInstallation.avbl():
                             success("CUDA support software was detected")
                             section("INSTALLING CuBLAS RENDERER SUPPORT...")
-                            if Objc_HandleCuBLASInstallation.main(version):
-                                success("CuBLAS library support were successfully installed")
+                            detected_versions, package_name = Objc_HandleCuBLASInstallation.search(version)
+                            if package_name is not None:
+                                success("Found CuBLAS package " + package_name)
+                                section("INSTALLING CuBLAS PACKAGE...")
+                                if Objc_HandleCuBLASInstallation.main(package_name):
+                                    success("CuBLAS library support were successfully installed")
+                                else:
+                                    failure("CuBLAS library support could not be installed")
+                                    general(
+                                        "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                                    )
                             else:
-                                failure("CuBLAS library support could not be installed")
+                                failure("CuBLAS library support matching version " + version + " was not found. Detected versions:\n" + "\n".join("      * " + v for v in detected_versions))
                                 general(
-                                    "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                                    "Please check the version number and try again"  # noqa
                                 )
                         else:
                             failure("CUDA support software was not detected")
