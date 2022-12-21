@@ -19,9 +19,25 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import subprocess
+import re
 
 
 class HandleCudaInstallation(object):
+    def avbl(self):
+        command = "dnf list installed | grep cuda"
+        prompt = subprocess.Popen(
+            command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
+        output = prompt.communicate()[0].decode("utf-8")
+        lines = output.splitlines()
+        linect = len(lines)
+        if linect == 0:
+            return False
+        else:
+            meta_installed = any(re.match(r"xorg-x11-drv-nvidia-cuda", line) for line in lines)
+            main_installed = any(re.match(r"cuda", line) for line in lines)
+            return meta_installed and main_installed
+
     def rpck(self):
         comand = "dnf repolist | grep 'cuda'"
         prompt = subprocess.Popen(

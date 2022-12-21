@@ -31,6 +31,7 @@ from . import (
     InstallNvidiaRepositories,
     InstallVideoAcceleration,
     InstallVulkanSupport,
+    InstallCuBLASSupport,
     __version__,
 )
 
@@ -101,6 +102,11 @@ def handle_compatibility_check():
 @main.command(name="primec", help="Setup PRIME support.")
 def handle_prime_support():
     HandlePrimeSupport()
+
+
+@main.command(name="cublas", help="Setup CuBLAS support.")
+def handle_cublas_support():
+    InstallCuBLASSupport()
 
 
 if __name__ == "__main__":
