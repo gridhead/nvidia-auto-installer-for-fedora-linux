@@ -22,7 +22,15 @@ import subprocess
 
 
 class InstallCuBLASSupport(object):
+    """
+    Install the CuBLAS library.
+    """
     def search(self, version):
+        """
+        Search for a libcublas-* package that matches the provided version number.
+        version should be a number matching the distributions on the RPMFusion repo,
+        or "latest" to get the most recent available version.
+        """
         command = "dnf search libcublas -q | grep -v devel"
         prompt = subprocess.Popen(
             command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
@@ -45,5 +53,8 @@ class InstallCuBLASSupport(object):
         return version_numbers, package_to_install
 
     def main(self, package_name):
+        """
+        Install the provided libcublas package.
+        """
         exec_status_code = os.system("dnf install -y " + package_name)
         return exec_status_code == 0

@@ -34,6 +34,9 @@ from . import (
 
 
 class InstallCuBLASSupport:
+    """
+    Interface to install the CuBLAS library.
+    """
     def __init__(self, version):
         section("CHECKING SUPERUSER PERMISSIONS...")
         if Objc_CheckSuperuserPermissions.main():
@@ -66,20 +69,20 @@ class InstallCuBLASSupport:
                         section("LOOKING FOR EXISTING CUDA INSTALLATION...")
                         if Objc_HandleCudaInstallation.avbl():
                             success("CUDA support software was detected")
-                            section("INSTALLING CuBLAS RENDERER SUPPORT...")
+                            section("INSTALLING CuBLAS LIBRARY...")
                             detected_versions, package_name = Objc_HandleCuBLASInstallation.search(version)
                             if package_name is not None:
                                 success("Found CuBLAS package " + package_name)
                                 section("INSTALLING CuBLAS PACKAGE...")
                                 if Objc_HandleCuBLASInstallation.main(package_name):
-                                    success("CuBLAS library support were successfully installed")
+                                    success("CuBLAS library were successfully installed")
                                 else:
-                                    failure("CuBLAS library support could not be installed")
+                                    failure("CuBLAS library could not be installed")
                                     general(
                                         "Please try executing `dnf update` with elevated privileges before this"  # noqa
                                     )
                             else:
-                                failure("CuBLAS library support matching version " + version + " was not found. Detected versions:\n" + "\n".join("      * " + v for v in detected_versions))
+                                failure("CuBLAS library matching version " + version + " was not found. Detected versions:\n" + "\n".join("      * " + v for v in detected_versions))
                                 general(
                                     "Please check the version number and try again"  # noqa
                                 )
