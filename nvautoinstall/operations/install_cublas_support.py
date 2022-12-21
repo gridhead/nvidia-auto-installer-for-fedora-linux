@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
+import os
 import subprocess
 
 
@@ -48,5 +49,5 @@ class InstallCuBLASSupport(object):
         return version_numbers, package_to_install
 
     def main(self, package_name):
-        print("TODO: INSTALL", package_name)
-        return True
+        exec_status_code = os.system("dnf install -y " + package_name)
+        return exec_status_code == 0
