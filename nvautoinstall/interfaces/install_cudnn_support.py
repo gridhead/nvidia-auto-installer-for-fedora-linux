@@ -75,6 +75,7 @@ class InstallCuDNNSupport:
                                 success("CuDNN repo is was detected")
                             else:
                                 section("ADDING CuDNN REPO...")
+                                warning("This mode adds the RHEL 8 repository, which is the only .rpm repository NVIDIA distributes for CuDNN.\nSee https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#package-manager-rhel-install for more info.")
                                 if Objc_HandleCuDNNInstallation.add_repo():
                                     success("Added CuDNN repo")
                                 else:
