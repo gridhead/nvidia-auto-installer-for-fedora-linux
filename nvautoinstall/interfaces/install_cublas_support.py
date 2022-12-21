@@ -34,7 +34,7 @@ from . import (
 
 
 class InstallCuBLASSupport:
-    def __init__(self):
+    def __init__(self, version):
         section("CHECKING SUPERUSER PERMISSIONS...")
         if Objc_CheckSuperuserPermissions.main():
             success("Superuser privilege acquired")
@@ -67,7 +67,7 @@ class InstallCuBLASSupport:
                         if Objc_HandleCudaInstallation.avbl():
                             success("CUDA support software was detected")
                             section("INSTALLING CuBLAS RENDERER SUPPORT...")
-                            if Objc_HandleCuBLASInstallation.main():
+                            if Objc_HandleCuBLASInstallation.main(version):
                                 success("CuBLAS library support were successfully installed")
                             else:
                                 failure("CuBLAS library support could not be installed")

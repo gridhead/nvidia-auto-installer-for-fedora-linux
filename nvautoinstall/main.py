@@ -105,8 +105,9 @@ def handle_prime_support():
 
 
 @main.command(name="cublas", help="Setup CuBLAS support.")
-def handle_cublas_support():
-    InstallCuBLASSupport()
+@click.argument('version', type=str, required=True, default="latest")
+def handle_cublas_support(version):
+    InstallCuBLASSupport(version)
 
 
 if __name__ == "__main__":

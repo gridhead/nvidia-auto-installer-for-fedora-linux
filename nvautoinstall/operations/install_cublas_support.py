@@ -21,6 +21,6 @@ import os
 
 
 class InstallCuBLASSupport(object):
-    def main(self):
-        print("TODO: INSTALL CUDA")
+    def main(self, version):
+        print("TODO: INSTALL CUBLAS VERSION", version)
         return True
