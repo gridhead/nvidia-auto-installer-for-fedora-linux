@@ -32,6 +32,7 @@ from . import (
     InstallVideoAcceleration,
     InstallVulkanSupport,
     InstallCuBLASSupport,
+    InstallCuDNNSupport,
     __version__,
 )
 
@@ -108,6 +109,12 @@ def handle_prime_support():
 @click.argument('version', type=str, required=True, default="latest")
 def handle_cublas_support(version):
     InstallCuBLASSupport(version)
+
+
+@main.command(name="cudnn", help="Install the CuDNN library.")
+@click.argument('version', type=str, required=True, default="latest")
+def handle_cudnn_support(version):
+    InstallCuDNNSupport(version)
 
 
 if __name__ == "__main__":

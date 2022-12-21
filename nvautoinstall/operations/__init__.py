@@ -27,3 +27,4 @@ from .install_ffmpeg_support import InstallFfmpegSupport  # noqa
 from .install_video_acceleration import InstallVideoAcceleration  # noqa
 from .install_vulkan_support import InstallVulkanSupport  # noqa
 from .install_cublas_support import InstallCuBLASSupport  # noqa
+from .install_cudnn_support import InstallCuDNNSupport  # noqa
