@@ -66,6 +66,14 @@ Active internet connection and superuser privilege is required to execute the fo
 - **`sudo nvautoinstall primec`**  
   This mode allows you to toggle the PRIME offloading to render all display elements using the discrete card. This has 
   only been tested on Workstation variant of Fedora Linux.
+- **`sudo nvautoinstall cublas`**
+  This mode installs the CuBLAS library. Enabling the RPM Fusion NVIDIA drivers repository and installing the 
+  basic drivers and CUDA support software are mandatory before doing this.
+- **`sudo nvautoinstall cudnn`**
+  This mode installs the CuDNN library. Enabling the RPM Fusion NVIDIA drivers repository and installing the 
+  basic drivers and CUDA support software are mandatory before doing this.
+  **Warning: this mode adds the RHEL 8 repository, which is the only .rpm repository NVIDIA distributes for CuDNN. https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#package-manager-rhel-install**
+  
 - **`sudo nvautoinstall --version`**  
   This mode shows the tool version and exits out.
 - **`sudo nvautoinstall --help`**  
