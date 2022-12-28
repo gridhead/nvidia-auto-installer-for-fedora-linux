@@ -19,9 +19,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import subprocess
+import re
+
+
+MAIN_PACKAGE_NAME = "cuda"
+META_PACKAGE_NAME = "xorg-x11-drv-nvidia-cuda"
 
 
 class HandleCudaInstallation(object):
+    def avbl(self):
+        """
+        Check whether both main and meta packages are installed.
+        """
+        command = "dnf list installed | grep cuda"
+        prompt = subprocess.Popen(
+            command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
+        output = prompt.communicate()[0].decode("utf-8")
+        lines = output.splitlines()
+        linect = len(lines)
+        if linect == 0:
+            return False
+        else:
+            meta_installed = any(re.match(META_PACKAGE_NAME, line) for line in lines)
+            main_installed = any(re.match(MAIN_PACKAGE_NAME, line) for line in lines)
+            return meta_installed and main_installed
+
     def rpck(self):
         comand = "dnf repolist | grep 'cuda'"
         prompt = subprocess.Popen(
@@ -47,7 +70,7 @@ class HandleCudaInstallation(object):
         return exec_status_code == 0
 
     def meta(self):
-        exec_status_code = os.system("dnf install -y xorg-x11-drv-nvidia-cuda")
+        exec_status_code = os.system("dnf install -y " + META_PACKAGE_NAME)
         return exec_status_code == 0
 
     def stop(self):
@@ -55,5 +78,5 @@ class HandleCudaInstallation(object):
         return exec_status_code == 0
 
     def main(self):
-        exec_status_code = os.system("dnf install -y cuda")
+        exec_status_code = os.system("dnf install -y " + MAIN_PACKAGE_NAME)
         return exec_status_code == 0

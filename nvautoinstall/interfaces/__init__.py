@@ -28,6 +28,8 @@ from ..operations import (
     InstallFfmpegSupport,
     InstallVideoAcceleration,
     InstallVulkanSupport,
+    InstallCuBLASSupport,
+    InstallCuDNNSupport,
 )
 
 Objc_CheckSuperuserPermissions = CheckSuperuserPermissions()
@@ -39,3 +41,5 @@ Objc_InstallFfmpegSupport = InstallFfmpegSupport()
 Objc_HandleDriversInstallation = HandleDriversInstallation()
 Objc_InstallVideoAcceleration = InstallVideoAcceleration()
 Objc_InstallVulkanSupport = InstallVulkanSupport()
+Objc_HandleCuBLASInstallation = InstallCuBLASSupport()
+Objc_HandleCuDNNInstallation = InstallCuDNNSupport()

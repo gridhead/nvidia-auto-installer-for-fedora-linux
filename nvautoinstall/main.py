@@ -31,6 +31,8 @@ from . import (
     InstallNvidiaRepositories,
     InstallVideoAcceleration,
     InstallVulkanSupport,
+    InstallCuBLASSupport,
+    InstallCuDNNSupport,
     __version__,
 )
 
@@ -101,6 +103,18 @@ def handle_compatibility_check():
 @main.command(name="primec", help="Setup PRIME support.")
 def handle_prime_support():
     HandlePrimeSupport()
+
+
+@main.command(name="cublas", help="Install the CuBLAS library.")
+@click.argument('version', type=str, required=True, default="latest")
+def handle_cublas_support(version):
+    InstallCuBLASSupport(version)
+
+
+@main.command(name="cudnn", help="Install the CuDNN library.")
+@click.argument('version', type=str, required=True, default="latest")
+def handle_cudnn_support(version):
+    InstallCuDNNSupport(version)
 
 
 if __name__ == "__main__":

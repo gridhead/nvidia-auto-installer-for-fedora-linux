@@ -28,5 +28,7 @@ from .interfaces.install_ffmpeg_support import InstallFfmpegSupport  # noqa
 from .interfaces.install_nvidia_repositories import InstallNvidiaRepositories  # noqa
 from .interfaces.install_video_acceleration import InstallVideoAcceleration  # noqa
 from .interfaces.install_vulkan_support import InstallVulkanSupport  # noqa
+from .interfaces.install_cublas_support import InstallCuBLASSupport  # noqa
+from .interfaces.install_cudnn_support import InstallCuDNNSupport  # noqa
 
 __version__ = "0.4.1"
