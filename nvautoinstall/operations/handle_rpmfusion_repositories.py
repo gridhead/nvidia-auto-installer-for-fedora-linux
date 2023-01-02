@@ -21,7 +21,7 @@ import os
 import subprocess
 
 
-class HandleRPMFusionRepositories(object):
+class HandleRPMFusionRepositories:
     def avbl(self):
         comand = "dnf repolist | grep 'rpmfusion-nonfree-updates'"
         prompt = subprocess.Popen(

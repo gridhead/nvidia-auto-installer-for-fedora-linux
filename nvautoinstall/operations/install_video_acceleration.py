@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 
 
-class InstallVideoAcceleration(object):
+class InstallVideoAcceleration:
     def main(self):
         exec_status_code = os.system("dnf install -y vdpauinfo libva-vdpau-driver libva-utils")
         return exec_status_code == 0

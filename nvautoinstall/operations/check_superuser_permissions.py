@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 
 
-class CheckSuperuserPermissions(object):
+class CheckSuperuserPermissions:
     def main(self):
         data = os.geteuid()
         return data == 0

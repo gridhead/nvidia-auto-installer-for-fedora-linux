@@ -21,7 +21,7 @@ import os
 import subprocess
 
 
-class HandleCudaInstallation(object):
+class HandleCudaInstallation:
     def rpck(self):
         comand = "dnf repolist | grep 'cuda'"
         prompt = subprocess.Popen(
