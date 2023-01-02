@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 
 
-class InstallFfmpegSupport(object):
+class InstallFfmpegSupport:
     def main(self):
         exec_status_code = os.system("dnf install -y xorg-x11-drv-nvidia-cuda-libs")
         return exec_status_code == 0

@@ -23,7 +23,7 @@ import subprocess
 import distro
 
 
-class HandleCompatibilityCheck(object):
+class HandleCompatibilityCheck:
     def gpuc(self):
         comand = "lspci | grep -E 'VGA|3D'"
         prompt = subprocess.Popen(

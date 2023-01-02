@@ -20,7 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 
 
-class InstallVulkanSupport(object):
+class InstallVulkanSupport:
     def main(self):
         exec_status_code = os.system("dnf install -y vulkan")
         return exec_status_code == 0

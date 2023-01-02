@@ -18,7 +18,7 @@
 * Device with a discrete NVIDIA GPU
 
 ### Installation
-If you use Fedora Linux (32 or above and Rawhide) - you can install NVIDIA Auto Installer for Fedora by enabling my 
+If you use Fedora Linux (32 or above and Rawhide) - you can install NVIDIA Auto Installer for Fedora by enabling my
 COPR repository. Simply execute the following commands in succession to install the tool.
 
 ```shell
@@ -36,39 +36,39 @@ COPR repository. Simply execute the following commands in succession to install 
 
 ### Modes of installation
 Active internet connection and superuser privilege is required to execute the following installation modes.
-- **`sudo nvautoinstall rpmadd`**  
+- **`sudo nvautoinstall rpmadd`**
   This mode enables the RPM Fusion NVIDIA drivers repository.
-- **`sudo nvautoinstall driver`**  
-  This mode simply installs the NVIDIA drivers. Enabling the RPM Fusion NVIDIA drivers repository is mandatory before 
+- **`sudo nvautoinstall driver`**
+  This mode simply installs the NVIDIA drivers. Enabling the RPM Fusion NVIDIA drivers repository is mandatory before
   doing this.
-- **`sudo nvautoinstall nvrepo`**  
+- **`sudo nvautoinstall nvrepo`**
   This mode enables the official NVIDIA repository for CUDA software.
-- **`sudo nvautoinstall plcuda`**  
-  This mode installs only the CUDA support softwares. Enabling the RPM Fusion NVIDIA drivers and NVIDIA official 
+- **`sudo nvautoinstall plcuda`**
+  This mode installs only the CUDA support softwares. Enabling the RPM Fusion NVIDIA drivers and NVIDIA official
   repository, and installing the basic drivers are mandatory before doing this.
-- **`sudo nvautoinstall ffmpeg`**  
-  This mode installs only the FFMPEG acceleration. Enabling the RPM Fusion NVIDIA drivers repository and installing the 
+- **`sudo nvautoinstall ffmpeg`**
+  This mode installs only the FFMPEG acceleration. Enabling the RPM Fusion NVIDIA drivers repository and installing the
   basic drivers are mandatory before doing this.
-- **`sudo nvautoinstall vulkan`**  
-  This mode installs only the Vulkan renderer. Enabling the RPM Fusion NVIDIA drivers repository and installing the 
+- **`sudo nvautoinstall vulkan`**
+  This mode installs only the Vulkan renderer. Enabling the RPM Fusion NVIDIA drivers repository and installing the
   basic drivers are mandatory before doing this.
-- **`sudo nvautoinstall vidacc`**  
-  This mode installs only the VDPAU/VAAPI acceleration. Enabling the RPM Fusion NVIDIA drivers repository and 
+- **`sudo nvautoinstall vidacc`**
+  This mode installs only the VDPAU/VAAPI acceleration. Enabling the RPM Fusion NVIDIA drivers repository and
   installing the basic drivers are mandatory before doing this.
-- **`sudo nvautoinstall getall`**  
+- **`sudo nvautoinstall getall`**
   This mode installs all the above packages. (Not been implemented yet)
-- **`sudo nvautoinstall cheksu`**  
-  This mode allows you to check the current user privilege level. You can use this tool effectively only when you have 
+- **`sudo nvautoinstall cheksu`**
+  This mode allows you to check the current user privilege level. You can use this tool effectively only when you have
   logged in as a root or sudo user.
-- **`sudo nvautoinstall compat`**  
-  This mode allows you to check your hardware and host compatibility. The tool would check your hardware and host and 
+- **`sudo nvautoinstall compat`**
+  This mode allows you to check your hardware and host compatibility. The tool would check your hardware and host and
   tell if your device is supported by the tool or not.
-- **`sudo nvautoinstall primec`**  
-  This mode allows you to toggle the PRIME offloading to render all display elements using the discrete card. This has 
+- **`sudo nvautoinstall primec`**
+  This mode allows you to toggle the PRIME offloading to render all display elements using the discrete card. This has
   only been tested on Workstation variant of Fedora Linux.
-- **`sudo nvautoinstall --version`**  
+- **`sudo nvautoinstall --version`**
   This mode shows the tool version and exits out.
-- **`sudo nvautoinstall --help`**  
+- **`sudo nvautoinstall --help`**
   This mode shows the help message and exits out.
 
 ### Note
@@ -90,10 +90,10 @@ Active internet connection and superuser privilege is required to execute the fo
 * Support for older cards by active querying at NVIDIA.
 
 ### Disclaimer
-This tool has been tried and tested multiple times and is expected to work flawlessly in Fedora Linux (32 or above, 
-and Rawhide). It has not been tested on any of the spins yet so you are requested to proceed with caution. While the 
-chances of things going wrong is pretty slim, you would still want to make backups, should things do not go as expected. 
-As always, you are choosing to use this tool at your will and you cannot hold me responsible for any mishap that may 
+This tool has been tried and tested multiple times and is expected to work flawlessly in Fedora Linux (32 or above,
+and Rawhide). It has not been tested on any of the spins yet so you are requested to proceed with caution. While the
+chances of things going wrong is pretty slim, you would still want to make backups, should things do not go as expected.
+As always, you are choosing to use this tool at your will and you cannot hold me responsible for any mishap that may
 occur due to the misuse of this tool.
 
 ### Previews

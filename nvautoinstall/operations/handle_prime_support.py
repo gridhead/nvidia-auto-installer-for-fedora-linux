@@ -17,10 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-class HandlePrimeSupport(object):
+class HandlePrimeSupport:
     def main(self, opts):
         try:
-            with open("/usr/share/X11/xorg.conf.d/nvidia.conf", "r") as sharconf:
+            with open("/usr/share/X11/xorg.conf.d/nvidia.conf") as sharconf:
                 shardata = sharconf.read()
             primemod = ""
             for indx in shardata.split("\n"):

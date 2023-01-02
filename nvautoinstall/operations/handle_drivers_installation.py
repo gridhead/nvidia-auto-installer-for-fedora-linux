@@ -21,7 +21,7 @@ import os
 import subprocess
 
 
-class HandleDriversInstallation(object):
+class HandleDriversInstallation:
     def main(self):
         exec_status_code = os.system(
             "dnf install -y gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs"  # noqa
