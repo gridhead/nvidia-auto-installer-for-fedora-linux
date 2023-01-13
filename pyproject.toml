@@ -30,6 +30,7 @@ classifiers = [
 python = "^3.8"
 click = ">=7.1.2"
 distro = ">=1.5.0"
+iniconfig = "^2.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
