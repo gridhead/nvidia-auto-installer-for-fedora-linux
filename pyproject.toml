@@ -43,12 +43,13 @@ pytest-flake8 = "^1.0.7"
 pytest-isort = "^2.0.0"
 bandit = "^1.7.4"
 black = "^22.10.0"
+pytest-cov = "^4.0.0"
 
 [tool.ruff]
 line-length = 100
 
 [tool.pytest.ini_options]
-addopts = "--black --isort --flake8"
+addopts = "--black --isort --flake8 --cov=nvautoinstall --cov-report=term-missing"
 flake8-max-line-length = 100
 filterwarnings = ["ignore::DeprecationWarning:flake8:254"]
 
