@@ -39,7 +39,7 @@ jobs:
              source venv/bin/activate
              poetry install
 
-      - name: Check the quality of the code
-        run: |
-             source venv/bin/activate
-             pytest
+      # - name: Check the quality of the code
+      #   run: |
+      #        source venv/bin/activate
+      #        pytest

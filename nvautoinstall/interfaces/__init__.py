@@ -17,8 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-from ..decoration import failure, general, section, success, warning  # noqa
-from ..operations import (
+from nvautoinstall.decoration import failure, general, section, success, warning
+from nvautoinstall.operations import (
     CheckSuperuserPermissions,
     HandleCompatibilityCheck,
     HandleCudaInstallation,
@@ -29,6 +29,9 @@ from ..operations import (
     InstallVideoAcceleration,
     InstallVulkanSupport,
 )
+
+__all__ = tuple(k for k in locals() if not k.startswith("_"))
+
 
 Objc_CheckSuperuserPermissions = CheckSuperuserPermissions()
 Objc_HandlePrimeSupport = HandlePrimeSupport()

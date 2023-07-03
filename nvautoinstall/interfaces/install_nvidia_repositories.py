@@ -39,7 +39,8 @@ class InstallNvidiaRepositories:
             if Objc_HandleCudaInstallation.rpck():
                 warning("Official CUDA repository was detected")
                 general(
-                    "Please try executing `nvautoinstall plcuda` with elevated privileges now to install CUDA software"  # noqa
+                    "Please try executing `nvautoinstall plcuda` with elevated privileges now to"
+                    " install CUDA software"
                 )
                 success("No further action is necessary")
             else:
@@ -58,17 +59,20 @@ class InstallNvidiaRepositories:
                             if Objc_HandleCudaInstallation.stop():
                                 success("NVIDIA DRIVER module has been disabled")
                                 general(
-                                    "Please try executing `nvautoinstall plcuda` with elevated privileges now to install CUDA software"  # noqa
+                                    "Please try executing `nvautoinstall plcuda` with elevated"
+                                    " privileges now to install CUDA software"
                                 )
                             else:
                                 failure("NVIDIA DRIVER module could not be disabled")
                                 general(
-                                    "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                                    "Please try executing `dnf update` with elevated privileges"
+                                    " before this"
                                 )
                         else:
                             failure("Repositories could not be refreshed")
                             general(
-                                "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                                "Please try executing `dnf update` with elevated privileges before"
+                                " this"
                             )
                     else:
                         failure("Official CUDA repository could not be enabled")
@@ -78,7 +82,8 @@ class InstallNvidiaRepositories:
                 else:
                     failure("Connection to NVIDIA servers could not be established")
                     general(
-                        "Please check the internet connection or firewall configuration and try again"  # noqa
+                        "Please check the internet connection or firewall configuration and try"
+                        " again"
                     )
         else:
             failure("Superuser privilege could not be acquired")

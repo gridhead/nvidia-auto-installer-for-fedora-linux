@@ -37,13 +37,20 @@ class HandleRPMFusionRepositories:
             success("Superuser privilege acquired")
             section("CHECKING AVAILABILITY OF RPM FUSION NVIDIA REPOSITORY...")
             if Objc_HandleRPMFusionRepositories.avbl():
-                warning("RPM Fusion repository for Proprietary NVIDIA Driver was detected")
+                warning(
+                    "RPM Fusion repository for                     Proprietary NVIDIA Driver was"
+                    " detected"
+                )
                 general(
-                    "Please try executing `nvautoinstall driver` with elevated privileges now to install the drivers"  # noqa
+                    "Please try executing `nvautoinstall driver`"
+                    "with elevated privileges now to install the drivers"
                 )
                 success("No further action is necessary")
             else:
-                warning("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
+                warning(
+                    "RPM Fusion repository for                         Proprietary NVIDIA Driver"
+                    " was not detected"
+                )
                 warning("Repository enabling is required")
                 section("ATTEMPTING CONNECTION TO RPM FUSION SERVERS...")
                 if Objc_HandleRPMFusionRepositories.conn():
@@ -52,7 +59,8 @@ class HandleRPMFusionRepositories:
                     if Objc_HandleRPMFusionRepositories.main():
                         success("RPM Fusion NVIDIA repository was enabled")
                         general(
-                            "Please try executing `nvautoinstall driver` with elevated privileges now to install the drivers"  # noqa
+                            "Please try executing `nvautoinstall driver`"
+                            "with elevated privileges now to install the drivers"
                         )
                     else:
                         failure("RPM Fusion NVIDIA repository could not be enabled")
@@ -62,7 +70,8 @@ class HandleRPMFusionRepositories:
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
                     general(
-                        "Please check the internet connection or firewall configuration and try again"  # noqa
+                        "Please check the internet connection or firewall configuration and try"
+                        " again"
                     )
         else:
             failure("Superuser privilege could not be acquired")
