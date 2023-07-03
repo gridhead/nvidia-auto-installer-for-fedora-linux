@@ -2,7 +2,7 @@
 name = "nvautoinstall"
 version = "0.4.1"
 description = "A CLI tool which lets you install proprietary NVIDIA drivers and much more easily on Fedora Linux (32 or above, ELN or Rawhide)"
-authors = ["Akashdeep Dhar <akashdeep.dhar@gmail.com>", "Christopher Engelhard <lcts@fedoraproject.org>", "Onuralp SEZER <thunderbirdtr@gmail.com>", "Gustavo Costa <xfgusta@gmail.com>"]
+authors = ["Akashdeep Dhar <akashdeep.dhar@gmail.com>", "Christopher Engelhard <lcts@fedoraproject.org>", "Onuralp SEZER <thunderbirdtr@fedoraproject.org>", "Gustavo Costa <xfgusta@gmail.com>"]
 license = "GPL-3.0-or-later"
 maintainers = ["Akashdeep Dhar <akashdeep.dhar@gmail.com>"]
 readme = "README.md"
