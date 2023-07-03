@@ -36,7 +36,7 @@ iniconfig = "^2.0.0"
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.0.0"
 isort = "^5.10.1"
-flake8 = "<4"
+flake8 = "<5"
 pytest = "^6.2.5"
 pytest-black = "^0.3.12"
 pytest-flake8 = "^1.0.7"
