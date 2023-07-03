@@ -58,10 +58,10 @@ class HandleCompatibilityCheck:
     def avbl(self):
         try:
             if distro.id() == "fedora":
-                if int(distro.os_release_info()["version_id"]) >= 32:
-                    return "full"
+                if int(distro.os_release_info()["version_id"]) >= 37:
+                    return True
                 else:
-                    return "half"
+                    return False
             else:
                 return False
         except KeyError:

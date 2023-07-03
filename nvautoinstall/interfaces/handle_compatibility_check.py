@@ -52,10 +52,10 @@ class HandleCompatibilityCheck:
                 failure("Unsupported OS detected")
                 general("This tool cannot be used here")
             else:
-                if data == "full":
+                if data:
                     success("Supported OS detected")
                     general("This tool is expected to work correctly here")
-                elif data == "half":
+                else:
                     warning("Minimally supported OS detected")
                     general("Discretion is advised while using this tool")
         failure("Leaving installer")
