@@ -17,16 +17,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-from .interfaces.check_superuser_permissions import CheckSuperuserPermissions  # noqa
-from .interfaces.handle_compatibility_check import HandleCompatibilityCheck  # noqa
-from .interfaces.handle_drivers_installation import HandleDriverInstallation  # noqa
-from .interfaces.handle_prime_support import HandlePrimeSupport  # noqa
-from .interfaces.handle_rpmfusion_repositories import HandleRPMFusionRepositories  # noqa
-from .interfaces.install_cuda_support import InstallCudaSupport  # noqa
-from .interfaces.install_everything import InstallEverything  # noqa
-from .interfaces.install_ffmpeg_support import InstallFfmpegSupport  # noqa
-from .interfaces.install_nvidia_repositories import InstallNvidiaRepositories  # noqa
-from .interfaces.install_video_acceleration import InstallVideoAcceleration  # noqa
-from .interfaces.install_vulkan_support import InstallVulkanSupport  # noqa
+from .interfaces.check_superuser_permissions import CheckSuperuserPermissions
+from .interfaces.handle_compatibility_check import HandleCompatibilityCheck
+from .interfaces.handle_drivers_installation import HandleDriverInstallation
+from .interfaces.handle_prime_support import HandlePrimeSupport
+from .interfaces.handle_rpmfusion_repositories import HandleRPMFusionRepositories
+from .interfaces.install_cuda_support import InstallCudaSupport
+from .interfaces.install_everything import InstallEverything
+from .interfaces.install_ffmpeg_support import InstallFfmpegSupport
+from .interfaces.install_nvidia_repositories import InstallNvidiaRepositories
+from .interfaces.install_video_acceleration import InstallVideoAcceleration
+from .interfaces.install_vulkan_support import InstallVulkanSupport
 
+__all__ = tuple(k for k in locals() if not k.startswith("_"))
 __version__ = "0.4.1"

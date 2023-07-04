@@ -48,7 +48,8 @@ class InstallVideoAcceleration:
                     if data is False:
                         failure("No existing NVIDIA driver packages were detected")
                         general(
-                            "Please try executing `nvautoinstall driver` with elevated privileges before this"  # noqa
+                            "Please try executing `nvautoinstall driver` with elevated privileges"
+                            " before this"
                         )
                     else:
                         qant = 0
@@ -63,17 +64,20 @@ class InstallVideoAcceleration:
                         else:
                             failure("Video acceleration could not be installed")
                             general(
-                                "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                                "Please try executing `dnf update` with elevated privileges before"
+                                " this"
                             )
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
                     general(
-                        "Please check the internet connection or firewall configuration and try again"  # noqa
+                        "Please check the internet connection or firewall configuration and try"
+                        " again"
                     )
             else:
                 failure("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
                 general(
-                    "Please try executing `nvautoinstall rpmadd` with elevated privileges before this"  # noqa
+                    "Please try executing `nvautoinstall rpmadd` with elevated privileges before"
+                    " this"
                 )
         else:
             failure("Superuser privilege could not be acquired")

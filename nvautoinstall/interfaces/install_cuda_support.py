@@ -48,7 +48,8 @@ class InstallCudaSupport:
                     if data is False:
                         failure("No existing NVIDIA driver packages were detected")
                         general(
-                            "Please try executing `nvautoinstall driver` with elevated privileges before this"  # noqa
+                            "Please try executing `nvautoinstall driver` with elevated privileges"
+                            " before this"
                         )
                     else:
                         qant = 0
@@ -76,34 +77,41 @@ class InstallCudaSupport:
                                     else:
                                         failure("NVIDIA CUDA core packages could not be installed")
                                         general(
-                                            "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                                            "Please try executing `dnf update` with elevated"
+                                            " privileges before this"
                                         )
                                 else:
                                     failure(
-                                        "RPM Fusion CUDA metapackage packages could not be installed"  # noqa
+                                        "RPM Fusion CUDA metapackage packages could not be"
+                                        " installed"
                                     )
                                     general(
-                                        "Please try executing `dnf update` with elevated privileges before this"  # noqa
+                                        "Please try executing `dnf update` with elevated privileges"
+                                        " before this"
                                     )
                             else:
                                 failure("Connection to NVIDIA servers could not be established")
                                 general(
-                                    "Please check the internet connection or firewall configuration and try again"  # noqa
+                                    "Please check the internet connection or firewall configuration"
+                                    " and try again"
                                 )
                         else:
                             failure("Official CUDA repository was not detected")
                             general(
-                                "Try executing `nvautoinstall nvrepo` with elevated privileges before this"  # noqa
+                                "Try executing `nvautoinstall nvrepo` with elevated privileges"
+                                " before this"
                             )
                 else:
                     failure("Connection to RPM Fusion servers could not be established")
                     general(
-                        "Please check the internet connection or firewall configuration and try again"  # noqa
+                        "Please check the internet connection or firewall configuration and try"
+                        " again"
                     )
             else:
                 failure("RPM Fusion repository for Proprietary NVIDIA Driver was not detected")
                 general(
-                    "Please try executing `nvautoinstall rpmadd` with elevated privileges before this"  # noqa
+                    "Please try executing `nvautoinstall rpmadd` with elevated privileges before"
+                    " this"
                 )
         else:
             failure("Superuser privilege could not be acquired")
