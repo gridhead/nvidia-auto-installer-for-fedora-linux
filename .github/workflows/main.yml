@@ -10,34 +10,25 @@ jobs:
         python-version: ["3.8", "3.9", "3.10"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Install the base dependencies
+        run: python -m pip install --upgrade poetry
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Set up a virtual environment for Python ${{ matrix.python-version }}
-        run: |
-             python -m pip install --upgrade virtualenv
-             virtualenv venv
-             source venv/bin/activate
-             which python
-
-      - name: Install the base dependencies
-        run: |
-             source venv/bin/activate
-             python -m pip install --upgrade poetry
+          cache: 'poetry'
 
       - name: Check the correctness of the project config
-        run: |
-             source venv/bin/activate
-             poetry check
+        run: poetry check
 
       - name: Install the package
-        run: |
-             source venv/bin/activate
-             poetry install
+        run: poetry install
+
+      - name: run nvautoinstall command 
+        run: poetry run nvautoinstall --version
 
       # - name: Check the quality of the code
       #   run: |
