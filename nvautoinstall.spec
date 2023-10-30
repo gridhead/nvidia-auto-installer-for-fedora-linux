@@ -1,7 +1,7 @@
 %global srcname nvidia-auto-installer-for-fedora-linux
 
 Name:    nvautoinstall
-Version: 0.4.1
+Version: 0.4.2
 Release: 2%{?dist}
 Summary: NVIDIA Auto Installer for Fedora Linux
 
