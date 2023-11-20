@@ -1,8 +1,8 @@
 %global srcname nvidia-auto-installer-for-fedora-linux
 
 Name:    nvautoinstall
-Version: 0.4.1
-Release: 2%{?dist}
+Version: 0.4.2
+Release: 1%{?dist}
 Summary: NVIDIA Auto Installer for Fedora Linux
 
 License: GPLv3+
@@ -37,6 +37,9 @@ A CLI tool which lets you install proprietary NVIDIA drivers and much more easil
 %{_bindir}/nvautoinstall
 
 %changelog
+
+* Mon Nov 20 2023 Onuralp Sezer <thunderbirdtr@fedoraproject.org> - 0.4.2-1
+- rebuild for py12
 
 * Sun Oct 09 2022 Onuralp Sezer <thunderbirdtr@fedoraproject.org> - 0.4.1-2
 - rebuild for py11

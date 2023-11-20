@@ -30,4 +30,11 @@ from .interfaces.install_video_acceleration import InstallVideoAcceleration
 from .interfaces.install_vulkan_support import InstallVulkanSupport
 
 __all__ = tuple(k for k in locals() if not k.startswith("_"))
-__version__ = "0.4.1"
+
+import importlib.metadata as importlib_metadata
+
+try:
+    __version__ = importlib_metadata.version(__name__ or __package__)
+except importlib_metadata.PackageNotFoundError:
+    __version__ = "development-0.0.0"
+
