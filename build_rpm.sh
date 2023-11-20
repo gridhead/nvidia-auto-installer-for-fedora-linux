@@ -11,6 +11,6 @@ poetry build
 poetry run nvautoinstall --version
 
 mkdir -p ~/rpmbuild/SOURCES/
-cp dist/* ~/rpmbuild/SOURCES/
+cp dist/*.tar.gz ~/rpmbuild/SOURCES/
 rpmbuild -bs ./nvautoinstall.spec
 rpmbuild -bb ./nvautoinstall.spec
