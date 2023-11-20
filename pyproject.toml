@@ -31,7 +31,7 @@ classifiers = [
 python = "^3.8"
 click = ">=7.1.2"
 distro = ">=1.5.0"
-iniconfig = ">=1.1.1" # minimun version soported
+iniconfig = ">=1.1.1" # minimun version supported
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.0.0"
