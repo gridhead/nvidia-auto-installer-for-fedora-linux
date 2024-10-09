@@ -34,7 +34,7 @@ distro = ">=1.5.0"
 iniconfig = ">=1.1.1" # minimun version supported
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.0.0"
+pre-commit = "^3.0.0 || ^4.0.0"
 isort = "^5.10.1"
 flake8 = "<8"
 pytest = "^6.2.5 || ^8.0.0"
