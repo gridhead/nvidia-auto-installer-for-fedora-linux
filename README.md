@@ -12,6 +12,10 @@
     <a href="https://copr.fedorainfracloud.org/coprs/t0xic0der/nvidia-auto-installer-for-fedora/package/nvautoinstall/"><img src="https://copr.fedorainfracloud.org/coprs/t0xic0der/nvidia-auto-installer-for-fedora/package/nvautoinstall/status_image/last_build.png" /></a>
 </p>
 
+<p align="center">
+    <a href="https://github.com/gridhead/nvidia-auto-installer-for-fedora-linux/issues/347"><b>The project is now RETIRED and UNMAINTAINED</b></a>
+</p>
+
 ### Requirements
 * Active internet connection
 * Fedora Linux (32 or above and Rawhide)
